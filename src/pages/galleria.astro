@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/src/assets/gallery.css">
+</head>
+<Layout>
+  <section class="gallery-hero">
+    <div class="hero-inner">
+      <h1>Galleria</h1>
+      <p class="lead">Una selezione di lavori e progetti — clicca per ingrandire.</p>
+    </div>
+  </section>
+
+  <section class="gallery-controls">
+    <div class="controls-inner">
+      <div class="filters">
+        <button class="filter-btn active" data-filter="*">Tutti</button>
+        <button class="filter-btn" data-filter="interactive">Interattivo</button>
+        <button class="filter-btn" data-filter="generative">Generativo</button>
+        <button class="filter-btn" data-filter="video">Video</button>
+      </div>
+      <div class="search-wrap">
+        <input id="gallery-search" type="search" placeholder="Cerca progetti" aria-label="Cerca progetti">
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-grid-section">
+    <div class="gallery-grid">
+      <!-- Expanded gallery - many images for interactive scrubbing -->
+      <!-- Replace these with your local images under /public/images/gallery if desired -->
+      
+      <!-- We'll generate a diverse set of 12 cards -->
+      <article class="gallery-card" data-tags="interactive generative" data-title="Oscillazioni Programmate" data-caption="Serie di animazioni reactive." data-large="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Oscillazioni Programmate">
+        <div class="card-meta"><h4>Oscillazioni Programmate</h4><p>interactive · generative</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="video" data-title="Loop Meccanico" data-caption="Clip sperimentale in loop." data-large="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=800&auto=format&fit=crop" alt="Loop Meccanico">
+        <div class="card-meta"><h4>Loop Meccanico</h4><p>video</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="generative" data-title="Pattern Algoritmico" data-caption="Pattern generati da regole semplici." data-large="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop" alt="Pattern Algoritmico">
+        <div class="card-meta"><h4>Pattern Algoritmico</h4><p>generative</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="interactive" data-title="Interazione Sonora" data-caption="Installazione che risponde al tocco." data-large="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop" alt="Interazione Sonora">
+        <div class="card-meta"><h4>Interazione Sonora</h4><p>interactive</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="generative video" data-title="Campo di Forme" data-caption="Video di evoluzione formale." data-large="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=800&auto=format&fit=crop" alt="Campo di Forme">
+        <div class="card-meta"><h4>Campo di Forme</h4><p>generative · video</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="interactive" data-title="Trame Interattive" data-caption="Interfaccia che reagisce al movimento." data-large="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800&auto=format&fit=crop" alt="Trame Interattive">
+        <div class="card-meta"><h4>Trame Interattive</h4><p>interactive</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="generative" data-title="Campi di Colore" data-caption="Studio di campi generativi." data-large="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?q=80&w=800&auto=format&fit=crop" alt="Campi di Colore">
+        <div class="card-meta"><h4>Campi di Colore</h4><p>generative</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="video" data-title="Frammenti in Loop" data-caption="Video loop sperimentale." data-large="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop" alt="Frammenti in Loop">
+        <div class="card-meta"><h4>Frammenti in Loop</h4><p>video</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="interactive generative" data-title="Strutture Dinamiche" data-caption="Esempio di struttura generata in tempo reale." data-large="https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?q=80&w=800&auto=format&fit=crop" alt="Strutture Dinamiche">
+        <div class="card-meta"><h4>Strutture Dinamiche</h4><p>interactive · generative</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="generative" data-title="Raster Evolutivo" data-caption="Serie di immagini di mutazione." data-large="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=800&auto=format&fit=crop" alt="Raster Evolutivo">
+        <div class="card-meta"><h4>Raster Evolutivo</h4><p>generative</p></div>
+      </article>
+
+      <article class="gallery-card" data-tags="interactive" data-title="Campo Reattivo" data-caption="Installazione che cambia con la presenza." data-large="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=800&auto=format&fit=crop" alt="Campo Reattivo">
+        <div class="card-meta"><h4>Campo Reattivo</h4><p>interactive</p></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Lightbox overlay -->
+  <div id="gallery-lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Chiudi">✕</button>
+    <div class="lightbox-inner">
+      <img id="lightbox-image" src="" alt="">
+      <div class="lightbox-caption">
+        <h3 id="lightbox-title"></h3>
+        <p id="lightbox-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/scripts/gallery.js"></script>
+</Layout>

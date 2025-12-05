@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/src/assets/board.css">
+</head>
+<Layout>
+  <section class="board-hero">
+    <div class="hero-inner">
+      <h1>Public Work — Lavagna Infinita</h1>
+      <p class="lead">Muoviti liberamente con il mouse (drag) o con le frecce/WASD per esplorare le poster generazioni.</p>
+      <div class="board-controls">
+        <button id="regenerate-btn">Rigenera poster</button>
+        <label><input id="count-input" type="number" min="20" max="1000" step="10" value="200"> poster</label>
+      </div>
+    </div>
+  </section>
+
+  <section id="board-container">
+    <div id="board" tabindex="0" aria-label="Lavagna infinita"></div>
+  </section>
+
+  <div class="board-overlay">
+    <div class="coords">x: <span id="coord-x">0</span> y: <span id="coord-y">0</span></div>
+    <div class="hint">Drag per muoverti — ruota rotella per scorrere verticalmente</div>
+  </div>
+
+  <script type="module" src="/src/scripts/board.js"></script>
+</Layout>
