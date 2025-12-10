@@ -1,6 +1,6 @@
 ---
-// HeaderFixed component - used in all pages except index
-// Uses the EXACT same structure as index.astro but with .fixed class already applied
+// Fixed header wrapper used on non-index pages
+import Header from './Header.astro';
 
 interface Props {
   currentPage?: string;
@@ -9,41 +9,4 @@ interface Props {
 const { currentPage = '' } = Astro.props;
 ---
 
-<!-- Import home.css for the same styles as index -->
-<link rel="stylesheet" href="/src/assets/home.css">
-
-<!-- Header navigation - same as index but with .fixed class -->
-<header class="site-header fixed">
-  <nav class="header-nav">
-    <a href="/" class="nav-link">Home</a>
-    <a href="/archivio" class="nav-link">Archivio</a>
-    <a href="/editor" class="nav-link">Editor</a>
-    <a href="/public-work" class="nav-link">Galleria</a>
-  </nav>
-</header>
-
-<!-- Clock section - same as index but with .fixed class on container -->
-<section class="clock-section">
-  <div class="clock-container fixed">
-    <span id="live-clock">01/12/2025 00:00:00</span>
-  </div>
-</section>
-
-<script is:inline>
-  // Clock update - same function as index
-  function updateClock() {
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = now.getFullYear();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const formatted = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-    const clockEl = document.getElementById('live-clock');
-    if (clockEl) clockEl.textContent = formatted;
-  }
-  
-  updateClock();
-  setInterval(updateClock, 1000);
-</script>
+<Header fixed includeStyles={true} currentPage={currentPage} />

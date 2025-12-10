@@ -1,4 +1,5 @@
 /* board.css - styles for the infinite pannable board */
+@import './base.css';
 
 :root{
   --bg: #020202;

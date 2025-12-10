@@ -1,8 +1,7 @@
 /* gallery.css - Infinite Gallery Styles */
+@import './base.css';
 
 :root {
-  --bg-dark: #000;
-  --text-light: #fff;
   --muted: rgba(255,255,255,0.7);
   --gap: 28px;
   --display-font: 'VG5000', 'Courier New', monospace;
