@@ -1,0 +1,352 @@
+[
+  {
+    "id": 1,
+    "title": "Struttura Tricroma",
+    "artist": "Giovanni Anceschi",
+    "year": "1963",
+    "group": "Gruppo T",
+    "technique": "Legno, proiettore, elettromotore, cm 52x51,5x51",
+    "location": "",
+    "image": "/_backup/opere_public/image.png"
+  },
+  {
+    "id": 2,
+    "title": "Percorsi Fluidi Orizzontali",
+    "artist": "Giovanni Anceschi",
+    "year": "1962",
+    "group": "Gruppo T",
+    "technique": "Legno, liquidi, tubi in plastica, elettromotore, cm 192,5×63, 5×129,5",
+    "location": "Parma, Collezione privata, Courtesy Galleria d'arte Niccoli",
+    "image": "/_backup/opere_public/image copy.png"
+  },
+  {
+    "id": 3,
+    "title": "Percorsi Fluidi",
+    "artist": "Giovanni Anceschi",
+    "year": "1961",
+    "group": "Gruppo T",
+    "technique": "Materiali vari, liquido, cm 44 × 48 × 6",
+    "location": "Francoforte, V.A.F. Collection",
+    "image": "/_backup/opere_public/image copy 2.png"
+  },
+  {
+    "id": 4,
+    "title": "Grande quadro clessidra",
+    "artist": "Giovanni Anceschi",
+    "year": "1959",
+    "group": "Gruppo T",
+    "technique": "Installazione con listelli su superficie, cm 103 × 73,5",
+    "location": "",
+    "image": "/_backup/opere_public/image copy 3.png"
+  },
+  {
+    "id": 5,
+    "title": "Tavola di possibilità liquide",
+    "artist": "Giovanni Anceschi",
+    "year": "1959",
+    "group": "Gruppo T",
+    "technique": "Materiali vari e liquido, cm 145x145x4,5",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 4.png"
+  },
+  {
+    "id": 6,
+    "title": "Strutturazione cilindrica virtuale",
+    "artist": "Giovanni Anceschi",
+    "year": "1963",
+    "group": "Gruppo T",
+    "technique": "Legno, aste metalliche, animazione elettromeccanica, cm 45,5 × 60 × 60",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 4-1.png"
+  },
+  {
+    "id": 7,
+    "title": "Superficie in vibrazione",
+    "artist": "Gabriele Devecchi",
+    "year": "1959",
+    "group": "Gruppo T",
+    "technique": "Para, spilli e motore elettrico",
+    "location": "GNAM, Roma; Museo Richter Collez. Cerqui, Parigi",
+    "image": "/_backup/opere_public/Rectangle 5.png"
+  },
+  {
+    "id": 8,
+    "title": "Superficie in vibrazione A7",
+    "artist": "Gabriele Devecchi",
+    "year": "1959-1962",
+    "group": "Gruppo T",
+    "technique": "Legno, gomma naturale, acciaio, elettromotore e perni, cm 52,07 × 52,07 × 8,26",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 5-1.png"
+  },
+  {
+    "id": 9,
+    "title": "Rotolineare",
+    "artist": "Gabriele Devecchi",
+    "year": "1961",
+    "group": "Gruppo T",
+    "technique": "Metacrilato trasparente e nero, alluminio, motore",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 6.png"
+  },
+  {
+    "id": 10,
+    "title": "Strutturazione triangolare",
+    "artist": "Gabriele Devecchi",
+    "year": "1963",
+    "group": "Gruppo T",
+    "technique": "Acciao, metacrilato, cm 50x50",
+    "location": "Deposito GAM Torino",
+    "image": "/_backup/opere_public/Rectangle 6-1.png"
+  },
+  {
+    "id": 11,
+    "title": "Deformazione Kerki",
+    "artist": "Gabriele Devecchi",
+    "year": "1964",
+    "group": "Gruppo T",
+    "technique": "Alluminio, metacrilato trasparente, motore, cm 50 (diametro)",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 6-2.png"
+  },
+  {
+    "id": 12,
+    "title": "Cronovideo nero4",
+    "artist": "Gabriele Devecchi",
+    "year": "1989",
+    "group": "Gruppo T",
+    "technique": "Orologi, alluminio",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 7.png"
+  },
+  {
+    "id": 13,
+    "title": "u.r.m.n.t.",
+    "artist": "Gabriele Devecchi",
+    "year": "1961",
+    "group": "Gruppo T",
+    "technique": "Legno, lamiera nera traforata, PCV bianco, motorino elettrico, cm 60x60x10",
+    "location": "",
+    "image": "/_backup/opere_public/Rectangle 7-1.png"
+  },
+  {
+    "id": 14,
+    "title": "Ambiente cronostatico",
+    "artist": "Davide Boriani",
+    "year": "1970-2013",
+    "group": "Gruppo N",
+    "technique": "Ambiente interattivo, cm 260 x Ø 400",
+    "location": "Valmore studio d'arte",
+    "image": "/_backup/opere_public/Rectangle 9.png"
+  },
+  {
+    "id": 15,
+    "title": "Ambiente stroboscopico n. 4",
+    "artist": "Davide Boriani",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Ambiente interattivo",
+    "location": "",
+    "image": "/_backup/opere_public/image 109.png"
+  },
+  {
+    "id": 16,
+    "title": "Specchio di percorsi",
+    "artist": "Davide Boriani",
+    "year": "1974",
+    "group": "Gruppo N",
+    "technique": "Specchio e leggere deformazioni",
+    "location": "",
+    "image": "/_backup/opere_public/image 110.png"
+  },
+  {
+    "id": 17,
+    "title": "Gioco del Tris dinamico",
+    "artist": "Davide Boriani",
+    "year": "1985",
+    "group": "Gruppo N",
+    "technique": "Sistema di gioco interattivo",
+    "location": "",
+    "image": "/_backup/opere_public/image 111.png"
+  },
+  {
+    "id": 18,
+    "title": "Perforato in vibrazione",
+    "artist": "Davide Boriani",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Lamiera perforata, motore",
+    "location": "",
+    "image": "/_backup/opere_public/image 112.png"
+  },
+  {
+    "id": 19,
+    "title": "Reticolo astratto",
+    "artist": "Grazia Varisco",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Composizione astratta",
+    "location": "",
+    "image": "/_backup/opere_public/image 113.png"
+  },
+  {
+    "id": 20,
+    "title": "Interferenze cromatiche",
+    "artist": "Grazia Varisco",
+    "year": "1966",
+    "group": "Gruppo N",
+    "technique": "Colori e forme",
+    "location": "",
+    "image": "/_backup/opere_public/image 114.png"
+  },
+  {
+    "id": 21,
+    "title": "Moltiplicazione visuale",
+    "artist": "Grazia Varisco",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Moltiplicazione geometrica",
+    "location": "",
+    "image": "/_backup/opere_public/image 115.png"
+  },
+  {
+    "id": 22,
+    "title": "Ritmo e spazio",
+    "artist": "Grazia Varisco",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Ritmo spaziale",
+    "location": "",
+    "image": "/_backup/opere_public/image 116.png"
+  },
+  {
+    "id": 23,
+    "title": "Variazione su tema quadrato",
+    "artist": "Grazia Varisco",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Variazione geometrica",
+    "location": "",
+    "image": "/_backup/opere_public/image 117.png"
+  },
+  {
+    "id": 24,
+    "title": "Reticolo Frangibile Quadricromia",
+    "artist": "Grazia Varisco",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Reticolo",
+    "location": "",
+    "image": "/_backup/opere_public/image 118.png"
+  },
+  {
+    "id": 25,
+    "title": "Variazione ritmica",
+    "artist": "Grazia Varisco",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Variabile quadrionda",
+    "location": "",
+    "image": "/_backup/opere_public/image 119.png"
+  },
+  {
+    "id": 26,
+    "title": "Reticolo Frangibile Quadricromia boogie",
+    "artist": "Grazia Varisco",
+    "year": "1969",
+    "group": "Gruppo N",
+    "technique": "Reticolo",
+    "location": "",
+    "image": "/_backup/opere_public/image 120.png"
+  },
+  {
+    "id": 27,
+    "title": "9 x 9 x X",
+    "artist": "Grazia Varisco",
+    "year": "1961",
+    "group": "Gruppo N",
+    "technique": "Composizione",
+    "location": "",
+    "image": "/_backup/opere_public/image 122.png"
+  },
+  {
+    "id": 28,
+    "title": "Nove sfere in colonna",
+    "artist": "Bruno Munari",
+    "year": "1961",
+    "group": "Gruppo N",
+    "technique": "Scultura",
+    "location": "",
+    "image": "/_backup/opere_public/image 123.png"
+  },
+  {
+    "id": 29,
+    "title": "Opera n.649",
+    "artist": "Enzo Mari",
+    "year": "1961",
+    "group": "Gruppo N",
+    "technique": "Opera",
+    "location": "",
+    "image": "/_backup/opere_public/image 124.png"
+  },
+  {
+    "id": 30,
+    "title": "Senza titolo",
+    "artist": "Alberto Biasi, Edoardo Landi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "Composizione",
+    "location": "",
+    "image": "/_backup/opere_public/image 125.png"
+  },
+  {
+    "id": 31,
+    "title": "Dinamica visuale",
+    "artist": "Alberto Biasi",
+    "year": "1962",
+    "group": "Gruppo N",
+    "technique": "Dinamica visuale",
+    "location": "",
+    "image": "/_backup/opere_public/image 126.png"
+  },
+  {
+    "id": 32,
+    "title": "Trame",
+    "artist": "Alberto Biasi",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "Trame",
+    "location": "",
+    "image": "/_backup/opere_public/image 127.png"
+  },
+  {
+    "id": 33,
+    "title": "Porta Celeste",
+    "artist": "Alberto Biasi",
+    "year": "1993",
+    "group": "Gruppo N",
+    "technique": "Porta",
+    "location": "",
+    "image": "/_backup/opere_public/image 128.png"
+  },
+  {
+    "id": 34,
+    "title": "Scultura da prendere a calci",
+    "artist": "Gabriele Devecchi",
+    "year": "1959",
+    "group": "Gruppo T",
+    "technique": "Scultura",
+    "location": "",
+    "image": "/_backup/opere_public/image 129.png"
+  },
+  {
+    "id": 35,
+    "title": "Ambiente a linee luminose",
+    "artist": "Gabriele Devecchi",
+    "year": "1969",
+    "group": "Gruppo T",
+    "technique": "Ambiente luminoso",
+    "location": "",
+    "image": "/_backup/opere_public/image 132.png"
+  }
+]

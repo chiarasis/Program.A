@@ -1,0 +1,183 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeaderFixed from '../components/HeaderFixed.astro';
+
+const opere = await import('../data/opere.json').then(m => m.default);
+---
+<head>
+	<meta charset="UTF-8">
+  <link rel="stylesheet" href="/src/assets/archivio.css">
+
+</head>
+<Layout>
+  <HeaderFixed currentPage="archivio" />
+
+  <main class="archivio-page">
+    <!-- Left side: Rolodex 3D scroll -->
+    <div class="rolodex-container">
+      <div class="rolodex-viewport">
+        <div id="rolodex" class="rolodex">
+          {opere.map((opera, index) => (
+            <div class="card" data-index={index} data-id={opera.id}>
+              <div class="card-inner">
+                <img src={opera.image} alt={opera.title} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side: Details -->
+    <div class="details-container">
+      <div class="details-content" id="detailsContent">
+        {opere.map((opera, index) => (
+          <div class="opera-details" data-index={index}>
+            <div class="opera-header">
+              <span class="opera-group">{opera.group}</span>
+              <span class="opera-year">{opera.year}</span>
+            </div>
+            <h2 class="opera-title">{opera.title}</h2>
+            <p class="opera-artist">{opera.artist}</p>
+            
+            <div class="opera-info">
+              <p class="opera-technique"><strong>Tecnica:</strong> {opera.technique || 'N/D'}</p>
+            </div>
+            
+            <div class="opera-location">
+              <p><strong>Ubicazione:</strong> {opera.location || 'N/D'}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <span>Scorri per ruotare</span>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 5V15M10 15L6 11M10 15L14 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    // Rolodex-style 3D rotation controlled by scroll
+    let rolodex: HTMLElement | null;
+    let cards: HTMLElement[] = [];
+    let detailsElements: HTMLElement[] = [];
+    let currentIndex = 0;
+    let targetRotation = 0;
+    let currentRotation = 0;
+    let cardCount = 0;
+
+    function init() {
+      rolodex = document.getElementById('rolodex');
+      if (!rolodex) return;
+
+      cards = Array.from(document.querySelectorAll('.card')) as HTMLElement[];
+      detailsElements = Array.from(document.querySelectorAll('.opera-details')) as HTMLElement[];
+      
+      cardCount = cards.length;
+      const anglePerCard = 360 / cardCount;
+
+      // Position cards in 3D space
+      cards.forEach((card, index) => {
+        const angle = anglePerCard * index;
+        
+        card.style.transformOrigin = 'center center';
+        card.style.transform = `rotateX(${angle}deg) translateZ(600px)`;
+      });
+
+      // Show first card details
+      updateActiveDetails(0);
+      updateCardsVisibility(anglePerCard);
+
+      // Handle scroll
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            handleScroll(anglePerCard);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      // Smooth animation loop
+      animate(anglePerCard);
+    }
+
+    function handleScroll(anglePerCard: number) {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const scrollProgress = Math.min(scrollTop / maxScroll, 1);
+
+      targetRotation = -scrollProgress * 360 * ((cardCount - 1) / cardCount);
+
+      const activeIndex = Math.round(Math.abs(targetRotation) / anglePerCard) % cardCount;
+      
+      if (activeIndex !== currentIndex) {
+        currentIndex = activeIndex;
+        updateActiveDetails(currentIndex);
+      }
+    }
+
+    function animate(anglePerCard: number) {
+      const diff = targetRotation - currentRotation;
+      currentRotation += diff * 0.1;
+
+      if (rolodex) {
+        rolodex.style.transform = `rotateX(${-currentRotation}deg)`;
+      }
+
+      updateCardsVisibility(anglePerCard);
+      requestAnimationFrame(() => animate(anglePerCard));
+    }
+
+    function updateCardsVisibility(anglePerCard: number) {
+      cards.forEach((card, index) => {
+        const cardAngle = anglePerCard * index;
+        const currentCardAngle = ((cardAngle - currentRotation) % 360 + 360) % 360;
+        
+        let normalizedAngle = currentCardAngle;
+        if (normalizedAngle > 180) normalizedAngle -= 360;
+        
+        const absAngle = Math.abs(normalizedAngle);
+        
+        let opacity;
+        if (absAngle < anglePerCard * 0.4) {
+          opacity = 1;
+          card.style.zIndex = '100';
+          card.style.pointerEvents = 'auto';
+        } else {
+          opacity = 0;
+          card.style.zIndex = '0';
+          card.style.pointerEvents = 'none';
+        }
+        
+        card.style.opacity = opacity.toString();
+        card.style.transition = 'opacity 0.25s ease';
+      });
+    }
+
+    function updateActiveDetails(index: number) {
+      detailsElements.forEach((el, i) => {
+        if (i === index) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+    }
+
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</Layout>
+

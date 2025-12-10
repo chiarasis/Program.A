@@ -1,0 +1,209 @@
+/* archivio.css - Stili specifici per la pagina archivio */
+@import './base.css';
+
+.archivio-page {
+    position: relative;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-family: var(--display-font);
+    font-weight: 700;
+    min-height: 800vh;
+    overflow-x: hidden;
+    padding-top: 50px;
+  }
+
+  .rolodex-container {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    width: 50%;
+    height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2000px;
+    z-index: 10;
+  }
+
+  .rolodex-viewport {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rolodex {
+    position: relative;
+    width: 400px;
+    height: 500px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+  }
+
+  .card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.6),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .details-container {
+    position: fixed;
+    right: 0;
+    top: 50px;
+    width: 50%;
+    height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px;
+    z-index: 5;
+  }
+
+  .details-content {
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+  }
+
+  .opera-details {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .opera-details.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .opera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  .opera-group {
+    color: #fff;
+    opacity: 0.6;
+  }
+
+  .opera-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+    font-family: var(--display-font);
+    color: #fff;
+  }
+
+  .opera-artist {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .opera-info,
+  .opera-location {
+    margin-bottom: 24px;
+    color: #999;
+    line-height: 1.6;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: var(--display-font);
+  }
+
+  .opera-info p,
+  .opera-info strong,
+  .opera-location p,
+  .opera-location strong {
+    margin: 0;
+    color: #999;
+  }
+
+  .scroll-indicator {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 20;
+    animation: bounce 2s ease-in-out infinite;
+    font-weight: 700;
+    font-family: var(--display-font);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+  }
+
+  @media (max-width: 1024px) {
+    .rolodex-container,
+    .details-container {
+      width: 100%;
+      position: relative;
+    }
+
+    .rolodex-container {
+      height: 70vh;
+    }
+
+    .details-container {
+      height: auto;
+      padding: 60px 40px 120px;
+    }
+
+    .opera-details {
+      position: relative !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      margin-bottom: 80px;
+    }
+
+    .archivio-page {
+      min-height: auto;
+    }
+  }
+

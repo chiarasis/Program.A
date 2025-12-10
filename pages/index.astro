@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/src/assets/home.css">
+</head>
+<Layout page="home">
+	<!-- Hero section with p5 canvas -->
+	<section class="hero-section">
+		<div id="p5-root" aria-hidden="true"></div>
+		<div class="title-wrap">
+			<h1 class="site-title">Program.A</h1>
+		</div>
+	</section>
+
+	<Header includeStyles={false} />
+
+	<!-- Content section with geometric backgrounds -->
+	<section class="content-section">
+		<div class="content-wrapper">
+			<!-- Block 1 -->
+			<article class="content-block block-1">
+				<div class="text-content">
+					<h4>Gruppo N a Bruno Munari, 12 gennaio 1962</h4>
+					<p>"Riteniamo il titolo Arte Programmata il più appropriato a definire i 
+					nostri esperimenti, per la maggior parte dei nostri lavori sarà da precisare che 
+					il programmatore dell'opera è lo stesso spettatore che sceglie una visione piuttosto 
+					che un'altra oppure ne determina delle variazioni indeterminabili cogliendo l'oggetto 
+					nel movimento della sua visuale."</p>
+				</div>
+			</article>
+	
+		<div id="valori"> <h2> I valori dell'arte programmata </h2> </div>		
+			
+		<div class="row-group">
+			<div class="content-geo-pair">
+				<article class="content-block block-2">
+					<div class="floating-squares"></div>
+					<div class="text-content">
+						<h3> SPETTATORE CO-CREATORE</h3>
+						<p>L'arte programmata mira a offrire al pubblico una piattaforma materiale che possa 
+							includerlo come co-creatore dell'opera. Automatizzando la realizzazione dell'opera, 
+							si richiede un'attività concreta da parte dello spettatore, coinvolto sul piano 
+							psicologico e percettivo.</p>
+					</div>
+				</article>
+			</div>
+
+			<div class="content-geo-pair">
+				<section class="geometric-section geo-1">
+					<div class="geo-container"></div>
+				</section>
+			</div>
+		</div>
+
+		<div class="row-group">
+			<div class="content-geo-pair">
+				<section class="geometric-section geo-2">
+					<div class="geo-container"></div>
+				</section>
+			</div>
+
+			<div class="content-geo-pair">
+				<article class="content-block block-3">
+					<div class="floating-squares"></div>
+					<div class="text-content">
+						<h3>STRUTTURA APERTA</h3>
+						<p>Le forme sono finite, logiche e definite, ma la loro manifestazione nello spazio e 
+							nel tempo, come oggetti concreti in movimento, le rende infinite, imprevedibili e 
+							prossime alla pura casualità.</p>
+					</div>
+				</article>
+			</div>
+		</div>
+
+		<div class="row-group">
+			<div class="content-geo-pair">
+				<article class="content-block block-4">
+					<div class="floating-squares"></div>
+					<div class="text-content">
+						<h3>CINETISMO E MUTAZIONE </h3>
+						<p>I meccanismi creano il movimento, scoprendo la realtà sempre cangiante del mondo 
+							fenomenico. L'analisi dei fenomeni percettivi diviene la chiave per la scoperta 
+							di nuovi valori"</p>
+					</div>
+				</article>
+			</div>
+
+			<div class="content-geo-pair">
+				<article class="content-block block-5">
+					<div class="floating-squares"></div>
+					<div class="text-content">
+						<h3>EFFETTO PROGRAMMATO </h3>
+						<p>Ad essere "programmata" in senso tecnico o elettronico è tanto l'opera d'arte 
+							quanto l'effetto che essa avrà sullo spettatore. L'artista è un tecnico che 
+							interpreta la realtà e i fenomeni visivi in senso scientifico e metodico. L'opera, 
+							realizzata sulla base di calcoli, ripetizioni, variazioni  di sequenze di forme, 
+							colori e pattern visivi, è concepita alla stregua di una funzione algoritmica.</p>
+					</div>
+				</article>
+			</div>
+		</div>
+	</div>
+	</section>
+
+	<Footer includeStyles={false} />
+
+	<script type="module" src="/src/scripts/p5-boot.mjs"></script>
+	<script src="/src/scripts/scroll-animations.js"></script>
+	<script src="/src/scripts/floatingSquares.js"></script>
+	<script src="/src/scripts/geometricShapes.js"></script>
+</Layout>

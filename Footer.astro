@@ -1,0 +1,48 @@
+---
+interface Props {
+  includeStyles?: boolean;
+}
+
+const { includeStyles = true } = Astro.props;
+---
+{includeStyles && <link rel="stylesheet" href="/src/assets/home.css" />}
+
+<footer class="site-footer">
+  <div class="footer-col footer-section">
+    <ul class="footer-links">
+      <li><a href="index.html" class="nav-link footer">home</a></li>
+      <li><a href="archivio.html" class="nav-link footer">archivio</a></li>
+      <li><a href="editor.html" class="nav-link footer">editor</a></li>
+      <li><a href="galleria.html" class="nav-link footer">galleria</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-col footer-section">
+    <ul class="footer-links">
+      <li><a class="footer-link">Politecnico di Milano</a></li>
+      <li><a class="footer-link">Laurea Magistrale in Design della Comunicazione</a></li>
+      <li><a class="footer-link">Corso di Cultura dell'Immagine Digitale</a></li>
+      <li><a class="footer-link">A.A. 2025 - 2026</a></li>
+      <li><a class="footer-link">Docente Maria Grazia Mattei</a></li>
+      <li><a class="footer-link">Cultore della materia Alice Polerà</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-col footer-section">
+    <ul class="footer-links">
+      <li><a class="footer-link">Credits</a></li>
+      <li><a class="footer-link">Erik Bottacin</a></li>
+      <li><a class="footer-link">Andrea Calò</a></li>
+      <li><a class="footer-link">Giulia D'Ercole</a></li>
+      <li><a class="footer-link">Andrea Ferrario</a></li>
+      <li><a class="footer-link">Giulia Roberti</a></li>
+      <li><a class="footer-link">Amelia Sampaolo</a></li>
+      <li><a class="footer-link">Chiara Sisto</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-col footer-right">
+    <img src="/public/Logo_Politecnico_Milano.png" alt="Politecnico di Milano" class="footer-logo" />
+  </div>
+</footer>
+
