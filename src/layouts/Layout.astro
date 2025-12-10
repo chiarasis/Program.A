@@ -1,4 +1,12 @@
 
+---
+interface Props {
+	page?: string;
+}
+
+const { page = '' } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -9,8 +17,9 @@
 		<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/basier-square-mono" />
 		<title> Program.A </title>
 	</head>
-	<body>
+	<body data-page={page}>
 			<slot />
+			<script src="/src/scripts/clock.js"></script>
 	</body>
 </html>
 
