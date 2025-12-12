@@ -1,0 +1,338 @@
+lo---
+import Layout from '../layouts/Layout.astro';
+import HeaderFixed from '../components/HeaderFixed.astro';
+---
+
+<Layout>
+  <HeaderFixed />
+  
+  <main class="editor-page">
+    <div class="editor-layout">
+      <aside class="controls-panel">
+        <div class="panel-header">
+          <h2>EFFETTI DI LUCE</h2>
+          <p class="panel-subtitle">Arte Programmata / Gruppo N</p>
+        </div>
+
+        <div class="control-group">
+          <label for="seed">Seed</label>
+          <input type="number" id="seed" value="12345" min="1" max="999999">
+        </div>
+
+        <div class="control-group">
+          <label for="patternType">Tipo Pattern</label>
+          <select id="patternType">
+            <option value="diagonal-grid">Griglia Diagonale</option>
+            <option value="moire">Effetto Moiré</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="gridRows">Righe Griglia</label>
+          <input type="range" id="gridRows" min="3" max="20" value="8" step="1">
+          <span class="value-display" id="gridRowsValue">8</span>
+        </div>
+
+        <div class="control-group">
+          <label for="gridCols">Colonne Griglia</label>
+          <input type="range" id="gridCols" min="3" max="15" value="7" step="1">
+          <span class="value-display" id="gridColsValue">7</span>
+        </div>
+
+        <div class="control-group">
+          <label for="lineCount">Numero Linee</label>
+          <input type="range" id="lineCount" min="5" max="50" value="20" step="1">
+          <span class="value-display" id="lineCountValue">20</span>
+        </div>
+
+        <div class="control-group">
+          <label for="rotationAngle">Angolo Rotazione</label>
+          <input type="range" id="rotationAngle" min="0" max="90" value="45" step="5">
+          <span class="value-display" id="rotationAngleValue">45°</span>
+        </div>
+
+        <div class="control-group">
+          <label for="animationSpeed">Velocità Animazione</label>
+          <input type="range" id="animationSpeed" min="0" max="2" value="0.3" step="0.1">
+          <span class="value-display" id="animationSpeedValue">0.3</span>
+        </div>
+
+        <div class="control-group">
+          <label for="depth">Profondità</label>
+          <input type="range" id="depth" min="0" max="100" value="50" step="5">
+          <span class="value-display" id="depthValue">50</span>
+        </div>
+
+        <div class="control-group">
+          <label for="perspective">Prospettiva</label>
+          <input type="range" id="perspective" min="0" max="100" value="40" step="5">
+          <span class="value-display" id="perspectiveValue">40</span>
+        </div>
+
+        <div class="control-group">
+          <label for="colorScheme">Schema Colore</label>
+          <select id="colorScheme">
+            <option value="green">Verde</option>
+            <option value="blue">Blu</option>
+            <option value="cyan">Ciano</option>
+            <option value="white">Bianco</option>
+            <option value="yellow">Giallo</option>
+            <option value="orange">Arancione</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="brightness">Luminosità</label>
+          <input type="range" id="brightness" min="0" max="100" value="80" step="5">
+          <span class="value-display" id="brightnessValue">80</span>
+        </div>
+
+        <div class="button-group">
+          <button id="regenerate" class="btn-primary">Rigenera</button>
+          <button id="downloadPNG" class="btn-secondary">Scarica PNG</button>
+        </div>
+
+        <a href="/editor" class="back-link">← Torna ai generatori</a>
+      </aside>
+
+      <section class="canvas-section">
+        <div id="canvasContainer" class="canvas-container"></div>
+        <div id="exportStatus" class="export-status"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" is:inline></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js" is:inline></script>
+  <script src="/js/lightEffectsEditor.js" is:inline></script>
+</Layout>
+
+<style>
+  .editor-page {
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    padding-top: 120px;
+  }
+
+  .editor-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: calc(100vh - 120px);
+  }
+
+  .controls-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 32px 24px;
+    overflow-y: auto;
+  }
+
+  .panel-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .panel-header h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-family: 'VG5000', monospace;
+  }
+
+  .panel-subtitle {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .control-group {
+    margin-bottom: 24px;
+  }
+
+  .control-group label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 8px;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .control-group input[type="range"] {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .control-group input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .control-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Basier Square Mono', monospace;
+    cursor: pointer;
+  }
+
+  .control-group select option {
+    background: #111;
+  }
+
+  .value-display {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #fff;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .info-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .info-box p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #999;
+    margin: 4px 0;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .info-box p strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .btn-primary {
+    background: #fff;
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: #ddd;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-secondary:hover {
+    border-color: #fff;
+  }
+
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .back-link {
+    display: block;
+    margin-top: 24px;
+    color: #666;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s ease;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  .back-link:hover {
+    color: #fff;
+  }
+
+  .canvas-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #0a0a0a;
+  }
+
+  .canvas-container {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .export-status {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    font-family: 'Basier Square Mono', monospace;
+  }
+
+  @media (max-width: 900px) {
+    .editor-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .controls-panel {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .canvas-section {
+      min-height: 60vh;
+    }
+  }
+</style>
