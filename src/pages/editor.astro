@@ -3,200 +3,179 @@ import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
 
 const editors = [
-  {
-    title: "Rilievo Ottico-Dinamico",
-    description: "Generatore di rilievi ottici con linee sovrapposte e interferenze moiré",
-    url: "/editor-biasi",
-    style: "Alberto Biasi / Gruppo N"
-  },
-  {
-    title: "Interferenza Geometrica",
-    description: "Pattern geometrici multipli sovrapposti con rotazioni e trasparenze",
-    url: "/editor-chiggio",
-    style: "Ennio Chiggio / Gruppo N"
-  },
-  {
-    title: "Strutture Cinetiche",
-    description: "Strutture modulari con profondità spaziale e variazioni cromatiche",
-    url: "/editor-kinetic",
-    style: "Manfredo Massironi / Gruppo N"
-  },
-  {
-    title: "Composizioni Dinamiche",
-    description: "Poster astratti con forme geometriche e composizioni programmate",
-    url: "/editor-poster",
-    style: "Toni Costa / Gruppo N"
-  },
-  {
-    title: "Moiré Pattern",
-    description: "Interferenze ottiche dinamiche con sovrapposizione di pattern lineari",
-    url: "/editor-moire",
-    style: "Classico / Gruppo N"
-  }
+  { title: 'Rilievo Ottico-Dinamico', description: 'Generatore di rilievi ottici con linee sovrapposte e interferenze moiré', url: '/editor-biasi', style: 'Alberto Biasi / Gruppo N' },
+  { title: 'Interferenza Geometrica', description: 'Pattern geometrici multipli sovrapposti con rotazioni e trasparenze', url: '/editor-chiggio', style: 'Ennio Chiggio / Gruppo N' },
+  { title: 'Strutture Cinetiche', description: 'Strutture modulari con profondità spaziale e variazioni cromatiche', url: '/editor-kinetic', style: 'Manfredo Massironi / Gruppo N' },
+  { title: 'Composizioni Dinamiche', description: 'Poster astratti con forme geometriche e composizioni programmate', url: '/editor-poster', style: 'Toni Costa / Gruppo N' },
+  { title: 'Moiré Pattern', description: 'Interferenze ottiche dinamiche con sovrapposizione di pattern lineari', url: '/editor-moire', style: 'Classico / Gruppo N' },
+  { title: 'Griglie', description: 'Strutture a griglia generative con moduli e parametri programmabili', url: '/editor-griglie', style: 'Strutture Programmata / Gruppo N' },
+  { title: 'Luce', description: 'Composizioni luminose e gradienti dinamici generativi', url: '/editor-luce', style: 'Light / Op-Art' },
+  { title: 'Crash Clock', description: 'Bande cinetiche rotanti con twist, wobble e noise flow', url: '/editor-crashclock', style: 'Kinetic Type / Ispirazione STG' },
+  { title: 'Pixel', description: 'Effetto pixelazione su immagini e video con controllo granularità e colore', url: '/editor-pixel', style: 'Pixel Art / Glitch' },
 ];
 ---
 
-<Layout>
-  <HeaderFixed />
+    <Layout>
+      <HeaderFixed />
   
-  <main class="editors-hub">
-    <header class="hub-header">
-      <h1>GENERATORI</h1>
-      <p class="subtitle">Crea opere generative ispirate all'arte programmata italiana degli anni '60</p>
-    </header>
+      <main class="editors-hub">
+        <header class="hub-header">
+          <h1>GENERATORI</h1>
+          <p class="subtitle">Crea opere generative ispirate all'arte programmata italiana degli anni '60</p>
+        </header>
 
-    <div class="editors-grid">
-      {editors.map((editor) => (
-        <a href={editor.url} class="editor-card">
-          <div class="card-content">
-            <span class="card-style">{editor.style}</span>
-            <h2>{editor.title}</h2>
-            <p>{editor.description}</p>
-            <div class="card-arrow">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
-  </main>
-</Layout>
+        <div class="editors-grid">
+          {editors.map((editor) => (
+            <a href={editor.url} class="editor-card">
+              <div class="card-content">
+                <span class="card-style">{editor.style}</span>
+                <h2>{editor.title}</h2>
+                <p>{editor.description}</p>
+                <div class="card-arrow">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </main>
+    </Layout>
 
-<style>
-  .editors-hub {
-    min-height: 100vh;
-    background: #000;
-    color: #fff;
-    padding: 180px 40px 120px;
-  }
+    <style>
+      .editors-hub {
+        min-height: 100vh;
+        background: #000;
+        color: #fff;
+        padding: 180px 40px 120px;
+      }
 
-  .hub-header {
-    max-width: 1200px;
-    margin: 0 auto 80px;
-    text-align: center;
-  }
+      .hub-header {
+        max-width: 1200px;
+        margin: 0 auto 80px;
+        text-align: center;
+      }
 
-  .hub-header h1 {
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    margin-bottom: 24px;
-    font-family: 'VG5000', monospace;
-  }
+      .hub-header h1 {
+        font-size: clamp(3rem, 6vw, 5rem);
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        margin-bottom: 24px;
+        font-family: 'VG5000', monospace;
+      }
 
-  .subtitle {
-    font-size: 1.1rem;
-    color: #999;
-    font-weight: 300;
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
-    font-family: 'Basier Square Mono', monospace;
-  }
+      .subtitle {
+        font-size: 1.1rem;
+        color: #999;
+        font-weight: 300;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: 'Basier Square Mono', monospace;
+      }
 
-  .editors-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-  }
+      .editors-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+      }
 
-  .editor-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 48px 40px;
-    text-decoration: none;
-    color: #fff;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-  }
+      .editor-card {
+        position: relative;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 48px 40px;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+      }
 
-  .editor-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #fff, transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
-  }
+      .editor-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+      }
 
-  .editor-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-4px);
-  }
+      .editor-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-4px);
+      }
 
-  .editor-card:hover::before {
-    transform: translateX(100%);
-  }
+      .editor-card:hover::before {
+        transform: translateX(100%);
+      }
 
-  .card-content {
-    position: relative;
-    z-index: 1;
-  }
+      .card-content {
+        position: relative;
+        z-index: 1;
+      }
 
-  .card-style {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #666;
-    margin-bottom: 16px;
-    font-family: 'Basier Square Mono', monospace;
-  }
+      .card-style {
+        display: inline-block;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 16px;
+        font-family: 'Basier Square Mono', monospace;
+      }
 
-  .editor-card h2 {
-    font-size: 1.8rem;
-    font-weight: 300;
-    margin-bottom: 16px;
-    line-height: 1.2;
-    font-family: 'VG5000', monospace;
-  }
+      .editor-card h2 {
+        font-size: 1.8rem;
+        font-weight: 300;
+        margin-bottom: 16px;
+        line-height: 1.2;
+        font-family: 'VG5000', monospace;
+      }
 
-  .editor-card p {
-    color: #999;
-    line-height: 1.6;
-    margin-bottom: 32px;
-    font-size: 0.95rem;
-    font-family: 'Basier Square Mono', monospace;
-  }
+      .editor-card p {
+        color: #999;
+        line-height: 1.6;
+        margin-bottom: 32px;
+        font-size: 0.95rem;
+        font-family: 'Basier Square Mono', monospace;
+      }
 
-  .card-arrow {
-    display: flex;
-    align-items: center;
-    color: #fff;
-    opacity: 0.5;
-    transition: all 0.3s ease;
-  }
+      .card-arrow {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+      }
 
-  .editor-card:hover .card-arrow {
-    opacity: 1;
-    transform: translateX(8px);
-  }
+      .editor-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(8px);
+      }
 
-  @media (max-width: 768px) {
-    .editors-hub {
-      padding: 140px 24px 100px;
-    }
+      @media (max-width: 768px) {
+        .editors-hub {
+          padding: 140px 24px 100px;
+        }
 
-    .hub-header {
-      margin-bottom: 48px;
-    }
+        .hub-header {
+          margin-bottom: 48px;
+        }
 
-    .editors-grid {
-      gap: 24px;
-    }
+        .editors-grid {
+          gap: 24px;
+        }
 
-    .editor-card {
-      padding: 36px 28px;
-    }
-  }
-</style>
+        .editor-card {
+          padding: 36px 28px;
+        }
+      }
+    </style>

@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeaderFixed from '../components/HeaderFixed.astro';
+---
+
+<Layout>
+  <HeaderFixed />
+  
+  <main class="editor-page">
+    <div class="editor-layout">
+      <aside class="controls-panel">
+        <div class="panel-header">
+          <h2>SAND</h2>
+        </div>
+
+        <div class="control-group">
+          <label for="seed">Seed</label>
+          <input type="number" id="seed" value="12345" min="1" max="999999">
+        </div>
+
+        <div class="control-section">
+          <h3>Composizione</h3>
+          
+          <div class="control-group">
+            <label for="sandAmount">Quantità Sabbia</label>
+            <input type="range" id="sandAmount" min="1000" max="10000" value="5000" step="500">
+            <span class="value-display" id="sandAmountValue">5000</span>
+          </div>
+
+          <div class="control-group">
+            <label for="obstacleCount">Numero Ostacoli</label>
+            <input type="range" id="obstacleCount" min="3" max="15" value="8" step="1">
+            <span class="value-display" id="obstacleCountValue">8</span>
+          </div>
+
+          <div class="control-group">
+            <label for="particleSize">Dimensione Granelli</label>
+            <input type="range" id="particleSize" min="2" max="6" value="4" step="0.5">
+            <span class="value-display" id="particleSizeValue">4.0</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h3>Fisica</h3>
+          
+          <div class="control-group">
+            <label for="gravity">Gravità</label>
+            <input type="range" id="gravity" min="0.2" max="2" value="1" step="0.1">
+            <span class="value-display" id="gravityValue">1.0</span>
+          </div>
+
+          <div class="control-group">
+            <label for="sandFlow">Fluidità Sabbia</label>
+            <input type="range" id="sandFlow" min="0.3" max="1.5" value="0.8" step="0.1">
+            <span class="value-display" id="sandFlowValue">0.80</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h3>Colore</h3>
+          
+          <div class="control-group">
+            <label for="colorMode">Modalità Colore</label>
+            <select id="colorMode">
+              <option value="mono">Monocromo</option>
+              <option value="gradient" selected>Gradiente</option>
+              <option value="depth">Profondità</option>
+              <option value="warm">Tonalità Calde</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="hue">Tonalità</label>
+            <input type="range" id="hue" min="0" max="360" value="30" step="1">
+            <span class="value-display" id="hueValue">30</span>
+          </div>
+
+          <div class="control-group">
+            <label for="saturation">Saturazione</label>
+            <input type="range" id="saturation" min="0" max="100" value="60" step="5">
+            <span class="value-display" id="saturationValue">60</span>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="shuffle" class="btn-control">Mescola</button>
+          <button id="reset" class="btn-control">Reset</button>
+        </div>
+
+        <div class="button-group">
+          <button id="downloadPNG" class="btn-primary">Scarica PNG</button>
+          <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
+        </div>
+
+        <a href="/editor" class="back-link">← Torna ai generatori</a>
+      </aside>
+
+      <section class="canvas-section">
+        <div id="canvasContainer" class="canvas-container"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" is:inline></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js" is:inline></script>
+  <script src="/js/sandEditor.js" is:inline></script>
+</Layout>
+
+<style>
+  @import '../assets/editor.css';
+</style>
+</Layout>

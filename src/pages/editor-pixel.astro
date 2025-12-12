@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeaderFixed from '../components/HeaderFixed.astro';
+---
+
+<Layout>
+  <HeaderFixed />
+  
+  <main class="editor-page">
+    <div class="editor-layout">
+      <aside class="controls-panel">
+        <div class="panel-header">
+          <h2>PIXEL</h2>
+        </div>
+
+        <div class="control-section">
+          <h3>Media</h3>
+          <div class="control-group">
+            <label for="fileInput">Carica Immagine/Video</label>
+            <input type="file" id="fileInput" accept="image/*,video/*">
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h3>Pixelazione</h3>
+          <div class="control-group">
+            <label for="pixelSize">Dimensione Pixel</label>
+            <input type="range" id="pixelSize" min="1" max="50" value="10" step="1">
+            <span class="value-display" id="pixelSizeValue">10</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h3>Colore</h3>
+          <div class="control-group">
+            <label for="hueEnabled">Abilita Tinta</label>
+            <input type="checkbox" id="hueEnabled">
+          </div>
+          <div class="control-group">
+            <label for="hue">Tonalità</label>
+            <input type="range" id="hue" min="0" max="360" value="0" step="1">
+            <span class="value-display" id="hueValue">0</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h3>Animazione</h3>
+          <div class="control-group">
+            <label for="animate">Abilita Animazione</label>
+            <input type="checkbox" id="animate">
+          </div>
+          <div class="control-group">
+            <label for="animationSpeed">Velocità</label>
+            <input type="range" id="animationSpeed" min="0" max="0.2" value="0.02" step="0.005">
+            <span class="value-display" id="animationSpeedValue">0.02</span>
+          </div>
+          <div class="control-group">
+            <label for="animationAmount">Intensità</label>
+            <input type="range" id="animationAmount" min="0" max="0.5" value="0.12" step="0.02">
+            <span class="value-display" id="animationAmountValue">0.12</span>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="playPause" class="btn-control">Pausa</button>
+          <button id="reset" class="btn-control">Reset</button>
+        </div>
+
+        <div class="button-group">
+          <button id="downloadPNG" class="btn-primary">Scarica PNG</button>
+          <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
+        </div>
+
+        <a href="/editor" class="back-link">← Torna ai generatori</a>
+      </aside>
+
+      <section class="canvas-section">
+        <div id="canvasContainer" class="canvas-container"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" is:inline></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js" is:inline></script>
+  <script src="/js/pixelEditor.js" is:inline></script>
+</Layout>
+
+<style>
+  @import '../assets/editor.css';
+  
+  input[type="file"] {
+    background: var(--acc-color);
+    color: var(--text-light);
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-family: var(--display-font);
+    cursor: pointer;
+    border: none;
+    width: 85%;
+    max-width: 320px;
+    margin-right: auto;
+  }
+  
+  input[type="file"]::file-selector-button {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-family: var(--display-font);
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+  }
+</style>
