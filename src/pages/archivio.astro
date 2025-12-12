@@ -17,13 +17,44 @@ const opere = await import('../data/opere.json').then(m => m.default);
     <div class="rolodex-container">
       <div class="rolodex-viewport">
         <div id="rolodex" class="rolodex">
-          {opere.map((opera, index) => (
-            <div class="card" data-index={index} data-id={opera.id}>
-              <div class="card-inner">
-                <img src={opera.image} alt={opera.title} />
+          {opere.map((opera, index) => {
+            const slugify = (s) => s
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '') // remove diacritics
+              .toLowerCase()
+              .replace(/&/g, 'and')
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/-{2,}/g, '-')
+              .replace(/^-+|-+$/g, '');
+            const baseName = `${slugify(opera.artist)}-${slugify(opera.title)}`;
+            const candidates = [
+              `/drive-opere/${baseName}.jpg`,
+              `/drive-opere/${baseName}.jpeg`,
+              `/drive-opere/${baseName}.png`
+            ];
+            const firstSrc = candidates[0];
+            return (
+              <div class="card" data-index={index} data-id={opera.id}>
+                <div class="card-inner">
+                  <img
+                    src={firstSrc}
+                    alt={`${opera.artist} — ${opera.title}`}
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      const currentIdx = candidates.findIndex(u => img.src.endsWith(u));
+                      const nextIdx = currentIdx >= 0 ? currentIdx + 1 : 1;
+                      if (nextIdx < candidates.length) {
+                        img.src = candidates[nextIdx];
+                      } else {
+                        // As last resort, hide broken image (keeps layout tidy)
+                        img.style.display = 'none';
+                      }
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>
@@ -40,13 +71,17 @@ const opere = await import('../data/opere.json').then(m => m.default);
             <h2 class="opera-title">{opera.title}</h2>
             <p class="opera-artist">{opera.artist}</p>
             
-            <div class="opera-info">
-              <p class="opera-technique"><strong>Tecnica:</strong> {opera.technique || 'N/D'}</p>
-            </div>
+            {opera.technique && (
+              <div class="opera-info">
+                <p class="opera-technique"><strong>Tecnica:</strong> {opera.technique}</p>
+              </div>
+            )}
             
-            <div class="opera-location">
-              <p><strong>Ubicazione:</strong> {opera.location || 'N/D'}</p>
-            </div>
+            {opera.location && (
+              <div class="opera-location">
+                <p><strong>Ubicazione:</strong> {opera.location}</p>
+              </div>
+            )}
           </div>
         ))}
       </div>
