@@ -1,6 +1,8 @@
 // Rombi editor - p5 sketch
 // Preview canvas and controls. Export PNG (1000x1500) and short GIF if gif.js present.
 
+let seedValue = 12345;
+let seedText = '';
 let rotation = 0;
 let params = {
   rotationSpeed: 0.0,
@@ -112,6 +114,35 @@ function setupControls() {
 
   const gifBtn = document.getElementById('downloadGIF');
   if (gifBtn) gifBtn.addEventListener('click', exportGIF);
+
+  // Seed controls
+  const seedEl = document.getElementById('seed');
+  if (seedEl) {
+    seedEl.addEventListener('change', (e) => {
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
+    });
+  }
+
+  const regenEl = document.getElementById('regenerate');
+  if (regenEl) {
+    regenEl.addEventListener('click', () => {
+      seedValue = Math.floor(Math.random() * 999999);
+      seedText = seedValue.toString();
+      if (seedEl) seedEl.value = seedText;
+    });
+  }
+}
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
 function exportPNG() {
@@ -166,7 +197,7 @@ function exportPNG() {
   if (window.PosterStorage) {
     window.PosterStorage.savePoster(dataURL, {
       editor: 'rombi',
-      seed: null,
+      seed: seedText || seedValue.toString(),
       filename: filename,
       width: W,
       height: H

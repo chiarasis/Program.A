@@ -88,40 +88,34 @@ async function loadUserPosters() {
     const emptyState = document.getElementById('emptyGallery');
     if (emptyState) emptyState.style.display = 'none';
 
-    // Generate random positions for posters
-    const minX = -2000;
-    const maxX = 2000;
-    const minY = -2000;
-    const maxY = 2000;
-    const minDistance = 800; // Minimum distance between posters to avoid overlap
+    // Randomize layout for posters across a large space
+    // Jittered grid layout: evenly spaced cells with random offsets
+    const count = posters.length;
+    const cols = Math.ceil(Math.sqrt(count));
+    const rows = Math.ceil(count / cols);
+
+    const cellW = 480; // base horizontal spacing
+    const cellH = 600; // base vertical spacing
+    const jitterX = 180; // random horizontal jitter
+    const jitterY = 180; // random vertical jitter
+
+    // Center the grid around (0,0)
+    const totalW = cols * cellW;
+    const totalH = rows * cellH;
+    const originX = -totalW / 2;
+    const originY = -totalH / 2;
 
     posters.forEach((poster, index) => {
-      let randomX, randomY;
-      let validPosition = false;
+      const c = index % cols;
+      const r = Math.floor(index / cols);
+      const baseX = originX + c * cellW;
+      const baseY = originY + r * cellH;
 
-      // Try to find a position that doesn't overlap with existing posters
-      while (!validPosition) {
-        randomX = Math.random() * (maxX - minX) + minX;
-        randomY = Math.random() * (maxY - minY) + minY;
+      const randX = baseX + (Math.random() * 2 - 1) * jitterX;
+      const randY = baseY + (Math.random() * 2 - 1) * jitterY;
 
-        // Check distance from other posters (simple check - just compare with index)
-        validPosition = true;
-        for (let i = 0; i < index; i++) {
-          const otherCard = container.children[i];
-          if (otherCard) {
-            const otherX = parseFloat(otherCard.style.left);
-            const otherY = parseFloat(otherCard.style.top);
-            const distance = Math.sqrt((randomX - otherX) ** 2 + (randomY - otherY) ** 2);
-            if (distance < minDistance) {
-              validPosition = false;
-              break;
-            }
-          }
-        }
-      }
-
-      console.log(`Creating poster card ${index} at position:`, { randomX, randomY });
-      createPosterCard(poster, randomX, randomY);
+      console.log(`Creating poster card ${index} at (${Math.round(randX)}, ${Math.round(randY)}):`, poster);
+      createPosterCard(poster, Math.round(randX), Math.round(randY));
     });
 
     updatePosterCount(posters.length);
@@ -154,6 +148,7 @@ function createPosterCard(poster, x, y) {
     <div class="poster-info">
       <h3>${editorName}</h3>
       <p>${date}</p>
+        ${poster.seed ? `<p class="poster-seed">Seed: ${poster.seed}</p>` : ''}
       <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
     </div>
   `;
@@ -385,6 +380,15 @@ function handleDragEnd() {
 
 function handleWheelPan(e) {
   e.preventDefault();
+
+  // Pinch-zoom on macOS trackpads triggers wheel events with ctrlKey=true
+  if (e.ctrlKey) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const zoomDelta = -e.deltaY * 0.005; // invert: pinch-out -> zoom in
+    zoomToPoint(mouseX, mouseY, zoomDelta);
+    return;
+  }
   
   const deltaX = e.deltaX;
   const deltaY = e.deltaY;

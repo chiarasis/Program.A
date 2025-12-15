@@ -1,5 +1,7 @@
 // Pixel Editor - Image/Video Pixelation Generator
 
+let seedValue = 12345;
+let seedText = '';
 let params = {
   posterW: 500,
   posterH: 750,
@@ -182,6 +184,7 @@ function setupControls() {
     if (window.PosterStorage) {
       window.PosterStorage.savePoster(dataURL, {
         editor: 'pixel',
+          seed: seedText || seedValue.toString(),
         filename: filename,
         width: params.posterW,
         height: params.posterH
@@ -202,6 +205,26 @@ function setupControls() {
       startGif();
     }
   });
+
+  // Seed controls
+  const seedEl = q('seed');
+  if (seedEl) {
+    seedEl.addEventListener('change', (e) => {
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
+    });
+  }
+}
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
 function handleFileUpload(event) {
