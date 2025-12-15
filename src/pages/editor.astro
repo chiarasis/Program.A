@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
+import Footer from '../components/Footer.astro';
 
 const editors = [
   { title: 'Griglie', description: 'Strutture a griglia generative con moduli e parametri programmabili', url: '/editor-griglie', style: 'Strutture Programmata / Gruppo N' },
@@ -11,32 +12,68 @@ const editors = [
 ];
 ---
 
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/src/assets/base.css">
+</head>
+
     <Layout>
       <HeaderFixed />
   
       <main class="editors-hub">
-        <header class="hub-header">
-          <h1>GENERATORI</h1>
-          <p class="subtitle">Crea opere generative ispirate all'arte programmata italiana degli anni '60</p>
-        </header>
+        <section class="content-section">
+          <div class="content-wrapper">
+            <div class="intro-block">
+              <p class="subtitle">Crea opere generative ispirate all'arte programmata italiana degli anni '60</p>
+            </div>
 
-        <div class="editors-grid">
-          {editors.map((editor) => (
-            <a href={editor.url} class="editor-card">
-              <div class="card-content">
-                <span class="card-style">{editor.style}</span>
-                <h2>{editor.title}</h2>
-                <p>{editor.description}</p>
-                <div class="card-arrow">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+            <div class="editors-grid">
+              {editors.map((editor, index) => (
+                <div class={`editor-row ${index % 2 === 0 ? 'align-left' : 'align-right'}`}>
+                  <article class={`content-block editor-block block-${index + 1}`}>
+                    <div class="floating-squares"></div>
+                    <a href={editor.url} class="editor-link">
+                      <div class="text-content">
+                        <span class="card-style">{editor.style}</span>
+                        <h2>{editor.title}</h2>
+                        <p>{editor.description}</p>
+                        <div class="card-arrow">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
                 </div>
-              </div>
-            </a>
-          ))}
-        </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
+
+      <Footer includeStyles={false} />
+
+      <script src="/src/scripts/floatingSquares.js"></script>
+      <script>
+        // Scroll animations
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll('.editor-block').forEach(block => {
+          observer.observe(block);
+        });
+      </script>
     </Layout>
 
     <style>
@@ -44,134 +81,167 @@ const editors = [
         min-height: 100vh;
         background: #000;
         color: #fff;
-        padding: 180px 40px 120px;
       }
 
-      .hub-header {
+      /* Content section */
+      .content-section {
+        position: relative;
+        background: #000;
+        padding: 140px 0 120px;
+      }
+
+      .content-wrapper {
         max-width: 1200px;
-        margin: 0 auto 80px;
-        text-align: center;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
       }
 
-      .hub-header h1 {
-        font-size: clamp(3rem, 6vw, 5rem);
-        font-weight: 300;
-        letter-spacing: -0.02em;
-        margin-bottom: 24px;
-        font-family: 'VG5000', monospace;
+      .intro-block {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
       }
 
       .subtitle {
         font-size: 1.1rem;
-        color: #999;
+        color: #b5b5b5;
         font-weight: 300;
         line-height: 1.6;
-        max-width: 600px;
-        margin: 0 auto;
-        font-family: 'Basier Square Mono', monospace;
+        font-family: var(--display-font);
       }
 
       .editors-grid {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
       }
 
-      .editor-card {
+      .editor-row {
+        display: flex;
+        width: 100%;
+      }
+
+      .editor-row.align-left {
+        justify-content: flex-start;
+      }
+
+      .editor-row.align-right {
+        justify-content: flex-end;
+      }
+
+      /* Editor blocks styled like home content blocks */
+      .content-block {
         position: relative;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        padding: 48px 40px;
+        padding: 60px;
+        min-height: 280px;
+        max-width: 600px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 1.4s ease, transform 1.4s ease;
+      }
+
+      .content-block.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .editor-link {
+        display: block;
         text-decoration: none;
         color: #fff;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-      }
-
-      .editor-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #fff, transparent);
-        transform: translateX(-100%);
-        transition: transform 0.6s ease;
+        transition: transform 0.3s ease;
       }
 
-      .editor-card:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.3);
+      .editor-link:hover {
         transform: translateY(-4px);
       }
 
-      .editor-card:hover::before {
-        transform: translateX(100%);
-      }
-
-      .card-content {
+      .text-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
       }
 
       .card-style {
         display: inline-block;
-        font-size: 11px;
+        font-size: 12px;
         letter-spacing: 2px;
         text-transform: uppercase;
-        color: #666;
+        color: #000;
         margin-bottom: 16px;
-        font-family: 'Basier Square Mono', monospace;
+        font-family: var(--display-font);
       }
 
-      .editor-card h2 {
-        font-size: 1.8rem;
-        font-weight: 300;
+      .content-block h2 {
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 400;
         margin-bottom: 16px;
         line-height: 1.2;
-        font-family: 'VG5000', monospace;
+        font-family: var(--display-font);
+        color: #000;
       }
 
-      .editor-card p {
-        color: #999;
-        line-height: 1.6;
-        margin-bottom: 32px;
-        font-size: 0.95rem;
-        font-family: 'Basier Square Mono', monospace;
+      .content-block p {
+        color: #000;
+        line-height: 1.75;
+        margin-bottom: 24px;
+        font-size: 1.1rem;
+        font-family: var(--display-font);
       }
 
       .card-arrow {
         display: flex;
         align-items: center;
-        color: #fff;
-        opacity: 0.5;
+        color: #000;
+        opacity: 0.6;
         transition: all 0.3s ease;
       }
 
-      .editor-card:hover .card-arrow {
+      .editor-link:hover .card-arrow {
         opacity: 1;
         transform: translateX(8px);
       }
 
+      /* Floating squares background (from home) */
+      .floating-squares {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
       @media (max-width: 768px) {
-        .editors-hub {
-          padding: 140px 24px 100px;
+        .content-section {
+          padding: 120px 0 100px;
         }
 
-        .hub-header {
-          margin-bottom: 48px;
+        .content-wrapper {
+          padding: 0 24px;
+          gap: 40px;
         }
 
         .editors-grid {
-          gap: 24px;
+          gap: 40px;
         }
 
-        .editor-card {
-          padding: 36px 28px;
+        .editor-row.align-left,
+        .editor-row.align-right {
+          justify-content: center;
+        }
+
+        .content-block {
+          padding: 40px 28px;
+          min-height: 240px;
+          max-width: 100%;
         }
       }
     </style>
