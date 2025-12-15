@@ -147,7 +147,23 @@ function setupControls() {
   if (playBtn) playBtn.addEventListener('click', ()=>{isAnimating=!isAnimating; playBtn.textContent = isAnimating? 'Pausa':'Play'; if(isAnimating) loop(); else noLoop();});
   
   const pngBtn = q('downloadPNG');
-  if (pngBtn) pngBtn.addEventListener('click', ()=>save('crashclock.png'));
+  if (pngBtn) pngBtn.addEventListener('click', ()=>{
+    const filename = 'crashclock.png';
+    const dataURL = canvas.toDataURL('image/png');
+    
+    if (window.PosterStorage) {
+      window.PosterStorage.savePoster(dataURL, {
+        editor: 'crashclock',
+        filename: filename,
+        width: 1000,
+        height: 1500
+      }).then(() => {
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Crash Clock');
+      }).catch(err => console.error('Failed to save poster:', err));
+    }
+    
+    save(filename);
+  });
   
   const gifBtn = q('downloadGIF');
   if (gifBtn) gifBtn.addEventListener('click', ()=>startGif());

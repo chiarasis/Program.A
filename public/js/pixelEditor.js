@@ -175,7 +175,22 @@ function setupControls() {
   
   const pngBtn = q('downloadPNG');
   if (pngBtn) pngBtn.addEventListener('click', ()=>{
-    if (sourceMedia) save('pixel.png');
+    if (!sourceMedia) return;
+    const filename = 'pixel.png';
+    const dataURL = canvas.toDataURL('image/png');
+    
+    if (window.PosterStorage) {
+      window.PosterStorage.savePoster(dataURL, {
+        editor: 'pixel',
+        filename: filename,
+        width: params.posterW,
+        height: params.posterH
+      }).then(() => {
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel');
+      }).catch(err => console.error('Failed to save poster:', err));
+    }
+    
+    save(filename);
   });
   
   const gifBtn = q('downloadGIF');

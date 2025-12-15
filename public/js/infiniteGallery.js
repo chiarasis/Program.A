@@ -1,5 +1,8 @@
 // Infinite Gallery Navigation System
 // Pan with smooth momentum, double-click to overview
+// Loads user-generated posters from IndexedDB
+
+console.log('infiniteGallery.js script loaded');
 
 let canvas;
 let container;
@@ -32,11 +35,20 @@ const MIN_SCALE = 0.3;
 const MAX_SCALE = 2;
 const ZOOM_AMOUNT = 0.5;
 
-function init() {
+async function init() {
+  console.log('init() called');
   canvas = document.getElementById('canvas');
   container = document.getElementById('postersContainer');
   
-  if (!canvas || !container) return;
+  console.log('canvas:', canvas, 'container:', container);
+  
+  if (!canvas || !container) {
+    console.error('Canvas or container not found!');
+    return;
+  }
+
+  // Load posters from IndexedDB
+  await loadUserPosters();
 
   // Center view on start
   const centerX = window.innerWidth / 2;
@@ -45,12 +57,157 @@ function init() {
   translateY = centerY - 600;
   updateTransform();
 
+  console.log('About to setupEventListeners');
   setupEventListeners();
+  console.log('Event listeners setup complete');
   startMomentumLoop();
 }
 
+async function loadUserPosters() {
+  try {
+    // Initialize storage and get all posters
+    if (!window.PosterStorage) {
+      console.error('PosterStorage not available');
+      showEmptyState();
+      return;
+    }
+
+    await window.PosterStorage.initDB();
+    const posters = await window.PosterStorage.getAllPosters();
+    
+    console.log('Loaded posters from IndexedDB:', posters);
+    
+    if (!posters || posters.length === 0) {
+      console.log('No posters found, showing empty state');
+      showEmptyState();
+      updatePosterCount(0);
+      return;
+    }
+
+    // Hide empty state
+    const emptyState = document.getElementById('emptyGallery');
+    if (emptyState) emptyState.style.display = 'none';
+
+    // Generate random positions for posters
+    const minX = -2000;
+    const maxX = 2000;
+    const minY = -2000;
+    const maxY = 2000;
+    const minDistance = 800; // Minimum distance between posters to avoid overlap
+
+    posters.forEach((poster, index) => {
+      let randomX, randomY;
+      let validPosition = false;
+
+      // Try to find a position that doesn't overlap with existing posters
+      while (!validPosition) {
+        randomX = Math.random() * (maxX - minX) + minX;
+        randomY = Math.random() * (maxY - minY) + minY;
+
+        // Check distance from other posters (simple check - just compare with index)
+        validPosition = true;
+        for (let i = 0; i < index; i++) {
+          const otherCard = container.children[i];
+          if (otherCard) {
+            const otherX = parseFloat(otherCard.style.left);
+            const otherY = parseFloat(otherCard.style.top);
+            const distance = Math.sqrt((randomX - otherX) ** 2 + (randomY - otherY) ** 2);
+            if (distance < minDistance) {
+              validPosition = false;
+              break;
+            }
+          }
+        }
+      }
+
+      console.log(`Creating poster card ${index} at position:`, { randomX, randomY });
+      createPosterCard(poster, randomX, randomY);
+    });
+
+    updatePosterCount(posters.length);
+  } catch (error) {
+    console.error('Failed to load posters:', error);
+    showEmptyState();
+  }
+}
+
+function createPosterCard(poster, x, y) {
+  const card = document.createElement('div');
+  card.className = 'poster-card';
+  card.dataset.id = poster.id;
+  card.dataset.editor = poster.editor;
+  card.style.left = `${x}px`;
+  card.style.top = `${y}px`;
+
+  const editorName = poster.editor.charAt(0).toUpperCase() + poster.editor.slice(1);
+  const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
+
+  card.innerHTML = `
+    <div class="poster-preview">
+      <img 
+        src="${poster.dataURL}"
+        alt="${poster.filename}"
+        loading="lazy"
+        class="poster-image"
+      />
+    </div>
+    <div class="poster-info">
+      <h3>${editorName}</h3>
+      <p>${date}</p>
+      <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
+    </div>
+  `;
+
+  // Add delete handler
+  const deleteBtn = card.querySelector('.delete-btn');
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deletePoster(poster.id);
+  });
+
+  container.appendChild(card);
+}
+
+async function deletePoster(posterId) {
+  if (!confirm('Eliminare questo poster?')) return;
+  
+  try {
+    await window.PosterStorage.deletePoster(posterId);
+    
+    // Remove from DOM
+    const card = container.querySelector(`[data-id="${posterId}"]`);
+    if (card) card.remove();
+    
+    // Update count
+    const remainingCards = container.querySelectorAll('.poster-card');
+    updatePosterCount(remainingCards.length);
+    
+    if (remainingCards.length === 0) {
+      showEmptyState();
+    }
+  } catch (error) {
+    console.error('Failed to delete poster:', error);
+    alert('Errore durante l\'eliminazione del poster');
+  }
+}
+
+function showEmptyState() {
+  const emptyState = document.getElementById('emptyGallery');
+  if (emptyState) emptyState.style.display = 'flex';
+}
+
+function updatePosterCount(count) {
+  const countEl = document.getElementById('posterCount');
+  if (countEl) {
+    countEl.textContent = `${count} generazioni`;
+  }
+}
+
 function setupEventListeners() {
+  console.log('setupEventListeners() called');
+  
   // Mouse drag (for mouse users)
+  console.log('Attaching mouse events to canvas:', canvas);
   canvas.addEventListener('mousedown', handleDragStart);
   document.addEventListener('mousemove', handleDragMove);
   document.addEventListener('mouseup', handleDragEnd);

@@ -157,8 +157,31 @@ function exportPNG() {
   pg.blendMode(pg.BLEND);
 
   pg.pop();
+  
+  // Get canvas data URL for storage
+  const dataURL = pg.canvas.toDataURL('image/png');
+  const filename = `rombi-poster-${Date.now()}.png`;
+  
+  // Save to IndexedDB
+  if (window.PosterStorage) {
+    window.PosterStorage.savePoster(dataURL, {
+      editor: 'rombi',
+      seed: null,
+      filename: filename,
+      width: W,
+      height: H
+    }).then(() => {
+      // Show success notification with gallery link
+      if (window.showDownloadSuccess) {
+        window.showDownloadSuccess('Rombi');
+      }
+    }).catch(err => {
+      console.error('Failed to save poster:', err);
+    });
+  }
+  
   // save the graphics
-  save(pg, `rombi-poster-${Date.now()}.png`);
+  save(pg, filename);
 }
 
 function exportGIF() {

@@ -247,9 +247,31 @@ function updateURL() {
 
 function exportPNG() {
   updateExportStatus('Esportazione PNG in corso...');
-  save(canvas, `light-effects-${seedValue}.png`);
-  updateExportStatus('PNG scaricato!');
-  setTimeout(() => updateExportStatus(''), 2000);
+  const filename = `light-effects-${seedValue}.png`;
+  const dataURL = canvas.toDataURL('image/png');
+  
+  if (window.PosterStorage) {
+    window.PosterStorage.savePoster(dataURL, {
+      editor: 'luce',
+      seed: seedValue,
+      filename: filename,
+      width: 1000,
+      height: 1500
+    }).then(() => {
+      if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
+      updateExportStatus('PNG scaricato!');
+      setTimeout(() => updateExportStatus(''), 2000);
+    }).catch(err => {
+      console.error('Failed to save poster:', err);
+      updateExportStatus('PNG scaricato!');
+      setTimeout(() => updateExportStatus(''), 2000);
+    });
+  } else {
+    updateExportStatus('PNG scaricato!');
+    setTimeout(() => updateExportStatus(''), 2000);
+  }
+  
+  save(canvas, filename);
 }
 
 function updateExportStatus(message) {
