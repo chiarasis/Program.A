@@ -99,6 +99,29 @@
     width: 100%;
   }
 
+  .editor-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 14px;
+    border: 1.5px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border-radius: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  }
+
+  .editor-link-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  }
+
   .opera-details.active {
     opacity: 1;
     pointer-events: auto;

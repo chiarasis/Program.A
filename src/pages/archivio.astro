@@ -4,6 +4,38 @@ import HeaderFixed from '../components/HeaderFixed.astro';
 
 const opereRaw = await import('../data/opere.json').then(m => m.default);
 const opere = [...opereRaw].sort((a, b) => a.artist.localeCompare(b.artist, 'it', { sensitivity: 'base' }));
+
+const pickEditor = (opera) => {
+  const text = `${opera.title || ''} ${opera.technique || ''}`.toLowerCase();
+
+  const matches = (pattern) => pattern.test(text);
+
+  if (matches(/luce|lumin|neon|lampad/)) {
+    return { url: '/editor-luce', label: 'Editor Luce' };
+  }
+
+  if (matches(/rombo|rombi|diamant/)) {
+    return { url: '/editor-rombi', label: 'Editor Rombi' };
+  }
+
+  if (matches(/pixel|digit|bit/)) {
+    return { url: '/editor-pixel', label: 'Editor Pixel' };
+  }
+
+  if (matches(/trama|reticol|griglia|griglie|linea|linee|lineare|scacchier|quadrati|serial|struttur|interferenz|rete|corda|filo/)) {
+    return { url: '/editor-griglie', label: 'Editor Griglie' };
+  }
+
+  if (matches(/cinet|vibraz|rotaz|strob|fluido|fluida|elastico|magnet|moviment|dinamic|cronostat|motor/)) {
+    return { url: '/editor-crashclock', label: 'Editor Crash Clock' };
+  }
+
+  if (opera.group && opera.group.toLowerCase().includes('gruppo n')) {
+    return { url: '/editor-griglie', label: 'Editor Griglie' };
+  }
+
+  return { url: '/editor-crashclock', label: 'Editor Crash Clock' };
+};
 ---
 <head>
 	<meta charset="UTF-8">
@@ -108,6 +140,15 @@ const opere = [...opereRaw].sort((a, b) => a.artist.localeCompare(b.artist, 'it'
                 <p><strong>Ubicazione:</strong> {opera.location}</p>
               </div>
             )}
+
+            {(() => {
+              const editor = pickEditor(opera);
+              return (
+                <a class="editor-link-btn" href={editor.url}>
+                  {editor.label}
+                </a>
+              );
+            })()}
           </div>
         ))}
       </div>
