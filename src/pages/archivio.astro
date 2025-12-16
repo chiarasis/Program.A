@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
 
-const opere = await import('../data/opere.json').then(m => m.default);
+const opereRaw = await import('../data/opere.json').then(m => m.default);
+const opere = [...opereRaw].sort((a, b) => a.artist.localeCompare(b.artist, 'it', { sensitivity: 'base' }));
 ---
 <head>
 	<meta charset="UTF-8">
@@ -41,11 +42,11 @@ const opere = await import('../data/opere.json').then(m => m.default);
           </div>
 
           {opere.map((opera, index) => (
-            <div class="card" data-index={index} data-id={opera.id} data-group={opera.group}>
+            <div class="card" data-index={index} data-id={opera.id} data-group={opera.group} data-image={opera.image} data-title={opera.title} data-artist={opera.artist} data-year={opera.year} data-technique={opera.technique} data-location={opera.location}>
               <div class="card-inner">
                 <img
                   src={opera.image}
-                  alt={`${opera.artist} _ ${opera.title}`}
+                  alt={`${opera.artist} — ${opera.title}`}
                 />
               </div>
             </div>
@@ -88,6 +89,7 @@ const opere = await import('../data/opere.json').then(m => m.default);
 
         {opere.map((opera, index) => (
           <div class="opera-details" data-index={index} data-id={opera.id} data-group={opera.group}>
+            <!-- Dati embedded nella card stessa -->
             <div class="opera-header">
               <span class="opera-group">{opera.group}</span>
               <span class="opera-year">{opera.year}</span>
@@ -125,9 +127,9 @@ const opere = await import('../data/opere.json').then(m => m.default);
     let rolodex: HTMLElement | null;
     let cards: HTMLElement[] = [];
     let detailsElements: HTMLElement[] = [];
-    let currentIndex = 0;
     let targetRotation = 0;
     let currentRotation = 0;
+    let activeCardId: string | null = null;
     let cardCount = 0;
     let anglePerCard = 0;
     let activeGroup = 'all';
@@ -135,6 +137,10 @@ const opere = await import('../data/opere.json').then(m => m.default);
     let filteredDetails: HTMLElement[] = [];
     let groupIntroCards: HTMLElement[] = [];
     let groupIntroDetails: HTMLElement[] = [];
+
+    const BASE_CARD_WIDTH = 420;
+    const MIN_CARD_HEIGHT = 280;
+    const MAX_CARD_HEIGHT = 520;
 
     // Group descriptions
     const groupDescriptions = {
@@ -239,16 +245,45 @@ const opere = await import('../data/opere.json').then(m => m.default);
       // Reset rotation
       currentRotation = 0;
       targetRotation = 0;
-      currentIndex = 0;
       window.scrollTo(0, 0);
       
-      updateActiveDetails(0);
-      updateCardsVisibility();
+        // Set active card id to the first filtered card (if any)
+        activeCardId = filteredCards[0]?.dataset.id || null;
+        updateCardsVisibility();
     }
 
     function init() {
       rolodex = document.getElementById('rolodex');
       if (!rolodex) return;
+
+      // Suppress image 404 errors in console
+      const allImages = document.querySelectorAll<HTMLImageElement>('.card img');
+      allImages.forEach(img => {
+        img.onerror = () => {
+          // Silently hide broken images
+          img.style.opacity = '0.3';
+          img.alt = 'Immagine non disponibile';
+        };
+
+        // Adapt card size to the image proportion
+        const card = img.closest('.card') as HTMLElement | null;
+        if (!card) return;
+        const applySizeFromImage = () => {
+          const { naturalWidth, naturalHeight } = img;
+          const ratio = naturalWidth > 0 ? naturalHeight / naturalWidth : 1;
+          const height = Math.min(MAX_CARD_HEIGHT, Math.max(MIN_CARD_HEIGHT, BASE_CARD_WIDTH * ratio));
+          card.style.width = `${BASE_CARD_WIDTH}px`;
+          card.style.height = `${height}px`;
+        };
+
+        if (img.complete && img.naturalWidth) {
+          applySizeFromImage();
+        } else {
+          img.onload = () => {
+            applySizeFromImage();
+          };
+        }
+      });
 
       // Separate group intro cards from artwork cards
       const allCards = Array.from(document.querySelectorAll('.card')) as HTMLElement[];
@@ -273,8 +308,7 @@ const opere = await import('../data/opere.json').then(m => m.default);
         card.style.transform = `rotateX(${angle}deg) translateZ(600px)`;
       });
 
-      // Show first card details
-      updateActiveDetails(0);
+      // Show first card details based on visibility
       updateCardsVisibility();
 
       updateStackHeights();
@@ -328,13 +362,6 @@ const opere = await import('../data/opere.json').then(m => m.default);
       const scrollProgress = Math.min(scrollTop / maxScroll, 1);
 
       targetRotation = -scrollProgress * 360 * ((cardCount - 1) / cardCount);
-
-      const activeIndex = Math.round(Math.abs(targetRotation) / anglePerCard) % cardCount;
-      
-      if (activeIndex !== currentIndex) {
-        currentIndex = activeIndex;
-        updateActiveDetails(currentIndex);
-      }
     }
 
     function animate() {
@@ -350,6 +377,9 @@ const opere = await import('../data/opere.json').then(m => m.default);
     }
 
     function updateCardsVisibility() {
+      let bestCard: HTMLElement | null = null;
+      let bestAbs = Infinity;
+
       filteredCards.forEach((card, index) => {
         const cardAngle = anglePerCard * index;
         const currentCardAngle = ((cardAngle - currentRotation) % 360 + 360) % 360;
@@ -358,6 +388,10 @@ const opere = await import('../data/opere.json').then(m => m.default);
         if (normalizedAngle > 180) normalizedAngle -= 360;
         
         const absAngle = Math.abs(normalizedAngle);
+        if (absAngle < bestAbs) {
+          bestAbs = absAngle;
+          bestCard = card;
+        }
         
         let opacity;
         if (absAngle < anglePerCard * 0.4) {
@@ -373,50 +407,52 @@ const opere = await import('../data/opere.json').then(m => m.default);
         card.style.opacity = opacity.toString();
         card.style.transition = 'opacity 0.25s ease';
       });
+
+      // After setting visibility, show details for the front-most card
+      if (bestCard) {
+        if (bestCard.classList.contains('group-intro-card')) {
+          const group = bestCard.dataset.group;
+          activeCardId = null;
+          updateGroupIntroDetail(group);
+        } else {
+          activeCardId = bestCard.dataset.id || null;
+          updateActiveDetailsById(activeCardId);
+        }
+      }
     }
 
-    function updateActiveDetails(filteredIndex: number) {
-      const activeCard = filteredCards[filteredIndex];
-      if (!activeCard) return;
-      
-      const cardId = activeCard.dataset.id;
-      const cardImg = activeCard.querySelector('img');
-      const imgAlt = cardImg?.alt || 'N/A';
-      
-      console.log('🔍 DEBUG updateActiveDetails:');
-      console.log('  filteredIndex:', filteredIndex);
-      console.log('  cardId:', cardId);
-      console.log('  img alt:', imgAlt);
-      
-      // Hide all artwork details
+    function updateGroupIntroDetail(group?: string) {
+      // Hide all details first
       detailsElements.forEach((el) => {
         el.classList.remove('active');
       });
-      
-      // Hide all group intro details
       groupIntroDetails.forEach((el) => {
         el.classList.remove('active');
       });
-      
-      // Show the matching detail by ID
-      if (cardId) {
-        const matchingDetail = detailsElements.find(el => el.dataset.id === cardId);
-        console.log('  matchingDetail found:', !!matchingDetail);
-        if (matchingDetail) {
-          const title = matchingDetail.querySelector('.opera-title')?.textContent;
-          console.log('  ✅ Showing detail:', title);
-          matchingDetail.classList.add('active');
-          return;
-        }
+
+      if (!group) return;
+      const introDetail = groupIntroDetails.find(d => d.dataset.group === group);
+      if (introDetail) {
+        introDetail.classList.add('active');
       }
-      
-      // Fallback: show by index if no ID match
-      console.log('  ⚠️ Using fallback by filteredIndex');
-      const activeDetail = filteredDetails[filteredIndex];
-      if (activeDetail) {
-        const title = activeDetail.querySelector('.opera-title')?.textContent;
-        console.log('  📌 Fallback detail:', title);
-        activeDetail.classList.add('active');
+    }
+
+    function updateActiveDetailsById(cardId: string | null) {
+      // Hide all details first
+      detailsElements.forEach((el) => {
+        el.classList.remove('active');
+      });
+      groupIntroDetails.forEach((el) => {
+        el.classList.remove('active');
+      });
+
+      if (!cardId) return;
+
+      // For artwork cards: find detail by matching data-id in the FULL list
+      const matchingDetail = detailsElements.find(el => el.dataset.id === cardId);
+      if (matchingDetail) {
+        matchingDetail.classList.add('active');
+        return;
       }
     }
 
