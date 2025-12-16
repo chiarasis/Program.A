@@ -7,7 +7,7 @@
     color: var(--text-light);
     font-family: var(--display-font);
     font-weight: 700;
-    min-height: 800vh;
+    min-height: 1200vh;
     overflow-x: hidden;
     padding-top: 50px;
   }
@@ -206,4 +206,97 @@
       min-height: auto;
     }
   }
+
+  /* Filter + description stack */
+  :root {
+    --filter-height: 120px;
+  }
+
+  .filter-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    z-index: 200;
+    padding: 100px 20px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 0;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+  }
+
+  .filter-spacer {
+    height: var(--filter-height);
+  }
+
+  .filter-buttons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+  }
+
+  .filter-btn {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    border: none;
+    padding: 12px 8px;
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: clamp(16px, 2.5vw, 28px);
+    cursor: pointer;
+    transition: color 0.25s ease, transform 0.25s ease;
+    letter-spacing: 0.8px;
+    text-transform: none;
+  }
+
+  .filter-btn:hover {
+    color: var(--text-light);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    color: var(--acc-color);
+  }
+
+  /* Group intro text styles */
+  .group-intro-text {
+    margin-top: 20px;
+  }
+
+  .group-intro-text blockquote {
+    font-family: var(--body-font);
+    font-style: italic;
+    font-size: 15px;
+    margin: 0 0 20px 0;
+    padding-left: 16px;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+  }
+
+  .group-intro-text p {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* Adjust rolodex container to account for filter */
+  .rolodex-container {
+    top: calc(var(--filter-height) + 10px);
+    height: calc(100vh - (var(--filter-height) + 10px));
+  }
+
+  /* Adjust details container */
+  .details-container {
+    padding-top: 50px;
+    top: calc(var(--filter-height) + 10px);
+    height: calc(100vh - (var(--filter-height) + 10px));
+  }
+
 

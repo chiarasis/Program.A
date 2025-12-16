@@ -7,7 +7,7 @@
     "group": "Gruppo T",
     "technique": "Legno, proiettore, elettromotore, cm 52x51,5x51",
     "location": "",
-    "image": "/_backup/opere_public/image.png"
+    "image": "/drive-opere/Anceschi_Struttura Tricroma.jpeg"
   },
   {
     "id": 2,
@@ -16,8 +16,8 @@
     "year": "1962",
     "group": "Gruppo T",
     "technique": "Legno, liquidi, tubi in plastica, elettromotore, cm 192,5×63, 5×129,5",
-    "location": "Parma, Collezione privata, Courtesy Galleria d'arte Niccoli",
-    "image": "/_backup/opere_public/image copy.png"
+    "location": "Parma, Collezione privata, Courtesy Galleria d’arte Niccoli",
+    "image": "/drive-opere/Anceschi_Percorsi Fluidi Orizzontali.png"
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
     "group": "Gruppo T",
     "technique": "Materiali vari, liquido, cm 44 × 48 × 6",
     "location": "Francoforte, V.A.F. Collection",
-    "image": "/_backup/opere_public/image copy 2.png"
+    "image": "/drive-opere/Anceschi_Percorsi Fluidi.webp"
   },
   {
     "id": 4,
@@ -37,7 +37,7 @@
     "group": "Gruppo T",
     "technique": "Installazione con listelli su superficie, cm 103 × 73,5",
     "location": "",
-    "image": "/_backup/opere_public/image copy 3.png"
+    "image": "/drive-opere/Anceschi_Grande quadro clessidra.jpg"
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "group": "Gruppo T",
     "technique": "Materiali vari e liquido, cm 145x145x4,5",
     "location": "",
-    "image": "/_backup/opere_public/Rectangle 4.png"
+    "image": "/drive-opere/Anceschi_Tavola di possibilità liquide.jpg"
   },
   {
     "id": 6,
@@ -55,9 +55,9 @@
     "artist": "Giovanni Anceschi",
     "year": "1963",
     "group": "Gruppo T",
-    "technique": "Legno, aste metalliche, animazione elettromeccanica, cm 45,5 × 60 × 60",
+    "technique": "Legno, aste metalliche, animazione elettromeccanica\ncm 45,5 × 60 × 60",
     "location": "",
-    "image": "/_backup/opere_public/Rectangle 4-1.png"
+    "image": "/drive-opere/Anceschi_Strutturazione cilindrica virtuale.jpg"
   },
   {
     "id": 7,
@@ -67,7 +67,7 @@
     "group": "Gruppo T",
     "technique": "Para, spilli e motore elettrico",
     "location": "GNAM, Roma; Museo Richter Collez. Cerqui, Parigi",
-    "image": "/_backup/opere_public/Rectangle 5.png"
+    "image": "/drive-opere/Devecchi_Superficie in vibrazione.jpg"
   },
   {
     "id": 8,
@@ -75,9 +75,9 @@
     "artist": "Gabriele Devecchi",
     "year": "1959-1962",
     "group": "Gruppo T",
-    "technique": "Legno, gomma naturale, acciaio, elettromotore e perni, cm 52,07 × 52,07 × 8,26",
+    "technique": "Legno, gomma naturale, acciaio, elettromotore e perni,\ncm 52,07 × 52,07 × 8,26",
     "location": "",
-    "image": "/_backup/opere_public/Rectangle 5-1.png"
+    "image": "/drive-opere/Devecchi_Superficie in vibrazione A7.jpg"
   },
   {
     "id": 9,
@@ -86,8 +86,8 @@
     "year": "1961",
     "group": "Gruppo T",
     "technique": "Metacrilato trasparente e nero, alluminio, motore",
-    "location": "",
-    "image": "/_backup/opere_public/Rectangle 6.png"
+    "location": "Francoforte, V.A.F. Collection",
+    "image": "/drive-opere/Devecchi_Rotolineare.jpg"
   },
   {
     "id": 10,
@@ -97,7 +97,7 @@
     "group": "Gruppo T",
     "technique": "Acciao, metacrilato, cm 50x50",
     "location": "Deposito GAM Torino",
-    "image": "/_backup/opere_public/Rectangle 6-1.png"
+    "image": "/drive-opere/Devecchi_Strutturazione triangolare.jpg"
   },
   {
     "id": 11,
@@ -106,247 +106,787 @@
     "year": "1964",
     "group": "Gruppo T",
     "technique": "Alluminio, metacrilato trasparente, motore, cm 50 (diametro)",
-    "location": "",
-    "image": "/_backup/opere_public/Rectangle 6-2.png"
+    "location": "Francoforte, V.A.F. Collection",
+    "image": "/drive-opere/Devecchi_Deformazione Kerki.jpg"
   },
   {
     "id": 12,
-    "title": "Cronovideo nero4",
-    "artist": "Gabriele Devecchi",
-    "year": "1989",
-    "group": "Gruppo T",
-    "technique": "Orologi, alluminio",
-    "location": "",
-    "image": "/_backup/opere_public/Rectangle 7.png"
-  },
-  {
-    "id": 13,
     "title": "u.r.m.n.t.",
     "artist": "Gabriele Devecchi",
     "year": "1961",
     "group": "Gruppo T",
     "technique": "Legno, lamiera nera traforata, PCV bianco, motorino elettrico, cm 60x60x10",
     "location": "",
-    "image": "/_backup/opere_public/Rectangle 7-1.png"
+    "image": "/drive-opere/Devecchi_u.r.m.n.t..jpg"
   },
   {
-    "id": 14,
+    "id": 13,
     "title": "Ambiente cronostatico",
     "artist": "Davide Boriani",
     "year": "1970-2013",
-    "group": "Gruppo N",
+    "group": "Gruppo T",
     "technique": "Ambiente interattivo, cm 260 x Ø 400",
-    "location": "Valmore studio d'arte",
-    "image": "/_backup/opere_public/Rectangle 9.png"
+    "location": "Valmore studio d'arte (accertare)",
+    "image": "/drive-opere/Boriani_Ambiente cronostatico.jpg"
   },
   {
-    "id": 15,
+    "id": 14,
     "title": "Ambiente stroboscopico n. 4",
     "artist": "Davide Boriani",
     "year": "1967",
-    "group": "Gruppo N",
-    "technique": "Ambiente interattivo",
+    "group": "Gruppo T",
+    "technique": "Legno, specchi, Plexiglas, lampade, motore, cm 360 x 360 x 250",
+    "location": "Milano, Museo del Novecento",
+    "image": "/drive-opere/Boriani_Ambiente stroboscopico n. 4.jpg"
+  },
+  {
+    "id": 15,
+    "title": "Superficie Magnetica",
+    "artist": "Davide Boriani",
+    "year": "1961",
+    "group": "Gruppo T",
+    "technique": "Campo elettromagnetico, metallo, limatura di ferro, calamita, motore elettrico, 60 x 17 cm",
     "location": "",
-    "image": "/_backup/opere_public/image 109.png"
+    "image": "/drive-opere/Boriani_Superficie Magnetica.jpg"
   },
   {
     "id": 16,
-    "title": "Specchio di percorsi",
+    "title": "Superficie magnetica modulare n. 1",
     "artist": "Davide Boriani",
-    "year": "1974",
-    "group": "Gruppo N",
-    "technique": "Specchio e leggere deformazioni",
+    "year": "1959",
+    "group": "Gruppo T",
+    "technique": "Magneti, motore elettrico, alluminio, vetro, cm 90 × 90 × 18",
     "location": "",
-    "image": "/_backup/opere_public/image 110.png"
+    "image": "/drive-opere/Boriani_Superficie magnetica modulare n. 1.jpg"
   },
   {
     "id": 17,
-    "title": "Gioco del Tris dinamico",
-    "artist": "Davide Boriani",
-    "year": "1985",
-    "group": "Gruppo N",
-    "technique": "Sistema di gioco interattivo",
+    "title": "Strutturazione fluida",
+    "artist": "Gianni Colombo",
+    "year": "1960",
+    "group": "Gruppo T",
+    "technique": "Ferro, vetro, animazione elettromeccanica, cm 60 × 45 × 15",
     "location": "",
-    "image": "/_backup/opere_public/image 111.png"
+    "image": "/drive-opere/Colombo_Strutturazione fluida.jpg"
   },
   {
     "id": 18,
-    "title": "Perforato in vibrazione",
-    "artist": "Davide Boriani",
+    "title": "Spazio elastico. Cubo.",
+    "artist": "Gianni Colombo",
     "year": "1968",
-    "group": "Gruppo N",
-    "technique": "Lamiera perforata, motore",
+    "group": "Gruppo T",
+    "technique": "Installazione, cm 123.0 x 42.0 x 42.0",
     "location": "",
-    "image": "/_backup/opere_public/image 112.png"
+    "image": "/drive-opere/Colombo_Spazio elastico. Cubo..jpg"
   },
   {
     "id": 19,
-    "title": "Reticolo astratto",
-    "artist": "Grazia Varisco",
-    "year": "1965",
-    "group": "Gruppo N",
-    "technique": "Composizione astratta",
+    "title": "Struttura Seriale",
+    "artist": "Gianni Colombo",
+    "year": "1964",
+    "group": "Gruppo T",
+    "technique": "Tecnica Mista Su Tavola, cm 50 x 30",
     "location": "",
-    "image": "/_backup/opere_public/image 113.png"
+    "image": "/drive-opere/Colombo_Struttura Seriale.jpg"
   },
   {
     "id": 20,
-    "title": "Interferenze cromatiche",
-    "artist": "Grazia Varisco",
-    "year": "1966",
-    "group": "Gruppo N",
-    "technique": "Colori e forme",
+    "title": "Nove quadrati adiacenti",
+    "artist": "Gianni Colombo",
+    "year": "1977",
+    "group": "Gruppo T",
+    "technique": "Smalto su legno e corda elastica, cm 72 × 72",
     "location": "",
-    "image": "/_backup/opere_public/image 114.png"
+    "image": "/drive-opere/Colombo_Nove quadrati adiacenti.jpg"
   },
   {
     "id": 21,
-    "title": "Moltiplicazione visuale",
-    "artist": "Grazia Varisco",
-    "year": "1967",
-    "group": "Gruppo N",
-    "technique": "Moltiplicazione geometrica",
+    "title": "Spazio elastico - Due doppi rettangoli adiacenti",
+    "artist": "Gianni Colombo",
+    "year": "1975-1976",
+    "group": "Gruppo T",
+    "technique": "Acrilico, elastici e chiodi su tavola, cm 71,5 x 71,5",
     "location": "",
-    "image": "/_backup/opere_public/image 115.png"
+    "image": "/drive-opere/Colombo_\"Spazio elastico - Due doppi rettangoli adiacenti\".jpg"
   },
   {
     "id": 22,
-    "title": "Ritmo e spazio",
+    "title": "Schema luminoso variabile RR66",
     "artist": "Grazia Varisco",
-    "year": "1967",
-    "group": "Gruppo N",
-    "technique": "Ritmo spaziale",
+    "year": "1962",
+    "group": "Gruppo T",
+    "technique": "Perspex, legno, lampada al neon circolare, motore elettrico.",
     "location": "",
-    "image": "/_backup/opere_public/image 116.png"
+    "image": "/drive-opere/Varisco_Schema luminoso variabile RR66.jpg"
   },
   {
     "id": 23,
-    "title": "Variazione su tema quadrato",
+    "title": "Variabile + quadrionda 130 - (Scacchiera) Reticolo",
     "artist": "Grazia Varisco",
-    "year": "1968",
-    "group": "Gruppo N",
-    "technique": "Variazione geometrica",
+    "year": "1963",
+    "group": "Gruppo T",
+    "technique": "Scatola, legno, perspex, tubo luminescente e motore elettrico, cm 34,5 × 34,5 × 10,5",
     "location": "",
-    "image": "/_backup/opere_public/image 117.png"
+    "image": "/drive-opere/Varisco_Variabile + quadrionda 130 - (Scacchiera) Reticolo.jpg"
   },
   {
     "id": 24,
-    "title": "Reticolo Frangibile Quadricromia",
+    "title": "Variabile + quadrionda 250 \"cromocronotopo\"",
     "artist": "Grazia Varisco",
     "year": "1968",
-    "group": "Gruppo N",
-    "technique": "Reticolo",
+    "group": "Gruppo T",
+    "technique": "Legno masonite, metallo, vetro quadrionda 250, motore elettrico,\ncm 50 x 50 x 10",
     "location": "",
-    "image": "/_backup/opere_public/image 118.png"
+    "image": "/drive-opere/Varisco_Variabile + quadrionda 250 \"cromocronotopo\".jpg"
   },
   {
     "id": 25,
-    "title": "Variazione ritmica",
+    "title": "Reticolo Frangibile Quadricromia boogie",
     "artist": "Grazia Varisco",
-    "year": "1968",
-    "group": "Gruppo N",
-    "technique": "Variabile quadrionda",
+    "year": "1969-1969",
+    "group": "Gruppo T",
+    "technique": "Legno, vetro industriale, motivo a 4 colori, \ncm 47 × 47",
     "location": "",
-    "image": "/_backup/opere_public/image 119.png"
+    "image": "/drive-opere/Varisco_Reticolo Frangibile Quadricromia boogie.jpg"
   },
   {
     "id": 26,
-    "title": "Reticolo Frangibile Quadricromia boogie",
-    "artist": "Grazia Varisco",
-    "year": "1969",
-    "group": "Gruppo N",
-    "technique": "Reticolo",
-    "location": "",
-    "image": "/_backup/opere_public/image 120.png"
-  },
-  {
-    "id": 27,
     "title": "9 x 9 x X",
     "artist": "Grazia Varisco",
     "year": "1961",
-    "group": "Gruppo N",
-    "technique": "Composizione",
+    "group": "Gruppo T",
+    "technique": "Perspex, vetro, legno, neon e motore elettrico, cm 90 x 90 x 40",
     "location": "",
-    "image": "/_backup/opere_public/image 122.png"
+    "image": "/drive-opere/Varisco_9 x 9 x X.jpg"
   },
   {
-    "id": 28,
+    "id": 27,
     "title": "Nove sfere in colonna",
     "artist": "Bruno Munari",
     "year": "1961",
-    "group": "Gruppo N",
-    "technique": "Scultura",
+    "group": "In nessun gruppo",
+    "technique": "",
     "location": "",
-    "image": "/_backup/opere_public/image 123.png"
+    "image": "/drive-opere/Munari_Nove sfere in colonna.jpg"
   },
   {
-    "id": 29,
+    "id": 28,
     "title": "Opera n.649",
     "artist": "Enzo Mari",
     "year": "1961",
-    "group": "Gruppo N",
-    "technique": "Opera",
+    "group": "In nessun gruppo",
+    "technique": "",
     "location": "",
-    "image": "/_backup/opere_public/image 124.png"
+    "image": "/drive-opere/Mari_Opera n.649.jpg"
   },
   {
-    "id": 30,
+    "id": 29,
     "title": "Senza titolo",
     "artist": "Alberto Biasi, Edoardo Landi",
     "year": "1964",
     "group": "Gruppo N",
-    "technique": "Composizione",
+    "technique": "Collage su base serigrafica, cm 64,5x65,5",
     "location": "",
-    "image": "/_backup/opere_public/image 125.png"
+    "image": "/drive-opere/Biasi_Landi_Senza titolo.jpg"
   },
   {
-    "id": 31,
+    "id": 30,
     "title": "Dinamica visuale",
     "artist": "Alberto Biasi",
     "year": "1962",
     "group": "Gruppo N",
-    "technique": "Dinamica visuale",
-    "location": "",
-    "image": "/_backup/opere_public/image 126.png"
+    "technique": "PVC su pannello, cm 49,8 x 49,8 x 3",
+    "location": "Collezione Peggy Guggenheim, Venezia (Fondazione Solomon R. Guggenheim, New York)",
+    "image": "/drive-opere/Biasi_Dinamica Visuale.jpg"
   },
   {
-    "id": 32,
+    "id": 31,
     "title": "Trame",
     "artist": "Alberto Biasi",
     "year": "1960",
     "group": "Gruppo N",
-    "technique": "Trame",
+    "technique": "Collage di lamiere forate, cm 90 x 46.",
     "location": "",
-    "image": "/_backup/opere_public/image 127.png"
+    "image": "/drive-opere/Biasi_Trame.jpg"
+  },
+  {
+    "id": 32,
+    "title": "Trama Cinetica (Vetro quadro)",
+    "artist": "Ennio Chiggio",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "Vetro, cassero in legno naturale, retino, cartoncino dipinto a rombo, cm 40x40x10",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Trama Cinetica (Vetro quadro).jpg"
   },
   {
     "id": 33,
-    "title": "Porta Celeste",
-    "artist": "Alberto Biasi",
-    "year": "1993",
+    "title": "Oculari",
+    "artist": "Ennio Chiggio",
+    "year": "1962",
     "group": "Gruppo N",
-    "technique": "Porta",
+    "technique": "ubetti in alluminio, cartoncino fustellato, vetro opale e struttura di legno, cm 36x36x5,5",
     "location": "",
-    "image": "/_backup/opere_public/image 128.png"
+    "image": "/drive-opere/Chiggio_Oculari.jpg"
   },
   {
     "id": 34,
-    "title": "Scultura da prendere a calci",
-    "artist": "Gabriele Devecchi",
-    "year": "1959",
-    "group": "Gruppo T",
-    "technique": "Scultura",
+    "title": "Quadrati spaziali",
+    "artist": "Ennio Chiggio",
+    "year": "1961",
+    "group": "Gruppo N",
+    "technique": "Struttura di legno, cavo di poliestere, distanziatori di gomma, cm 48x48x1",
     "location": "",
-    "image": "/_backup/opere_public/image 129.png"
+    "image": "/drive-opere/Chiggio_Quadrati spaziali.jpg"
   },
   {
     "id": 35,
-    "title": "Ambiente a linee luminose",
-    "artist": "Gabriele Devecchi",
-    "year": "1969",
-    "group": "Gruppo T",
-    "technique": "Ambiente luminoso",
+    "title": "Interferenza Lineare 13.2",
+    "artist": "Ennio Chiggio",
+    "year": "1966",
+    "group": "Gruppo N",
+    "technique": "Doppia lastra in plexiglas aerografato, cornice in legno, cm 47x47x10",
     "location": "",
-    "image": "/_backup/opere_public/image 132.png"
+    "image": "/drive-opere/Chiggio_Interferenza Lineare 13.2.jpg"
+  },
+  {
+    "id": 36,
+    "title": "Incrocio circolare progressivo",
+    "artist": "Ennio Chiggio",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Acrilico su tavola, cm 70x70x5",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Incrocio circolare progressivo.jpg"
+  },
+  {
+    "id": 37,
+    "title": "Interferenza lineare",
+    "artist": "Ennio Chiggio",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Tecnica mista e applicazioni su cartone, cm 24,5x25",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Interferenza lineare.jpg"
+  },
+  {
+    "id": 38,
+    "title": "Interferenza lineare 2",
+    "artist": "Ennio Chiggio",
+    "year": "1966",
+    "group": "Gruppo N",
+    "technique": "Lastra in plexiglass fluorescente giallo trasparente incisa al laser, cm 45x45x5",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Interferenza lineare 2.jpg"
+  },
+  {
+    "id": 39,
+    "title": "Diffrazione ad arco",
+    "artist": "Ennio Chiggio",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Diffrazione ad arco.jpg"
+  },
+  {
+    "id": 40,
+    "title": "Interferenza lineare 14.3 (4+5 moduli)",
+    "artist": "Ennio Chiggio",
+    "year": "1969",
+    "group": "Gruppo N",
+    "technique": "Plexiglass serigrafato, scatola in legno, cm 81 × 81 × 11",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Interferenza lineare 14.3 (4+5 moduli).jpg"
+  },
+  {
+    "id": 41,
+    "title": "Diffrazione Stellata",
+    "artist": "Ennio Chiggio",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Vetro millerighe belga, cartoncino stampato, cornice in legno laminato\ncm 42x42x6",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Diffrazione Stellata.jpg"
+  },
+  {
+    "id": 42,
+    "title": "Diffrazione Mobile a Losanghe",
+    "artist": "Ennio Chiggio",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Vetro belga a tramatura tonda lenticolare, disegno su pellicola tipografica, cornice di legno laminato, cm 42x42x6",
+    "location": "",
+    "image": "/drive-opere/Chiggio_Diffrazione Mobile a Losanghe.jpg"
+  },
+  {
+    "id": 43,
+    "title": "Cinorifrazione cilindrica",
+    "artist": "Edoardo Landi",
+    "year": "1976",
+    "group": "Gruppo N",
+    "technique": "Acrilico e inserto in plexiglas su tela, cm. 99 x 99 x 2 (lato cm. 70 x 70)",
+    "location": "",
+    "image": "/drive-opere/Landi_cinorifrazione cilindrica.jpg"
+  },
+  {
+    "id": 44,
+    "title": "Struttura visuale + influenza cromatica",
+    "artist": "Edoardo Landi",
+    "year": "1973",
+    "group": "Gruppo N",
+    "technique": "Tecnica mista su carta, 18,8cm x 18,8cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Struttura visuale + influenza cromatica.jpg"
+  },
+  {
+    "id": 45,
+    "title": "Struttura visuale",
+    "artist": "Edoardo Landi",
+    "year": "1973",
+    "group": "Gruppo N",
+    "technique": "Acrilico ed elastico su tavola, 71.5 x 71.5 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Struttura visuale.jpg"
+  },
+  {
+    "id": 46,
+    "title": "Struttura visuale + influenza cromatica",
+    "artist": "Edoardo Landi",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "olio e tecnica mista su cartoncino cm.24x24",
+    "location": "",
+    "image": "/drive-opere/Landi_Struttura visuale + influenza cromatica 01.jpg"
+  },
+  {
+    "id": 47,
+    "title": "Cinorifrazione cilindrica",
+    "artist": "Edoardo Landi",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "legno e cilindri in perspex, 40 x 40 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Cinorifrazione cilindrica 01.jpg"
+  },
+  {
+    "id": 48,
+    "title": "Senza titolo",
+    "artist": "Edoardo Landi",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Collage di cartoncini colorati su carta, 14 x 14 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Senza titolo.jpg"
+  },
+  {
+    "id": 49,
+    "title": "Verso l'alto, Verso il basso",
+    "artist": "Edoardo Landi",
+    "year": "1961",
+    "group": "Gruppo N",
+    "technique": "Carta perforata su carta, 70 x 70 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Verso l'alto verso il basso.jpg"
+  },
+  {
+    "id": 50,
+    "title": "Senza titolo",
+    "artist": "Edoardo Landi, Alberto Biasi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "serigrafia e collage su cartone, 50 x 50 cm",
+    "location": "",
+    "image": "/drive-opere/Biasi_Landi_Senza titolo.jpg"
+  },
+  {
+    "id": 51,
+    "title": "Riflessione sferica verticale",
+    "artist": "Edoardo Landi",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Semisfere in acciaio cromato e cartoncini serigrafati su legno dipinto, cm 70x70x8,5",
+    "location": "",
+    "image": "/drive-opere/Landi_Riflessione sferica verticale.jpg"
+  },
+  {
+    "id": 52,
+    "title": "Cineriflessione sferica variabile",
+    "artist": "Edoardo Landi",
+    "year": "1967-69",
+    "group": "Gruppo N",
+    "technique": "Acciaio cromato e cartone stampato, 74 × 73 × 9 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Cineriflessione sferica variabile.jpg"
+  },
+  {
+    "id": 53,
+    "title": "Senza titolo",
+    "artist": "Edoardo Landi",
+    "year": "1972",
+    "group": "Gruppo N",
+    "technique": "Serigrafia, 50x50 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Senza titolo 02.jpg"
+  },
+  {
+    "id": 54,
+    "title": "S. O. 64.",
+    "artist": "Edoardo Landi",
+    "year": "1971",
+    "group": "Gruppo N",
+    "technique": "Serigrafia, 52.0 x 49.5 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_S. O. 64.jpg"
+  },
+  {
+    "id": 55,
+    "title": "Struttura visuale",
+    "artist": "Edoardo Landi",
+    "year": "1961-1962",
+    "group": "Gruppo N",
+    "technique": "100 × 100 × 2 cm",
+    "location": "",
+    "image": "/drive-opere/Landi_Struttura visuale.jpg"
+  },
+  {
+    "id": 56,
+    "title": "Senza titolo",
+    "artist": "Alberto Biasi e Edoardo Landi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "(cm 45x45)",
+    "location": "",
+    "image": "/drive-opere/Biasi e landi_untitled.jpg"
+  },
+  {
+    "id": 57,
+    "title": "Light prisms",
+    "artist": "Alberto Biasi",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Legno, acrilico, specchi, plexiglass, motore, cm 50 x 38 x 68",
+    "location": "",
+    "image": "/drive-opere/Biasi_light prisms.jpg"
+  },
+  {
+    "id": 58,
+    "title": "Dinamica o Gocce",
+    "artist": "Alberto Biasi",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Rilievo in pvc su tavola (cm 121x122x5)",
+    "location": "",
+    "image": "/drive-opere/Biasi_dinamica o gocce.jpg"
+  },
+  {
+    "id": 59,
+    "title": "Rilievo ottico dinamico",
+    "artist": "Alberto Biasi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "Tempera su cartone e lamiera forata, cm 57 x 57",
+    "location": "",
+    "image": "/drive-opere/Biasi_rilievo ottico dinamico.jpg"
+  },
+  {
+    "id": 60,
+    "title": "Politipo",
+    "artist": "Alberto Biasi",
+    "year": "1971",
+    "group": "Gruppo N",
+    "technique": "Rilievo in pvc su tavola dipinta, cm 166 x 117 x 5",
+    "location": "",
+    "image": "/drive-opere/Biasi_politipo.jpg"
+  },
+  {
+    "id": 61,
+    "title": "Politipo 72",
+    "artist": "Alberto Biasi",
+    "year": "1972",
+    "group": "Gruppo N",
+    "technique": "Rilievo in PVC su tavola",
+    "location": "",
+    "image": "/drive-opere/Biasi_Politipo 72.jpg"
+  },
+  {
+    "id": 62,
+    "title": "Trama",
+    "artist": "Alberto Biasi",
+    "year": "1959",
+    "group": "Gruppo N",
+    "technique": "Carte forate sovrapposte, cm 39,5 x 39,5 × 1.",
+    "location": "",
+    "image": "/drive-opere/Biasi_trama.jpg"
+  },
+  {
+    "id": 63,
+    "title": "Trama, oltre il velo di Trono Ludovisi...la nascita di Afrodite Trama",
+    "artist": "Alberto Biasi",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "Lamiere sovrapposte, cm 50 x 66 x 20.",
+    "location": "",
+    "image": "/drive-opere/Biasi_Trama oltre il velo di Trono Ludovisi...la nascita di afrodite trama.jpg"
+  },
+  {
+    "id": 64,
+    "title": "Trame",
+    "artist": "Alberto Biasi",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "Carta perforata sovrapposta (cm 35x55x2)",
+    "location": "",
+    "image": "/drive-opere/Biasi_trame.jpg"
+  },
+  {
+    "id": 65,
+    "title": "Dinamica visiva triangolare",
+    "artist": "Alberto Biasi",
+    "year": "1965-1978",
+    "group": "Gruppo N",
+    "technique": "Rilievo in pvc su tavola dipinta (cm 100x116x5)",
+    "location": "",
+    "image": "/drive-opere/Biasi_dinamica visiva triangolare.jpg"
+  },
+  {
+    "id": 66,
+    "title": "Immaginazione dinamica",
+    "artist": "Alberto Biasi",
+    "year": "1965-68",
+    "group": "Gruppo N",
+    "technique": "Rilievo in PVC (cm 10x11,5x0,4)",
+    "location": "",
+    "image": "/drive-opere/Biasi_immaginazione dinamica.jpg"
+  },
+  {
+    "id": 67,
+    "title": "Oggetto ottico-dinamico",
+    "artist": "Alberto Biasi",
+    "year": "1960",
+    "group": "Gruppo N",
+    "technique": "",
+    "location": "",
+    "image": "/drive-opere/Biasi_oggetto ottico dinamico.jpg"
+  },
+  {
+    "id": 68,
+    "title": "Dinamica visuale",
+    "artist": "Alberto Biasi",
+    "year": "1959",
+    "group": "Gruppo N",
+    "technique": "Rilievo in pvc su tavola dipinta (cm 48,6x48,6x3)",
+    "location": "",
+    "image": "/drive-opere/Biasi_Dinamica Visuale.jpg"
+  },
+  {
+    "id": 69,
+    "title": "Dinamica romboidale",
+    "artist": "Alberto Biasi",
+    "year": "1968",
+    "group": "Gruppo N",
+    "technique": "Rilievo in pvc su tavola dipinta (cm 88x52x4)",
+    "location": "",
+    "image": "/drive-opere/Biasi_dinamica romboidale.jpg"
+  },
+  {
+    "id": 70,
+    "title": "Struttura a quadrati rotati",
+    "artist": "Manfredo Massironi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "Scultura in legno sagomato (cm 52x52x5,5)",
+    "location": "",
+    "image": "/drive-opere/Massironi_struttura a quadrati rotati.jpg"
+  },
+  {
+    "id": 71,
+    "title": "Assemblaggio",
+    "artist": "Manfredo Massironi",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Alluminio, legno, plexiglas (cm 60x60)",
+    "location": "",
+    "image": "/drive-opere/Massironi_assemblaggio.jpg"
+  },
+  {
+    "id": 72,
+    "title": "Ipercubo Plexiglas",
+    "artist": "Manfredo Massironi",
+    "year": "1963",
+    "group": "Gruppo N",
+    "technique": "Plexiglas (cm 40,9x37,5x37,5)",
+    "location": "",
+    "image": "/drive-opere/massironi_ipercubo plexiglas.jpg"
+  },
+  {
+    "id": 73,
+    "title": "C + Q2 - M",
+    "artist": "Manfredo Massironi",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Multiplo polimaterico (cm 36x36)",
+    "location": "",
+    "image": "/drive-opere/massironi_c+q2-m.jpg"
+  },
+  {
+    "id": 74,
+    "title": "C + Q2 - M",
+    "artist": "Manfredo Massironi",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Multiplo polimaterico (cm 36x36)",
+    "location": "",
+    "image": "/drive-opere/massironi_c+q2-m_2.jpg"
+  },
+  {
+    "id": 75,
+    "title": "C + Q2 - M",
+    "artist": "Manfredo Massironi",
+    "year": "1965",
+    "group": "Gruppo N",
+    "technique": "Multiplo polimaterico (cm 36x36)",
+    "location": "",
+    "image": "/drive-opere/massironi_c+q2-m_3.jpg"
+  },
+  {
+    "id": 76,
+    "title": "Fotoriflessione variabile",
+    "artist": "Manfredo Massironi",
+    "year": "1962",
+    "group": "Gruppo N",
+    "technique": "Legno, specchio, lampadine (cm 51,5x50x30)",
+    "location": "",
+    "image": "/drive-opere/massironi_fotoriflessione variabile.jpg"
+  },
+  {
+    "id": 77,
+    "title": "Fotoriflessione variabile",
+    "artist": "Manfredo Massironi",
+    "year": "1962",
+    "group": "Gruppo N",
+    "technique": "Elettromotore, specchi e lampade  (cm 51x48x28)",
+    "location": "",
+    "image": "/drive-opere/massironi_fotoriflessione variabile_2.jpg"
+  },
+  {
+    "id": 78,
+    "title": "Linea",
+    "artist": "Toni Costa",
+    "year": "1969",
+    "group": "Gruppo N",
+    "technique": "Pvc,  cm 74 x 35",
+    "location": "",
+    "image": "/drive-opere/Costa_Linea.jpg"
+  },
+  {
+    "id": 79,
+    "title": "Dinamica visuale",
+    "artist": "Toni Costa",
+    "year": "1969",
+    "group": "Gruppo N",
+    "technique": "Tecnica mista, PVC e pannello, cm 100x100",
+    "location": "",
+    "image": "/drive-opere/Costa_Dinamica visuale.jpg"
+  },
+  {
+    "id": 80,
+    "title": "Dinamica Visuale",
+    "artist": "Toni Costa",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Pvc, cm 80x80",
+    "location": "",
+    "image": "/drive-opere/Costa_Dinamica visuale 2.jpg"
+  },
+  {
+    "id": 81,
+    "title": "Alternazione Visuale",
+    "artist": "Toni Costa",
+    "year": "1967",
+    "group": "Gruppo N",
+    "technique": "Rilievo su tavola con tela dipinta, cm 85 x 85",
+    "location": "",
+    "image": "/drive-opere/Costa_Alternazione Visuale.jpg"
+  },
+  {
+    "id": 82,
+    "title": "Struttura 862",
+    "artist": "Enzo Mari",
+    "year": "1967",
+    "group": "In nessun gruppo",
+    "technique": "Alluminio anodizzato naturale e nero (cm 61x61x52,5)",
+    "location": "",
+    "image": "/drive-opere/Mari_Struttura 862.jpg"
+  },
+  {
+    "id": 83,
+    "title": "Struttura 1918",
+    "artist": "Enzo Mari",
+    "year": "1968",
+    "group": "In nessun gruppo",
+    "technique": "Alluminio anodittato naturale e nero (cm 91x 91x 11,5)",
+    "location": "",
+    "image": "/drive-opere/Mari_Struttura 1918.jpg"
+  },
+  {
+    "id": 84,
+    "title": "Ambiente Torviscosa",
+    "artist": "Enzo Mari",
+    "year": "1963",
+    "group": "In nessun gruppo",
+    "technique": "Alluminio nero e alluminio anodizzato naturale (cm 480x 320x 160)",
+    "location": "",
+    "image": "/drive-opere/Mari_Ambiente Torviscosa.jpg"
+  },
+  {
+    "id": 85,
+    "title": "Sruttura 726",
+    "artist": "Enzo Mari",
+    "year": "1663",
+    "group": "In nessun gruppo",
+    "technique": "Alluminio anodizzato naturale e nero (cm 64x64x12)",
+    "location": "",
+    "image": "/drive-opere/Mari_Sruttura 726.jpg"
+  },
+  {
+    "id": 86,
+    "title": "Struttura 444",
+    "artist": "Enzo Mari",
+    "year": "1958",
+    "group": "In nessun gruppo",
+    "technique": "",
+    "location": "",
+    "image": "/drive-opere/Mari_Struttura 444.jpg"
+  },
+  {
+    "id": 87,
+    "title": "Struttura 527",
+    "artist": "Enzo Mari",
+    "year": "1958",
+    "group": "In nessun gruppo",
+    "technique": "",
+    "location": "",
+    "image": "/drive-opere/Mari_Struttura 527.jpg"
+  },
+  {
+    "id": 88,
+    "title": "Visione dinamica",
+    "artist": "Gruppo N",
+    "year": "1962",
+    "group": "Gruppo N",
+    "technique": "cm 100 x 100 x 4",
+    "location": "",
+    "image": "/drive-opere/N_Visione dinamica.jpg"
+  },
+  {
+    "id": 89,
+    "title": "Interferenza geometrica",
+    "artist": "Gruppo N",
+    "year": "1962",
+    "group": "Gruppo N",
+    "technique": "Lastre di vetro scorrevoli disegnate",
+    "location": "",
+    "image": "/drive-opere/N_Interferenza geometrica.jpg"
   }
 ]
