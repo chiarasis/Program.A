@@ -1,5 +1,7 @@
 // Pixel Editor - Image/Video Pixelation Generator
 
+let seedValue = 12345;
+let seedText = '';
 let params = {
   posterW: 500,
   posterH: 750,
@@ -175,7 +177,23 @@ function setupControls() {
   
   const pngBtn = q('downloadPNG');
   if (pngBtn) pngBtn.addEventListener('click', ()=>{
-    if (sourceMedia) save('pixel.png');
+    if (!sourceMedia) return;
+    const filename = 'pixel.png';
+    const dataURL = canvas.toDataURL('image/png');
+    
+    if (window.PosterStorage) {
+      window.PosterStorage.savePoster(dataURL, {
+        editor: 'pixel',
+          seed: seedText || seedValue.toString(),
+        filename: filename,
+        width: params.posterW,
+        height: params.posterH
+      }).then(() => {
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel');
+      }).catch(err => console.error('Failed to save poster:', err));
+    }
+    
+    save(filename);
   });
   
   const gifBtn = q('downloadGIF');
@@ -187,6 +205,26 @@ function setupControls() {
       startGif();
     }
   });
+
+  // Seed controls
+  const seedEl = q('seed');
+  if (seedEl) {
+    seedEl.addEventListener('change', (e) => {
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
+    });
+  }
+}
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
 function handleFileUpload(event) {

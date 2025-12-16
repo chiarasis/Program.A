@@ -1,4 +1,5 @@
 
+let seedText = '';
 let seedValue = 12345;
 let rng;
 
@@ -24,8 +25,9 @@ function setup() {
   
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('seed')) {
-    seedValue = parseInt(urlParams.get('seed'));
-    document.getElementById('seed').value = seedValue;
+    seedText = urlParams.get('seed');
+    seedValue = stringToSeed(seedText);
+    document.getElementById('seed').value = seedText;
   }
   
   setupControls();
@@ -217,7 +219,8 @@ function setupControls() {
   const seedEl = document.getElementById('seed');
   if (seedEl) {
     seedEl.addEventListener('change', (e) => {
-      seedValue = parseInt(e.target.value);
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
       updateURL();
     });
   }
@@ -226,7 +229,8 @@ function setupControls() {
   if (regenEl) {
     regenEl.addEventListener('click', () => {
       seedValue = Math.floor(Math.random() * 999999);
-      document.getElementById('seed').value = seedValue;
+      seedText = seedValue.toString();
+      document.getElementById('seed').value = seedText;
       updateURL();
     });
   }
@@ -239,17 +243,50 @@ function setupControls() {
   }
 }
 
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
 function updateURL() {
   const url = new URL(window.location);
-  url.searchParams.set('seed', seedValue);
+  url.searchParams.set('seed', seedText || seedValue);
   window.history.replaceState({}, '', url);
 }
 
 function exportPNG() {
   updateExportStatus('Esportazione PNG in corso...');
-  save(canvas, `light-effects-${seedValue}.png`);
-  updateExportStatus('PNG scaricato!');
-  setTimeout(() => updateExportStatus(''), 2000);
+  const filename = `light-effects-${seedValue}.png`;
+  const dataURL = canvas.toDataURL('image/png');
+  
+  if (window.PosterStorage) {
+    window.PosterStorage.savePoster(dataURL, {
+      editor: 'luce',
+      seed: seedText || seedValue.toString(),
+      filename: filename,
+      width: 1000,
+      height: 1500
+    }).then(() => {
+      if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
+      updateExportStatus('PNG scaricato!');
+      setTimeout(() => updateExportStatus(''), 2000);
+    }).catch(err => {
+      console.error('Failed to save poster:', err);
+      updateExportStatus('PNG scaricato!');
+      setTimeout(() => updateExportStatus(''), 2000);
+    });
+  } else {
+    updateExportStatus('PNG scaricato!');
+    setTimeout(() => updateExportStatus(''), 2000);
+  }
+  
+  save(canvas, filename);
 }
 
 function updateExportStatus(message) {

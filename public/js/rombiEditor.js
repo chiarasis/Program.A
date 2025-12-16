@@ -1,6 +1,8 @@
 // Rombi editor - p5 sketch
 // Preview canvas and controls. Export PNG (1000x1500) and short GIF if gif.js present.
 
+let seedValue = 12345;
+let seedText = '';
 let rotation = 0;
 let params = {
   rotationSpeed: 0.0,
@@ -112,6 +114,35 @@ function setupControls() {
 
   const gifBtn = document.getElementById('downloadGIF');
   if (gifBtn) gifBtn.addEventListener('click', exportGIF);
+
+  // Seed controls
+  const seedEl = document.getElementById('seed');
+  if (seedEl) {
+    seedEl.addEventListener('change', (e) => {
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
+    });
+  }
+
+  const regenEl = document.getElementById('regenerate');
+  if (regenEl) {
+    regenEl.addEventListener('click', () => {
+      seedValue = Math.floor(Math.random() * 999999);
+      seedText = seedValue.toString();
+      if (seedEl) seedEl.value = seedText;
+    });
+  }
+}
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
 function exportPNG() {
@@ -157,8 +188,31 @@ function exportPNG() {
   pg.blendMode(pg.BLEND);
 
   pg.pop();
+  
+  // Get canvas data URL for storage
+  const dataURL = pg.canvas.toDataURL('image/png');
+  const filename = `rombi-poster-${Date.now()}.png`;
+  
+  // Save to IndexedDB
+  if (window.PosterStorage) {
+    window.PosterStorage.savePoster(dataURL, {
+      editor: 'rombi',
+      seed: seedText || seedValue.toString(),
+      filename: filename,
+      width: W,
+      height: H
+    }).then(() => {
+      // Show success notification with gallery link
+      if (window.showDownloadSuccess) {
+        window.showDownloadSuccess('Rombi');
+      }
+    }).catch(err => {
+      console.error('Failed to save poster:', err);
+    });
+  }
+  
   // save the graphics
-  save(pg, `rombi-poster-${Date.now()}.png`);
+  save(pg, filename);
 }
 
 function exportGIF() {

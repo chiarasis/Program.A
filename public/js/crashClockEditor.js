@@ -1,6 +1,8 @@
 // CrashClock-inspired kinetic editor
 // Rotating bands and dynamic type-like elements with user controls
 
+let seedValue = 12345;
+let seedText = '';
 let params = {
   posterW: 500,
   posterH: 750,
@@ -30,6 +32,16 @@ function setup() {
   const c = createCanvas(params.posterW, params.posterH);
   c.parent('canvasContainer');
   colorMode(HSB, 360, 100, 100, 100);
+
+  // Load seed from URL if present
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('seed')) {
+    seedText = urlParams.get('seed');
+    seedValue = stringToSeed(seedText);
+    const seedEl = document.getElementById('seed');
+    if (seedEl) seedEl.value = seedText;
+  }
+
   initParticles();
 }
 
@@ -99,6 +111,8 @@ function draw() {
 
 function initParticles(){
   particles = [];
+  randomSeed(seedValue);
+  noiseSeed(seedValue);
   const halfW = width/2, halfH = height/2;
   for (let i = 0; i < params.particleCount; i++) {
     const x = random(-halfW*0.85, halfW*0.85);
@@ -147,10 +161,58 @@ function setupControls() {
   if (playBtn) playBtn.addEventListener('click', ()=>{isAnimating=!isAnimating; playBtn.textContent = isAnimating? 'Pausa':'Play'; if(isAnimating) loop(); else noLoop();});
   
   const pngBtn = q('downloadPNG');
-  if (pngBtn) pngBtn.addEventListener('click', ()=>save('crashclock.png'));
+  if (pngBtn) pngBtn.addEventListener('click', ()=>{
+    const filename = 'crashclock.png';
+    const dataURL = canvas.toDataURL('image/png');
+    
+    if (window.PosterStorage) {
+      window.PosterStorage.savePoster(dataURL, {
+        editor: 'crashclock',
+        seed: seedText || seedValue.toString(),
+        filename: filename,
+        width: 1000,
+        height: 1500
+      }).then(() => {
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Crash Clock');
+      }).catch(err => console.error('Failed to save poster:', err));
+    }
+    
+    save(filename);
+  });
   
   const gifBtn = q('downloadGIF');
   if (gifBtn) gifBtn.addEventListener('click', ()=>startGif());
+
+  // Seed controls
+  const seedEl = q('seed');
+  if (seedEl) {
+    seedEl.addEventListener('change', (e) => {
+      seedText = e.target.value;
+      seedValue = stringToSeed(seedText);
+      initParticles(); // Reinitialize with new seed
+    });
+  }
+
+  const regenEl = q('regenerate');
+  if (regenEl) {
+    regenEl.addEventListener('click', () => {
+      seedValue = Math.floor(Math.random() * 999999);
+      seedText = seedValue.toString();
+      if (seedEl) seedEl.value = seedText;
+      initParticles();
+    });
+  }
+}
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
 function mousePressed(){ dragging = true; }

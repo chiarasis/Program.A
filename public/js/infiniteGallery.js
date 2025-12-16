@@ -1,5 +1,8 @@
 // Infinite Gallery Navigation System
 // Pan with smooth momentum, double-click to overview
+// Loads user-generated posters from IndexedDB
+
+console.log('infiniteGallery.js script loaded');
 
 let canvas;
 let container;
@@ -32,11 +35,20 @@ const MIN_SCALE = 0.3;
 const MAX_SCALE = 2;
 const ZOOM_AMOUNT = 0.5;
 
-function init() {
+async function init() {
+  console.log('init() called');
   canvas = document.getElementById('canvas');
   container = document.getElementById('postersContainer');
   
-  if (!canvas || !container) return;
+  console.log('canvas:', canvas, 'container:', container);
+  
+  if (!canvas || !container) {
+    console.error('Canvas or container not found!');
+    return;
+  }
+
+  // Load posters from IndexedDB
+  await loadUserPosters();
 
   // Center view on start
   const centerX = window.innerWidth / 2;
@@ -45,12 +57,152 @@ function init() {
   translateY = centerY - 600;
   updateTransform();
 
+  console.log('About to setupEventListeners');
   setupEventListeners();
+  console.log('Event listeners setup complete');
   startMomentumLoop();
 }
 
+async function loadUserPosters() {
+  try {
+    // Initialize storage and get all posters
+    if (!window.PosterStorage) {
+      console.error('PosterStorage not available');
+      showEmptyState();
+      return;
+    }
+
+    await window.PosterStorage.initDB();
+    const posters = await window.PosterStorage.getAllPosters();
+    
+    console.log('Loaded posters from IndexedDB:', posters);
+    
+    if (!posters || posters.length === 0) {
+      console.log('No posters found, showing empty state');
+      showEmptyState();
+      updatePosterCount(0);
+      return;
+    }
+
+    // Hide empty state
+    const emptyState = document.getElementById('emptyGallery');
+    if (emptyState) emptyState.style.display = 'none';
+
+    // Randomize layout for posters across a large space
+    // Jittered grid layout: evenly spaced cells with random offsets
+    const count = posters.length;
+    const cols = Math.ceil(Math.sqrt(count));
+    const rows = Math.ceil(count / cols);
+
+    const cellW = 480; // base horizontal spacing
+    const cellH = 600; // base vertical spacing
+    const jitterX = 180; // random horizontal jitter
+    const jitterY = 180; // random vertical jitter
+
+    // Center the grid around (0,0)
+    const totalW = cols * cellW;
+    const totalH = rows * cellH;
+    const originX = -totalW / 2;
+    const originY = -totalH / 2;
+
+    posters.forEach((poster, index) => {
+      const c = index % cols;
+      const r = Math.floor(index / cols);
+      const baseX = originX + c * cellW;
+      const baseY = originY + r * cellH;
+
+      const randX = baseX + (Math.random() * 2 - 1) * jitterX;
+      const randY = baseY + (Math.random() * 2 - 1) * jitterY;
+
+      console.log(`Creating poster card ${index} at (${Math.round(randX)}, ${Math.round(randY)}):`, poster);
+      createPosterCard(poster, Math.round(randX), Math.round(randY));
+    });
+
+    updatePosterCount(posters.length);
+  } catch (error) {
+    console.error('Failed to load posters:', error);
+    showEmptyState();
+  }
+}
+
+function createPosterCard(poster, x, y) {
+  const card = document.createElement('div');
+  card.className = 'poster-card';
+  card.dataset.id = poster.id;
+  card.dataset.editor = poster.editor;
+  card.style.left = `${x}px`;
+  card.style.top = `${y}px`;
+
+  const editorName = poster.editor.charAt(0).toUpperCase() + poster.editor.slice(1);
+  const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
+
+  card.innerHTML = `
+    <div class="poster-preview">
+      <img 
+        src="${poster.dataURL}"
+        alt="${poster.filename}"
+        loading="lazy"
+        class="poster-image"
+      />
+    </div>
+    <div class="poster-info">
+      <h3>${editorName}</h3>
+      <p>${date}</p>
+        ${poster.seed ? `<p class="poster-seed">Seed: ${poster.seed}</p>` : ''}
+      <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
+    </div>
+  `;
+
+  // Add delete handler
+  const deleteBtn = card.querySelector('.delete-btn');
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deletePoster(poster.id);
+  });
+
+  container.appendChild(card);
+}
+
+async function deletePoster(posterId) {
+  if (!confirm('Eliminare questo poster?')) return;
+  
+  try {
+    await window.PosterStorage.deletePoster(posterId);
+    
+    // Remove from DOM
+    const card = container.querySelector(`[data-id="${posterId}"]`);
+    if (card) card.remove();
+    
+    // Update count
+    const remainingCards = container.querySelectorAll('.poster-card');
+    updatePosterCount(remainingCards.length);
+    
+    if (remainingCards.length === 0) {
+      showEmptyState();
+    }
+  } catch (error) {
+    console.error('Failed to delete poster:', error);
+    alert('Errore durante l\'eliminazione del poster');
+  }
+}
+
+function showEmptyState() {
+  const emptyState = document.getElementById('emptyGallery');
+  if (emptyState) emptyState.style.display = 'flex';
+}
+
+function updatePosterCount(count) {
+  const countEl = document.getElementById('posterCount');
+  if (countEl) {
+    countEl.textContent = `${count} generazioni`;
+  }
+}
+
 function setupEventListeners() {
+  console.log('setupEventListeners() called');
+  
   // Mouse drag (for mouse users)
+  console.log('Attaching mouse events to canvas:', canvas);
   canvas.addEventListener('mousedown', handleDragStart);
   document.addEventListener('mousemove', handleDragMove);
   document.addEventListener('mouseup', handleDragEnd);
@@ -228,6 +380,15 @@ function handleDragEnd() {
 
 function handleWheelPan(e) {
   e.preventDefault();
+
+  // Pinch-zoom on macOS trackpads triggers wheel events with ctrlKey=true
+  if (e.ctrlKey) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const zoomDelta = -e.deltaY * 0.005; // invert: pinch-out -> zoom in
+    zoomToPoint(mouseX, mouseY, zoomDelta);
+    return;
+  }
   
   const deltaX = e.deltaX;
   const deltaY = e.deltaY;

@@ -14,6 +14,15 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="control-section">
+          <h3>Parametri</h3>
+          <div class="control-group">
+            <label for="seed">Seed / Nome</label>
+            <input type="text" id="seed" value="12345" placeholder="Il tuo nome o numero">
+          </div>
+          <button id="regenerate" class="btn-secondary" style="margin-bottom: 16px;">Rigenera Seed</button>
+        </div>
+
+        <div class="control-section">
           <h3>Animazione</h3>
           <div class="control-group">
             <label for="rotationSpeed">Velocità Rotazione</label>
@@ -87,6 +96,8 @@ import HeaderFixed from '../components/HeaderFixed.astro';
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" is:inline></script>
+  <script src="/js/posterStorage.js" is:inline></script>
+  <script src="/js/downloadNotification.js" is:inline></script>
   <script src="/js/rombiEditor.js" is:inline></script>
 </Layout>
 
