@@ -54,7 +54,7 @@ const editors = [
 
       <Footer includeStyles={false} />
 
-      <script src="/src/scripts/floatingSquares.js"></script>
+      <script src="/js/floatingSquares.js" is:inline></script>
       <script>
         // Scroll animations
         const observerOptions = {
@@ -216,7 +216,7 @@ const editors = [
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 1;
+        z-index: 0;
       }
 
       @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-import createSketch from '/src/scripts/p5-sketch.mjs';
+import createSketch from '/js/p5-sketch.mjs';
 
 // Ensure script runs only in browser and that p5 library is loaded before creating sketch
 if (typeof window !== 'undefined') {
