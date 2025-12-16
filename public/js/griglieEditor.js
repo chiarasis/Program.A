@@ -99,6 +99,8 @@ function drawPattern() {
     
     push();
     rotate(layerAngle);
+    // Pass layer index for mixed mode pattern selection
+    window.currentLayerIndex = layer;
     drawLineGrid();
     pop();
   }
@@ -109,16 +111,21 @@ function drawPattern() {
 function drawLineGrid() {
   const maxDim = max(width, height);
   const spacing = params.lineSpacing * params.gridSize;
-  const gridPattern = floor(rng() * 3); // 0=horizontal, 1=vertical, 2=circular
   
-  if (gridPattern === 0 || gridPattern === 1) {
-    // Horizontal or vertical lines
+  // Mixed mode: first layer is circles, rest are lines
+  const layerIndex = window.currentLayerIndex || 0;
+  const drawCircles = (layerIndex === 0);
+  const drawLines = (layerIndex !== 0);
+  
+  if (drawLines) {
+    // Lines: horizontal or vertical
+    const linePattern = floor(rng() * 2); // 0=horizontal, 1=vertical
     const count = floor(maxDim / spacing) + 2;
     const offset = -maxDim / 2;
     
     for (let i = 0; i < count; i++) {
       const pos = offset + i * spacing;
-      if (gridPattern === 0) {
+      if (linePattern === 0) {
         // Horizontal lines
         line(-maxDim/2, pos, maxDim/2, pos);
       } else {
@@ -126,7 +133,9 @@ function drawLineGrid() {
         line(pos, -maxDim/2, pos, maxDim/2);
       }
     }
-  } else {
+  }
+  
+  if (drawCircles) {
     // Circular/concentric lines
     const maxRadius = maxDim * 0.8;
     const count = floor(maxRadius / spacing);
@@ -145,16 +154,21 @@ function drawLineGridToGraphics(pg, w, h) {
   const spacing = params.lineSpacing * params.gridSize * scale;
   
   const maxDim = max(w, h);
-  const gridPattern = floor(rng() * 3); // 0=horizontal, 1=vertical, 2=circular
   
-  if (gridPattern === 0 || gridPattern === 1) {
-    // Horizontal or vertical lines
+  // Mixed mode: first layer is circles, rest are lines
+  const layerIndex = window.currentLayerIndexGIF || 0;
+  const drawCircles = (layerIndex === 0);
+  const drawLines = (layerIndex !== 0);
+  
+  if (drawLines) {
+    // Lines: horizontal or vertical
+    const linePattern = floor(rng() * 2); // 0=horizontal, 1=vertical
     const count = floor(maxDim / spacing) + 2;
     const offset = -maxDim / 2;
     
     for (let i = 0; i < count; i++) {
       const pos = offset + i * spacing;
-      if (gridPattern === 0) {
+      if (linePattern === 0) {
         // Horizontal lines
         pg.line(-maxDim/2, pos, maxDim/2, pos);
       } else {
@@ -162,7 +176,9 @@ function drawLineGridToGraphics(pg, w, h) {
         pg.line(pos, -maxDim/2, pos, maxDim/2);
       }
     }
-  } else {
+  }
+  
+  if (drawCircles) {
     // Circular/concentric lines
     const maxRadius = maxDim * 0.8;
     const count = floor(maxRadius / spacing);
@@ -200,6 +216,13 @@ function setupControls() {
       });
     }
   });
+  // Pattern type select
+  const patternTypeEl = document.getElementById('patternType');
+  if (patternTypeEl) {
+    patternTypeEl.addEventListener('change', (e) => {
+      params.patternType = e.target.value;
+    });
+  }
   
   // Rotation direction
   const directionEl = document.getElementById('rotationDirection');
@@ -393,6 +416,8 @@ function exportPosterWithFrame() {
     
     posterCanvas.push();
     posterCanvas.rotate(layerAngle);
+    // Pass layer index for mixed mode pattern selection
+    window.currentLayerIndexGIF = layer;
     drawLineGridToGraphics(posterCanvas, exportWidth, exportHeight);
     posterCanvas.pop();
   }
