@@ -13,48 +13,43 @@ const opere = await import('../data/opere.json').then(m => m.default);
   <HeaderFixed currentPage="archivio" />
 
   <main class="archivio-page">
+    <!-- Filter section -->
+    <div class="filter-section">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-group="all">tutti</button>
+        <button class="filter-btn" data-group="Gruppo T">gruppo T</button>
+        <button class="filter-btn" data-group="Gruppo N">gruppo N</button>
+      </div>
+    </div>
+
+    <div class="filter-spacer"></div>
+
     <!-- Left side: Rolodex 3D scroll -->
     <div class="rolodex-container">
       <div class="rolodex-viewport">
         <div id="rolodex" class="rolodex">
-          {opere.map((opera, index) => {
-            const slugify = (s) => s
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '') // remove diacritics
-              .toLowerCase()
-              .replace(/&/g, 'and')
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/-{2,}/g, '-')
-              .replace(/^-+|-+$/g, '');
-            const baseName = `${slugify(opera.artist)}-${slugify(opera.title)}`;
-            const candidates = [
-              `/drive-opere/${baseName}.jpg`,
-              `/drive-opere/${baseName}.jpeg`,
-              `/drive-opere/${baseName}.png`
-            ];
-            const firstSrc = candidates[0];
-            return (
-              <div class="card" data-index={index} data-id={opera.id}>
-                <div class="card-inner">
-                  <img
-                    src={firstSrc}
-                    alt={`${opera.artist} — ${opera.title}`}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      const currentIdx = candidates.findIndex(u => img.src.endsWith(u));
-                      const nextIdx = currentIdx >= 0 ? currentIdx + 1 : 1;
-                      if (nextIdx < candidates.length) {
-                        img.src = candidates[nextIdx];
-                      } else {
-                        // As last resort, hide broken image (keeps layout tidy)
-                        img.style.display = 'none';
-                      }
-                    }}
-                  />
-                </div>
+          <!-- Group description card (hidden by default, shown when filtering) -->
+          <div class="card group-intro-card" data-index="-1" data-group="Gruppo T" style="display: none;">
+            <div class="card-inner">
+              <img src="/drive-opere/gruppo-t.webp" alt="Gruppo T" />
+            </div>
+          </div>
+          <div class="card group-intro-card" data-index="-1" data-group="Gruppo N" style="display: none;">
+            <div class="card-inner">
+              <img src="/drive-opere/gruppo-n.png" alt="Gruppo N" />
+            </div>
+          </div>
+
+          {opere.map((opera, index) => (
+            <div class="card" data-index={index} data-id={opera.id} data-group={opera.group}>
+              <div class="card-inner">
+                <img
+                  src={opera.image}
+                  alt={`${opera.artist} _ ${opera.title}`}
+                />
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -62,8 +57,37 @@ const opere = await import('../data/opere.json').then(m => m.default);
     <!-- Right side: Details -->
     <div class="details-container">
       <div class="details-content" id="detailsContent">
+        <!-- Group description details (hidden by default) -->
+        <div class="opera-details group-intro-detail" data-index="-1" data-group="Gruppo T" style="display: none;">
+          <div class="opera-header">
+            <span class="opera-group">Gruppo T</span>
+            <span class="opera-year">1959 – 1968</span>
+          </div>
+          <div class="group-intro-text">
+            <blockquote>"Consideriamo quindi la realtà come continuo divenire di fenomeni che noi percepiamo nella variazione."</blockquote>
+            <p>Il gruppo T, nasce nel 1961, attorno alle personalità di Giovanni Anceschi, Davide Boriani, Gianni Colombo, Gabriele Devecchi, e Grazia Varisco. Tutti i membri del Gruppo milanese, sono accomunati da un fortissimo senso di appartenenza al gruppo, e dalla medesima visione di un'arte specchio dei rapidi cambiamenti sociali.</p>
+            <p>L'arte sconfina nel campo dalla scienza, e non può più prescindere dalla ricerca del dinamismo intrinseco alla realtà.</p>
+            <p>Affianco al concetto di cinetismo emerge quello di continua trasformazione, tanto dei materiali quanto delle variabili spaziali.</p>
+            <p>In questo contesto si inseriscono i Percorsi fluidi di Anceschi, stranianti e resi interattivi dalla rotazione e dallo spostamento manuale, o le Superfici magnetiche di Boriani, che, nella loro precisione scientifica, stimolano la sensorialità dello spettatore; allo stesso modo i pulsanti Schemi Luminosi Varabili di Grazia Varisco e gli URMNT, le lamiere forate di DeVecchi, che confermano uno studio avanzato sulle potenzialità dei materiali e si dimostrano esempi validissimi di soluzioni autonome, individuali, all'interno di una poetica comune.</p>
+          </div>
+        </div>
+
+        <div class="opera-details group-intro-detail" data-index="-1" data-group="Gruppo N" style="display: none;">
+          <div class="opera-header">
+            <span class="opera-group">Gruppo N</span>
+            <span class="opera-year">1959 – 1976</span>
+          </div>
+          <div class="group-intro-text">
+            <blockquote>"La dicitura enne distingue un gruppo di "disegnatori sperimentali" uniti dall'esigenza di ricercare collettivamente".</blockquote>
+            <p>Il nucleo originario del gruppo N si forma a Parma nel 1959; nel 1960 raggiunge il suo assetto definitivo con gli artisti Alberto Biasi, Ennio Chiggio, Toni Costa, Edoardo Landi e Manfredo Massironi.</p>
+            <p>Il concetto di lavoro di gruppo diviene radicale e, di conseguenza, il rifiuto del principio di autorialità: l'intento è quello di intraprendere la via della globalità del fare artistico, mettendo in discussione l'immagine dell'artista come individualista elitario. L'intera opera del gruppo è intrisa di una forte componente etica e politica.</p>
+            <p>Il Gruppo N diventa una sorta di laboratorio europeo della forma virtuale, che esplora tanto la bidimensionalità, nelle variazioni ottiche della superficie, quanto la spazialità e l'oggetto tridimensionale. Il fine ultimo si ritrova nel coinvolgimento dello spettatore, sfruttando e sfidando la psicologia della percezione.</p>
+            <p>Questa è la poetica dei Rilievi ottico-dinamici e dei Light Prism di Alberto Biasi, delle Trame e delle Interferenze Lineari di Ennio Chiggio, delle Dinamiche Visuali di Toni Costa, delle Riflessioni sferiche di Edoardo Landi, delle Fotoriflessioni di Manfredo Massironi.</p>
+          </div>
+        </div>
+
         {opere.map((opera, index) => (
-          <div class="opera-details" data-index={index}>
+          <div class="opera-details" data-index={index} data-id={opera.id} data-group={opera.group}>
             <div class="opera-header">
               <span class="opera-group">{opera.group}</span>
               <span class="opera-year">{opera.year}</span>
@@ -105,16 +129,141 @@ const opere = await import('../data/opere.json').then(m => m.default);
     let targetRotation = 0;
     let currentRotation = 0;
     let cardCount = 0;
+    let anglePerCard = 0;
+    let activeGroup = 'all';
+    let filteredCards: HTMLElement[] = [];
+    let filteredDetails: HTMLElement[] = [];
+    let groupIntroCards: HTMLElement[] = [];
+    let groupIntroDetails: HTMLElement[] = [];
+
+    // Group descriptions
+    const groupDescriptions = {
+      'Gruppo T': `
+        <div class="description-content">
+          <blockquote>“Consideriamo quindi la realtà come continuo divenire di fenomeni che noi percepiamo nella variazione.”</blockquote>
+          <p>Il gruppo T, nasce nel 1961, attorno alle personalità di Giovanni Anceschi, Davide Boriani, Gianni Colombo, Gabriele Devecchi, e Grazia Varisco. Tutti i membri del Gruppo milanese, sono accomunati da un fortissimo senso di appartenenza al gruppo, e dalla medesima visione di un’arte specchio dei rapidi cambiamenti sociali.</p>
+          <p>L’arte sconfina nel campo dalla scienza, e non può più prescindere dalla ricerca del dinamismo intrinseco alla realtà.</p>
+          <p>Affianco al concetto di cinetismo emerge quello di continua trasformazione, tanto dei materiali quanto delle variabili spaziali.</p>
+          <p>In questo contesto si inseriscono i Percorsi fluidi di Anceschi, stranianti e resi interattivi dalla rotazione e dallo spostamento manuale, o le Superfici magnetiche di Boriani, che, nella loro precisione scientifica, stimolano la sensorialità dello spettatore; allo stesso modo i pulsanti Schemi Luminosi Varabili di Grazia Varisco e gli URMNT, le lamiere forate di DeVecchi, che confermano uno studio avanzato sulle potenzialità dei materiali e si dimostrano esempi validissimi di soluzioni autonome, individuali, all’interno di una poetica comune.</p>
+        </div>
+      `,
+      'Gruppo N': `
+        <div class="description-content">
+          <blockquote>“La dicitura enne distingue un gruppo di “disegnatori sperimentali” uniti dall'esigenza di ricercare collettivamente”.</blockquote>
+          <p>Il nucleo originario del gruppo N si forma a Parma nel 1959; nel 1960 raggiunge il suo assetto definitivo con gli artisti Alberto Biasi, Ennio Chiggio, Toni Costa, Edoardo Landi e Manfredo Massironi.</p>
+          <p>Il concetto di lavoro di gruppo diviene radicale e, di conseguenza, il rifiuto del principio di autorialità: l’intento è quello di intraprendere la via della globalità del fare artistico, mettendo in discussione l’immagine dell’artista come individualista elitario. L’intera opera del gruppo è intrisa di una forte componente etica e politica.</p>
+          <p>Il Gruppo N diventa una sorta di laboratorio europeo della forma virtuale, che esplora tanto la bidimensionalità, nelle variazioni ottiche della superficie, quanto la spazialità e l’oggetto tridimensionale. Il fine ultimo si ritrova nel coinvolgimento dello spettatore, sfruttando e sfidando la psicologia della percezione.</p>
+          <p>Questa è la poetica dei Rilievi ottico-dinamici e dei Light Prism di Alberto Biasi, delle Trame e delle Interferenze Lineari di Ennio Chiggio, delle Dinamiche Visuali di Toni Costa, delle Riflessioni sferiche di Edoardo Landi, delle Fotoriflessioni di Manfredo Massironi.</p>
+        </div>
+      `
+    };
+
+    function updateStackHeights() {
+      const filterSection = document.querySelector('.filter-section') as HTMLElement | null;
+      const spacer = document.querySelector('.filter-spacer') as HTMLElement | null;
+
+      const filterH = filterSection?.offsetHeight ?? 0;
+
+      document.documentElement.style.setProperty('--filter-height', `${filterH}px`);
+      if (spacer) {
+        spacer.style.height = `${filterH}px`;
+      }
+    }
+
+    function filterCards(group: string) {
+      activeGroup = group;
+      
+      // Update button states
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        if ((btn as HTMLElement).dataset.group === group) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Hide all group intro cards first
+      groupIntroCards.forEach(card => {
+        card.style.display = 'none';
+      });
+      groupIntroDetails.forEach(detail => {
+        detail.style.display = 'none';
+      });
+
+      // Filter cards and details
+      if (group === 'all') {
+        filteredCards = cards;
+        filteredDetails = detailsElements;
+      } else {
+        // Find and show the matching group intro card/detail
+        const introCard = groupIntroCards.find(c => c.dataset.group === group);
+        const introDetail = groupIntroDetails.find(d => (d as HTMLElement).dataset.group === group);
+        
+        if (introCard) introCard.style.display = 'block';
+        if (introDetail) introDetail.style.display = 'block';
+
+        // Build filtered lists with intro first
+        const artworkCards = cards.filter(card => card.dataset.group === group);
+        const artworkDetails = detailsElements.filter(detail => (detail as HTMLElement).dataset.group === group);
+        
+        filteredCards = introCard ? [introCard, ...artworkCards] : artworkCards;
+        filteredDetails = introDetail ? [introDetail as HTMLElement, ...artworkDetails] : artworkDetails;
+        
+        // Re-index filtered cards for correct positioning
+        filteredCards.forEach((card, idx) => {
+          card.dataset.filteredIndex = idx.toString();
+        });
+      }
+
+      // Hide/show artwork cards
+      cards.forEach(card => {
+        if (group === 'all' || card.dataset.group === group) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update card count and re-position
+      cardCount = filteredCards.length;
+      anglePerCard = 360 / cardCount;
+
+      // Re-position visible cards in 3D in filtered order
+      filteredCards.forEach((card, index) => {
+        const angle = anglePerCard * index;
+        card.style.transform = `rotateX(${angle}deg) translateZ(600px)`;
+        card.dataset.filteredIndex = index.toString();
+      });
+
+      // Reset rotation
+      currentRotation = 0;
+      targetRotation = 0;
+      currentIndex = 0;
+      window.scrollTo(0, 0);
+      
+      updateActiveDetails(0);
+      updateCardsVisibility();
+    }
 
     function init() {
       rolodex = document.getElementById('rolodex');
       if (!rolodex) return;
 
-      cards = Array.from(document.querySelectorAll('.card')) as HTMLElement[];
-      detailsElements = Array.from(document.querySelectorAll('.opera-details')) as HTMLElement[];
+      // Separate group intro cards from artwork cards
+      const allCards = Array.from(document.querySelectorAll('.card')) as HTMLElement[];
+      groupIntroCards = allCards.filter(card => card.classList.contains('group-intro-card'));
+      cards = allCards.filter(card => !card.classList.contains('group-intro-card'));
+      
+      const allDetails = Array.from(document.querySelectorAll('.opera-details')) as HTMLElement[];
+      groupIntroDetails = allDetails.filter(detail => detail.classList.contains('group-intro-detail'));
+      detailsElements = allDetails.filter(detail => !detail.classList.contains('group-intro-detail'));
+      
+      filteredCards = cards;
+      filteredDetails = detailsElements;
       
       cardCount = cards.length;
-      const anglePerCard = 360 / cardCount;
+      anglePerCard = 360 / cardCount;
 
       // Position cards in 3D space
       cards.forEach((card, index) => {
@@ -126,14 +275,26 @@ const opere = await import('../data/opere.json').then(m => m.default);
 
       // Show first card details
       updateActiveDetails(0);
-      updateCardsVisibility(anglePerCard);
+      updateCardsVisibility();
+
+      updateStackHeights();
+      window.addEventListener('resize', updateStackHeights);
+
+      // Setup filter buttons
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const group = (btn as HTMLElement).dataset.group || 'all';
+          filterCards(group);
+        });
+      });
 
       // Handle scroll
       let ticking = false;
       window.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            handleScroll(anglePerCard);
+            handleScroll();
             ticking = false;
           });
           ticking = true;
@@ -141,10 +302,27 @@ const opere = await import('../data/opere.json').then(m => m.default);
       });
 
       // Smooth animation loop
-      animate(anglePerCard);
+      animate();
     }
 
-    function handleScroll(anglePerCard: number) {
+    function attachImageFallbacks() {
+      const imgs = document.querySelectorAll<HTMLImageElement>('.card img[data-candidates]');
+      imgs.forEach((img) => {
+        const listRaw = img.dataset.candidates || '';
+        const list = listRaw.split('|').filter(Boolean);
+        let idx = 0;
+        img.onerror = () => {
+          idx += 1;
+          if (idx < list.length) {
+            img.src = list[idx];
+          } else {
+            img.style.display = 'none';
+          }
+        };
+      });
+    }
+
+    function handleScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const maxScroll = document.body.scrollHeight - window.innerHeight;
       const scrollProgress = Math.min(scrollTop / maxScroll, 1);
@@ -159,7 +337,7 @@ const opere = await import('../data/opere.json').then(m => m.default);
       }
     }
 
-    function animate(anglePerCard: number) {
+    function animate() {
       const diff = targetRotation - currentRotation;
       currentRotation += diff * 0.1;
 
@@ -167,12 +345,12 @@ const opere = await import('../data/opere.json').then(m => m.default);
         rolodex.style.transform = `rotateX(${-currentRotation}deg)`;
       }
 
-      updateCardsVisibility(anglePerCard);
-      requestAnimationFrame(() => animate(anglePerCard));
+      updateCardsVisibility();
+      requestAnimationFrame(() => animate());
     }
 
-    function updateCardsVisibility(anglePerCard: number) {
-      cards.forEach((card, index) => {
+    function updateCardsVisibility() {
+      filteredCards.forEach((card, index) => {
         const cardAngle = anglePerCard * index;
         const currentCardAngle = ((cardAngle - currentRotation) % 360 + 360) % 360;
         
@@ -197,14 +375,49 @@ const opere = await import('../data/opere.json').then(m => m.default);
       });
     }
 
-    function updateActiveDetails(index: number) {
-      detailsElements.forEach((el, i) => {
-        if (i === index) {
-          el.classList.add('active');
-        } else {
-          el.classList.remove('active');
-        }
+    function updateActiveDetails(filteredIndex: number) {
+      const activeCard = filteredCards[filteredIndex];
+      if (!activeCard) return;
+      
+      const cardId = activeCard.dataset.id;
+      const cardImg = activeCard.querySelector('img');
+      const imgAlt = cardImg?.alt || 'N/A';
+      
+      console.log('🔍 DEBUG updateActiveDetails:');
+      console.log('  filteredIndex:', filteredIndex);
+      console.log('  cardId:', cardId);
+      console.log('  img alt:', imgAlt);
+      
+      // Hide all artwork details
+      detailsElements.forEach((el) => {
+        el.classList.remove('active');
       });
+      
+      // Hide all group intro details
+      groupIntroDetails.forEach((el) => {
+        el.classList.remove('active');
+      });
+      
+      // Show the matching detail by ID
+      if (cardId) {
+        const matchingDetail = detailsElements.find(el => el.dataset.id === cardId);
+        console.log('  matchingDetail found:', !!matchingDetail);
+        if (matchingDetail) {
+          const title = matchingDetail.querySelector('.opera-title')?.textContent;
+          console.log('  ✅ Showing detail:', title);
+          matchingDetail.classList.add('active');
+          return;
+        }
+      }
+      
+      // Fallback: show by index if no ID match
+      console.log('  ⚠️ Using fallback by filteredIndex');
+      const activeDetail = filteredDetails[filteredIndex];
+      if (activeDetail) {
+        const title = activeDetail.querySelector('.opera-title')?.textContent;
+        console.log('  📌 Fallback detail:', title);
+        activeDetail.classList.add('active');
+      }
     }
 
     // Initialize
