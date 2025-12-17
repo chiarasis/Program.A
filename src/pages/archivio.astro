@@ -3,7 +3,22 @@ import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
 
 const opereRaw = await import('../data/opere.json').then(m => m.default);
-const opere = [...opereRaw].sort((a, b) => a.artist.localeCompare(b.artist, 'it', { sensitivity: 'base' }));
+
+// Extract the earliest year from strings like "1959", "1959-1962", "1970–2013"
+const parseYearStart = (y) => {
+  if (!y) return Number.POSITIVE_INFINITY;
+  const matches = String(y).match(/\d{4}/g);
+  if (!matches) return Number.POSITIVE_INFINITY;
+  return Math.min(...matches.map(Number));
+};
+
+// Chronological order: oldest first; tie-break by artist name
+const opere = [...opereRaw].sort((a, b) => {
+  const ya = parseYearStart(a.year);
+  const yb = parseYearStart(b.year);
+  if (ya !== yb) return ya - yb;
+  return (a.artist || '').localeCompare(b.artist || '', 'it', { sensitivity: 'base' });
+});
 
 const pickEditor = (opera) => {
   const text = `${opera.title || ''} ${opera.technique || ''}`.toLowerCase();
@@ -135,11 +150,7 @@ const pickEditor = (opera) => {
               </div>
             )}
             
-            {opera.location && (
-              <div class="opera-location">
-                <p><strong>Ubicazione:</strong> {opera.location}</p>
-              </div>
-            )}
+            
 
             {(() => {
               const editor = pickEditor(opera);
@@ -178,6 +189,14 @@ const pickEditor = (opera) => {
     let filteredDetails: HTMLElement[] = [];
     let groupIntroCards: HTMLElement[] = [];
     let groupIntroDetails: HTMLElement[] = [];
+
+    // Helper: parse earliest year from strings like "1959", "1959-1962", "1970–2013"
+    function parseYearStartStr(y) {
+      if (!y) return Number.POSITIVE_INFINITY;
+      const matches = String(y).match(/\d{4}/g);
+      if (!matches) return Number.POSITIVE_INFINITY;
+      return Math.min(...matches.map(Number));
+    }
 
     const BASE_CARD_WIDTH = 420;
     const MIN_CARD_HEIGHT = 280;
@@ -240,7 +259,13 @@ const pickEditor = (opera) => {
 
       // Filter cards and details
       if (group === 'all') {
-        filteredCards = cards;
+        // Sort all cards chronologically: oldest first
+        filteredCards = [...cards].sort((a, b) => {
+          const ya = parseYearStartStr(a.dataset.year);
+          const yb = parseYearStartStr(b.dataset.year);
+          if (ya !== yb) return ya - yb;
+          return (a.dataset.artist || '').localeCompare(b.dataset.artist || '', 'it', { sensitivity: 'base' });
+        });
         filteredDetails = detailsElements;
       } else {
         // Find and show the matching group intro card/detail
@@ -251,7 +276,14 @@ const pickEditor = (opera) => {
         if (introDetail) introDetail.style.display = 'block';
 
         // Build filtered lists with intro first
-        const artworkCards = cards.filter(card => card.dataset.group === group);
+        // Filter and sort artwork cards chronologically within the group
+        const artworkCardsUnsorted = cards.filter(card => card.dataset.group === group);
+        const artworkCards = artworkCardsUnsorted.sort((a, b) => {
+          const ya = parseYearStartStr(a.dataset.year);
+          const yb = parseYearStartStr(b.dataset.year);
+          if (ya !== yb) return ya - yb;
+          return (a.dataset.artist || '').localeCompare(b.dataset.artist || '', 'it', { sensitivity: 'base' });
+        });
         const artworkDetails = detailsElements.filter(detail => (detail as HTMLElement).dataset.group === group);
         
         filteredCards = introCard ? [introCard, ...artworkCards] : artworkCards;
@@ -279,7 +311,7 @@ const pickEditor = (opera) => {
       // Re-position visible cards in 3D in filtered order
       filteredCards.forEach((card, index) => {
         const angle = anglePerCard * index;
-        card.style.transform = `rotateX(${angle}deg) translateZ(600px)`;
+        card.style.transform = `translateY(-50%) rotateX(${angle}deg) translateZ(600px)`;
         card.dataset.filteredIndex = index.toString();
       });
 
@@ -346,7 +378,7 @@ const pickEditor = (opera) => {
         const angle = anglePerCard * index;
         
         card.style.transformOrigin = 'center center';
-        card.style.transform = `rotateX(${angle}deg) translateZ(600px)`;
+        card.style.transform = `translateY(-50%) rotateX(${angle}deg) translateZ(600px)`;
       });
 
       // Show first card details based on visibility
