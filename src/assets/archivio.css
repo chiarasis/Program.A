@@ -108,21 +108,23 @@
     justify-content: center;
     gap: 8px;
     margin-top: 20px;
-    padding: 10px 14px;
-    border: 1.5px solid #fff;
-    color: #fff;
+    padding: 12px 20px;
+    background: var(--acc-color);
+    color: var(--text-light);
     text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-    border-radius: 6px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 0;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
   }
 
   .editor-link-btn:hover {
+    background: var(--text-light);
+    color: var(--bg-dark);
     transform: translateY(-1px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    border: 2px solid var(--acc-color);
   }
 
   .opera-details.active {
