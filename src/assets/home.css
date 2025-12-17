@@ -3,31 +3,34 @@
 
 /* Video intro overlay */
 .video-intro-overlay {
-  position: fixed;
+  position: absolute; /* confined to hero */
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  background: #000;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* above p5 canvas, below any UI */
+  background: transparent; /* let hero background show through */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 1s ease;
+  transition: opacity 0.6s ease;
+  pointer-events: none; /* keep p5 mouse interaction active */
 }
 
 .video-intro-overlay video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background: transparent; /* ensure alpha-friendly rendering */
+  pointer-events: none;
 }
 
 .video-intro-overlay.video-ended {
   position: absolute;
-  z-index: 50 !important;
-  opacity: 0.6;
+  z-index: 10 !important; /* remain in hero stack */
+  opacity: 1;
   pointer-events: none;
-  mix-blend-mode: screen;
+  background: transparent;
 }
 
 /* titolo + p5 */

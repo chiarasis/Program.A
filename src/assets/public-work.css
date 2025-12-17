@@ -35,19 +35,21 @@
 .poster-card {
   position: absolute;
   width: 300px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #000; /* no transparency */
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform 0.18s ease; /* focus on zoom */
   cursor: pointer;
+  will-change: transform;
 }
 
 .poster-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-  z-index: 10;
+  background: #000; /* keep opaque on hover */
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: scale(1.2); /* stronger zoom on hover */
+  z-index: 999; /* rise above overlapping posters */
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
 }
 
 .poster-preview {

@@ -2,18 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import '../assets/home.css';
 ---
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="/src/assets/home.css">
-</head>
 <Layout page="home">
 	<!-- Hero section with p5 canvas -->
 	<section class="hero-section">
 		<!-- Video intro overlay (inside hero section) -->
 		<div id="video-intro" class="video-intro-overlay">
 			<video id="intro-video" autoplay muted playsinline>
-				<source src="/programa.mov" type="video/mp4">
+				<source src="/programa .webm" type="video/webm">
 			</video>
 		</div>
 		
