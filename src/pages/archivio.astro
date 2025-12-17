@@ -131,7 +131,7 @@ const pickEditor = (opera) => {
             
             {opera.technique && (
               <div class="opera-info">
-                <p class="opera-technique"><strong>Tecnica:</strong> {opera.technique}</p>
+                <p class="opera-technique"> {opera.technique}</p>
               </div>
             )}
             
@@ -284,7 +284,7 @@ const pickEditor = (opera) => {
       });
 
       // Reset rotation
-      currentRotation = 0;
+      currentRotation = 0; 
       targetRotation = 0;
       window.scrollTo(0, 0);
       
