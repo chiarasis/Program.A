@@ -4,7 +4,7 @@ import json
 import os
 import glob
 
-csv_path = '/Users/afe28/Downloads/Culturiamoci Archivio Foglio1.csv'
+csv_path = '/Users/afe28/Downloads/Culturiamoci Archivio Foglio1 (1).csv'
 output_path = '/Users/afe28/Documents/GitHub/Program.A/src/data/opere.json'
 images_dir = '/Users/afe28/Documents/GitHub/Program.A/public/drive-opere'
 
@@ -34,6 +34,7 @@ with open(csv_path, 'r', encoding='utf-8') as f:
         technique = row.get('Tecnica, dimensioni (cm 10x10x10)', '').strip()
         location = row.get('Ubicazione', '').strip()
         filename = row.get('Nome file (Cognome_Titolo)', '').strip()
+        editor_title = row.get('Titolo del generatore', '').strip()
         
         # Skip if no artist or title
         if not artist or not title:
@@ -80,7 +81,8 @@ with open(csv_path, 'r', encoding='utf-8') as f:
             "group": group,
             "technique": technique,
             "location": location,
-            "image": image_path
+            "image": image_path,
+            "editorTitle": editor_title
         }
         
         opere.append(opera)

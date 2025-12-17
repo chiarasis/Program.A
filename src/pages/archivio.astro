@@ -20,36 +20,22 @@ const opere = [...opereRaw].sort((a, b) => {
   return (a.artist || '').localeCompare(b.artist || '', 'it', { sensitivity: 'base' });
 });
 
+const editorMap = {
+  'trame visuali': { url: '/editor-griglie', label: 'Editor Griglie' },
+  'trame': { url: '/editor-griglie', label: 'Editor Griglie' },
+  'cinetismi luminosi': { url: '/editor-luce', label: 'Editor Luce' },
+  'spazi magnetici': { url: '/editor-crashclock', label: 'Editor Crash Clock' },
+  'strutture discretizzate': { url: '/editor-pixel', label: 'Editor Pixel' },
+  'dinamiche ottiche': { url: '/editor-rombi', label: 'Editor Rombi' }
+};
+
 const pickEditor = (opera) => {
-  const text = `${opera.title || ''} ${opera.technique || ''}`.toLowerCase();
-
-  const matches = (pattern) => pattern.test(text);
-
-  if (matches(/luce|lumin|neon|lampad/)) {
-    return { url: '/editor-luce', label: 'Editor Luce' };
+  const keyRaw = opera.editorTitle || opera.editor || opera.generatorTitle;
+  const key = keyRaw ? keyRaw.toString().trim().toLowerCase() : '';
+  if (key && editorMap[key]) {
+    return editorMap[key];
   }
-
-  if (matches(/rombo|rombi|diamant/)) {
-    return { url: '/editor-rombi', label: 'Editor Rombi' };
-  }
-
-  if (matches(/pixel|digit|bit/)) {
-    return { url: '/editor-pixel', label: 'Editor Pixel' };
-  }
-
-  if (matches(/trama|reticol|griglia|griglie|linea|linee|lineare|scacchier|quadrati|serial|struttur|interferenz|rete|corda|filo/)) {
-    return { url: '/editor-griglie', label: 'Editor Griglie' };
-  }
-
-  if (matches(/cinet|vibraz|rotaz|strob|fluido|fluida|elastico|magnet|moviment|dinamic|cronostat|motor/)) {
-    return { url: '/editor-crashclock', label: 'Editor Crash Clock' };
-  }
-
-  if (opera.group && opera.group.toLowerCase().includes('gruppo n')) {
-    return { url: '/editor-griglie', label: 'Editor Griglie' };
-  }
-
-  return { url: '/editor-crashclock', label: 'Editor Crash Clock' };
+  return { url: '/editor', label: 'Editor' };
 };
 ---
 <head>
@@ -155,8 +141,8 @@ const pickEditor = (opera) => {
             {(() => {
               const editor = pickEditor(opera);
               return (
-                <a class="editor-link-btn" href={editor.url}>
-                  {editor.label}
+                <a class="editor-link-btn" href={editor.url} title={editor.label} aria-label={`Vai all'editor: ${editor.label}`}>
+                  Vai all'editor
                 </a>
               );
             })()}
