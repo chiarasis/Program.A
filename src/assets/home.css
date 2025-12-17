@@ -1,6 +1,35 @@
 /* home.css - Stili specifici per la homepage */
 @import './base.css';
 
+/* Video intro overlay */
+.video-intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease;
+}
+
+.video-intro-overlay video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-intro-overlay.video-ended {
+  position: absolute;
+  z-index: 50 !important;
+  opacity: 0.6;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
 /* titolo + p5 */
 .hero-section {
   position: relative;

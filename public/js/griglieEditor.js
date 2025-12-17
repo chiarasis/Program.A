@@ -29,7 +29,7 @@ const GIF_DURATION = 5; // seconds
 const GIF_FPS = 15; // Reduced FPS for smoother animation
 
 function setup() {
-  const canvas = createCanvas(600, 900); // 2:3 ratio, fits viewport
+  const canvas = createCanvas(500, 750); // 2:3 ratio, fits viewport
   canvas.parent('canvasContainer');
   colorMode(HSB, 360, 100, 100, 100);
   
@@ -149,7 +149,7 @@ function drawLineGrid() {
 
 function drawLineGridToGraphics(pg, w, h) {
   // Normalize to preview size to maintain consistent pattern
-  const previewHeight = 900;
+  const previewHeight = 750;
   const scale = h / previewHeight;
   const spacing = params.lineSpacing * params.gridSize * scale;
   
@@ -379,10 +379,10 @@ function finishGIF() {
 }
 
 function exportPosterWithFrame() {
-  // Export at 2x resolution (2000x3000) showing same content as preview (600x900)
-  const exportWidth = 2000;
-  const exportHeight = 3000;
-  const scale = exportWidth / 600; // Scale factor
+  // Export at 2x resolution (1000x1500) showing same content as preview (500x750)
+  const exportWidth = 1000;
+  const exportHeight = 1500;
+  const scale = exportWidth / 500; // Scale factor
   
   const posterCanvas = createGraphics(exportWidth, exportHeight);
   posterCanvas.colorMode(HSB, 360, 100, 100, 100);

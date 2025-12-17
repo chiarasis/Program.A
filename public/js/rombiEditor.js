@@ -1,5 +1,5 @@
 // Rombi editor - p5 sketch
-// Preview canvas and controls. Export PNG (1000x1500) and short GIF if gif.js present.
+// Preview canvas and controls. Export PNG (500x750) and short GIF if gif.js present.
 
 let seedValue = 12345;
 let seedText = '';
@@ -19,7 +19,7 @@ params.pulseSpeed = 1;
 params.pulseAmount = 0.25;
 
 function setup() {
-  const canvas = createCanvas(600, 900);
+  const canvas = createCanvas(500, 750);
   canvas.parent('canvasContainer');
   colorMode(HSB, 360, 100, 100, 100);
   angleMode(DEGREES);
@@ -134,21 +134,41 @@ function setupControls() {
   }
 }
 
-function stringToSeed(str) {
-  if (!str) return 12345;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash);
+function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
+  const textCol = 255; // White text
+  pg.fill(textCol);
+  pg.noStroke();
+  pg.textFont('monospace');
+  
+  // Top left: Program.A logo
+  pg.textAlign(pg.LEFT, pg.TOP);
+  pg.textSize(16 * scale);
+  pg.text('Program.A', 20 * scale, 20 * scale);
+  
+  // Top right: Date
+  pg.textAlign(pg.RIGHT, pg.TOP);
+  pg.textSize(12 * scale);
+  const today = new Date();
+  const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+  pg.text(dateStr, exportWidth - 20 * scale, 20 * scale);
+  
+  // Bottom left: Seed info
+  pg.textAlign(pg.LEFT, pg.BOTTOM);
+  pg.textSize(10 * scale);
+  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  
+  // Bottom right: Editor name
+  pg.textAlign(pg.RIGHT, pg.BOTTOM);
+  pg.textSize(14 * scale);
+  pg.text(editorName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
 }
 
+
+
 function exportPNG() {
-  // create high-res graphics 1000x1500
-  const W = 1000;
-  const H = 1500;
+  // create high-res graphics 500x750
+  const W = 500;
+  const H = 750;
   const pg = createGraphics(W, H);
   pg.colorMode(HSB, 360, 100, 100, 100);
   pg.angleMode(DEGREES);
@@ -189,9 +209,12 @@ function exportPNG() {
 
   pg.pop();
   
+  // Add info overlay
+  drawPosterInfo(pg, W, H, 1, 'rombi');
+  
   // Get canvas data URL for storage
   const dataURL = pg.canvas.toDataURL('image/png');
-  const filename = `rombi-poster-${Date.now()}.png`;
+  const filename = `rombi-poster-${seedValue}.png`;
   
   // Save to IndexedDB
   if (window.PosterStorage) {
@@ -206,6 +229,11 @@ function exportPNG() {
       if (window.showDownloadSuccess) {
         window.showDownloadSuccess('Rombi');
       }
+      // Download the file
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = filename;
+      link.click();
     }).catch(err => {
       console.error('Failed to save poster:', err);
     });

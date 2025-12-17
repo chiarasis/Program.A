@@ -19,11 +19,34 @@ let sourceMedia = null;
 let mediaType = null; // 'image' or 'video'
 let videoElement = null;
 
+// Bulge effect variables (for click interaction - deforms entire image)
+let bulgePoints = []; // Array of {x, y, radius, strength, decay}
+const MAX_BULGE_RADIUS = 180;
+const BULGE_STRENGTH = 0.4;
+
 function setup() {
   const c = createCanvas(params.posterW, params.posterH);
   c.parent('canvasContainer');
   colorMode(HSB, 360, 100, 100, 100);
   noLoop(); // Start paused until media is loaded
+  
+  // Add click handler for bulge effect (animated deformation)
+  c.mousePressed(() => {
+    if (sourceMedia && mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+      bulgePoints.push({
+        x: mouseX,
+        y: mouseY,
+        radius: MAX_BULGE_RADIUS,
+        strength: BULGE_STRENGTH,
+        time: 0,
+        maxTime: 200
+      });
+      
+      // Start loop for animation
+      loop();
+    }
+    return false; // Prevent default
+  });
 }
 
 function draw() {
@@ -46,6 +69,19 @@ function draw() {
     text('Carica un\'immagine o video', width/2, height/2);
   }
   
+  // Update bulge points - fade out over time
+  if (bulgePoints.length > 0) {
+    bulgePoints = bulgePoints.filter(p => {
+      p.time++;
+      return p.time < p.maxTime;
+    });
+    
+    // Stop looping only if no more bulge points AND no animation AND no video
+    if (bulgePoints.length === 0 && mediaType === 'image' && !params.animate) {
+      noLoop();
+    }
+  }
+  
   // GIF recording
   if (isRecording) {
     const f = frameCount - startFrame;
@@ -58,6 +94,35 @@ function draw() {
   }
 }
 
+function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
+  const textCol = 255; // White text
+  pg.fill(textCol);
+  pg.noStroke();
+  pg.textFont('monospace');
+  
+  // Top left: Program.A logo
+  pg.textAlign(pg.LEFT, pg.TOP);
+  pg.textSize(16 * scale);
+  pg.text('Program.A', 20 * scale, 20 * scale);
+  
+  // Top right: Date
+  pg.textAlign(pg.RIGHT, pg.TOP);
+  pg.textSize(12 * scale);
+  const today = new Date();
+  const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+  pg.text(dateStr, exportWidth - 20 * scale, 20 * scale);
+  
+  // Bottom left: Seed info
+  pg.textAlign(pg.LEFT, pg.BOTTOM);
+  pg.textSize(10 * scale);
+  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  
+  // Bottom right: Editor name
+  pg.textAlign(pg.RIGHT, pg.BOTTOM);
+  pg.textSize(14 * scale);
+  pg.text(editorName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
+}
+
 function applyPixelation(img) {
   const px = params.pixelSize;
   const cols = Math.ceil(width / px);
@@ -65,11 +130,96 @@ function applyPixelation(img) {
   
   img.loadPixels();
   
+  // Calculate crop dimensions to match poster aspect ratio without stretching
+  const posterAspect = width / height;
+  const imgAspect = img.width / img.height;
+  
+  let cropX = 0, cropY = 0, cropW = img.width, cropH = img.height;
+  
+  if (imgAspect > posterAspect) {
+    // Image is wider: crop width
+    cropW = img.height * posterAspect;
+    cropX = (img.width - cropW) / 2;
+  } else {
+    // Image is taller: crop height
+    cropH = img.width / posterAspect;
+    cropY = (img.height - cropH) / 2;
+  }
+  
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      // Sample pixel from source at scaled position
-      const srcX = floor(map(x, 0, cols, 0, img.width));
-      const srcY = floor(map(y, 0, rows, 0, img.height));
+      // Calculate pixel position
+      let pixelX = x * px;
+      let pixelY = y * px;
+      let pixelSz = px;
+      
+      // Calculate source position
+      let sampleX = x;
+      let sampleY = y;
+      let maxBulgeFactor = 0; // Track maximum bulge effect for pixel size
+      
+      // ANIMATION: Vertical stripe movement when animation is enabled
+      if (params.animate) {
+        const t = frameCount * (params.animationSpeed || 0.02);
+        const stripeWidth = 8; // Width of each stripe
+        const stripeIndex = floor(x / stripeWidth);
+        
+        // Alternate stripes move up/down based on stripe index
+        const direction = (stripeIndex % 2 === 0) ? 1 : -1;
+        const verticalOffset = sin(t + stripeIndex * 0.5) * (params.animationAmount || 0.12) * 10;
+        
+        sampleY += verticalOffset * direction;
+      }
+      
+      // CLICK BULGE: Apply animated spherical bulge distortion from click points
+      for (let bulge of bulgePoints) {
+        const centerX = pixelX + px/2;
+        const centerY = pixelY + px/2;
+        const distance = sqrt(pow(centerX - bulge.x, 2) + pow(centerY - bulge.y, 2));
+        
+        if (distance < bulge.radius) {
+          // Animation curve: starts at 0, expands to 1, then retracts to 0
+          const progress = bulge.time / bulge.maxTime; // 0 to 1
+          let animCurve;
+          
+          if (progress < 0.5) {
+            // First half: expansion (0 to 1)
+            animCurve = sin(progress * PI);
+          } else {
+            // Second half: retraction (1 to 0)
+            animCurve = sin((1 - progress) * PI);
+          }
+          
+          // Spherical bulge - pulls image outward from center like a lens
+          const normalizedDist = distance / bulge.radius;
+          const bulgeFactor = (1 - normalizedDist * normalizedDist) * bulge.strength * animCurve;
+          
+          // Track maximum bulge factor
+          maxBulgeFactor = max(maxBulgeFactor, bulgeFactor);
+          
+          // Calculate displacement direction (outward from bulge center)
+          const angle = atan2(centerY - bulge.y, centerX - bulge.x);
+          
+          // Displace the sampling position (creates the "lens" effect)
+          const displacement = bulgeFactor * bulge.radius * 0.5;
+          sampleX -= cos(angle) * displacement / px;
+          sampleY -= sin(angle) * displacement / px;
+        }
+      }
+      
+      // Enlarge pixels based on maximum bulge effect
+      pixelSz = px * (1 + maxBulgeFactor * 3);
+      pixelX -= (pixelSz - px) / 2;
+      pixelY -= (pixelSz - px) / 2;
+      
+      // Sample pixel from cropped area using displaced coordinates
+      let srcX = floor(map(sampleX, 0, cols, cropX, cropX + cropW));
+      let srcY = floor(map(sampleY, 0, rows, cropY, cropY + cropH));
+      
+      // Clamp to image bounds
+      srcX = constrain(srcX, 0, img.width - 1);
+      srcY = constrain(srcY, 0, img.height - 1);
+      
       const idx = (srcY * img.width + srcX) * 4;
       
       const r = img.pixels[idx];
@@ -92,21 +242,12 @@ function applyPixelation(img) {
       
       // No brightness quantization to keep page lighter and colors natural
       
-      // Animation wobble on brightness
-      if (params.animate) {
-        const t = frameCount * (params.animationSpeed || 0.02);
-        const wob = sin(x*0.3 + y*0.25 + t) * (params.animationAmount || 0.12);
-        rr = constrain(rr*(1+wob), 0, 255);
-        gg = constrain(gg*(1+wob), 0, 255);
-        bb = constrain(bb*(1+wob), 0, 255);
-      }
-      
       // Draw pixel block in RGB to preserve original colors
       push();
       colorMode(RGB, 255);
       noStroke();
       fill(rr, gg, bb);
-      rect(x * px, y * px, px, px);
+      rect(pixelX, pixelY, pixelSz, pixelSz);
       pop();
     }
   }
@@ -165,6 +306,7 @@ function setupControls() {
     resetBtn.addEventListener('click', ()=>{
       sourceMedia = null;
       mediaType = null;
+      bulgePoints = []; // Clear bulge deformations
       if (videoElement) {
         videoElement.pause();
         videoElement.remove();
@@ -178,13 +320,21 @@ function setupControls() {
   const pngBtn = q('downloadPNG');
   if (pngBtn) pngBtn.addEventListener('click', ()=>{
     if (!sourceMedia) return;
-    const filename = 'pixel.png';
-    const dataURL = canvas.toDataURL('image/png');
+    const filename = `pixel-${seedValue}.png`;
+
+    // Snapshot current canvas
+    const snapshot = get(0, 0, width, height);
+
+    // Create graphics and paste snapshot
+    const pg = createGraphics(params.posterW, params.posterH);
+    pg.image(snapshot, 0, 0, params.posterW, params.posterH);
+    drawPosterInfo(pg, params.posterW, params.posterH, 1, 'pixel');
+    const dataURL = pg.canvas.toDataURL('image/png');
     
     if (window.PosterStorage) {
       window.PosterStorage.savePoster(dataURL, {
         editor: 'pixel',
-          seed: seedText || seedValue.toString(),
+        seed: seedText || seedValue.toString(),
         filename: filename,
         width: params.posterW,
         height: params.posterH
@@ -193,7 +343,8 @@ function setupControls() {
       }).catch(err => console.error('Failed to save poster:', err));
     }
     
-    save(filename);
+    // Save using p5.js save function
+    save(pg, filename);
   });
   
   const gifBtn = q('downloadGIF');

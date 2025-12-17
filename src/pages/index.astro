@@ -10,10 +10,14 @@ import Footer from '../components/Footer.astro';
 <Layout page="home">
 	<!-- Hero section with p5 canvas -->
 	<section class="hero-section">
-		<div id="p5-root" aria-hidden="true"></div>
-		<div class="title-wrap">
-			<h1 class="site-title">Program.A</h1>
+		<!-- Video intro overlay (inside hero section) -->
+		<div id="video-intro" class="video-intro-overlay">
+			<video id="intro-video" autoplay muted playsinline>
+				<source src="/programa.mov" type="video/mp4">
+			</video>
 		</div>
+		
+		<div id="p5-root" aria-hidden="true"></div>
 	</section>
 
 	<Header includeStyles={false} />
@@ -112,4 +116,22 @@ import Footer from '../components/Footer.astro';
 	<script src="/js/scroll-animations.js" is:inline></script>
 	<script src="/js/floatingSquares.js" is:inline></script>
 	<script src="/js/geometricShapes.js" is:inline></script>
+	
+	<script is:inline>
+		// Video intro handler
+		const videoIntro = document.getElementById('video-intro');
+		const introVideo = document.getElementById('intro-video');
+		
+		if (videoIntro && introVideo) {
+			// When video ends, freeze on last frame and overlay on hero section
+			introVideo.addEventListener('ended', () => {
+				videoIntro.classList.add('video-ended');
+				// Allow interaction through the video overlay
+				videoIntro.style.pointerEvents = 'none';
+			});
+			
+			// Force play on load
+			introVideo.play().catch(err => console.log('Autoplay prevented:', err));
+		}
+	</script>
 </Layout>

@@ -18,7 +18,7 @@ let params = {
 };
 
 function setup() {
-  const canvas = createCanvas(1000, 1500);
+  const canvas = createCanvas(500, 750);
   canvas.parent('canvasContainer');
   colorMode(HSB, 360, 100, 100, 100);
   frameRate(30);
@@ -56,6 +56,35 @@ function draw() {
       drawMoireGrid(time);
       break;
   }
+}
+
+function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
+  const textCol = 255; // White text
+  pg.fill(textCol);
+  pg.noStroke();
+  pg.textFont('monospace');
+  
+  // Top left: Program.A logo
+  pg.textAlign(pg.LEFT, pg.TOP);
+  pg.textSize(16 * scale);
+  pg.text('Program.A', 20 * scale, 20 * scale);
+  
+  // Top right: Date
+  pg.textAlign(pg.RIGHT, pg.TOP);
+  pg.textSize(12 * scale);
+  const today = new Date();
+  const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+  pg.text(dateStr, exportWidth - 20 * scale, 20 * scale);
+  
+  // Bottom left: Seed info
+  pg.textAlign(pg.LEFT, pg.BOTTOM);
+  pg.textSize(10 * scale);
+  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  
+  // Bottom right: Editor name
+  pg.textAlign(pg.RIGHT, pg.BOTTOM);
+  pg.textSize(14 * scale);
+  pg.text(editorName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
 }
 
 function drawDiagonalGrid(time) {
@@ -263,15 +292,23 @@ function updateURL() {
 function exportPNG() {
   updateExportStatus('Esportazione PNG in corso...');
   const filename = `light-effects-${seedValue}.png`;
-  const dataURL = canvas.toDataURL('image/png');
+  
+  // Snapshot current canvas
+  const snapshot = get(0, 0, width, height);
+
+  // Create graphics and paste snapshot
+  const pg = createGraphics(500, 750);
+  pg.image(snapshot, 0, 0, 500, 750);
+  drawPosterInfo(pg, 500, 750, 1, 'luce');
+  const dataURL = pg.canvas.toDataURL('image/png');
   
   if (window.PosterStorage) {
     window.PosterStorage.savePoster(dataURL, {
       editor: 'luce',
       seed: seedText || seedValue.toString(),
       filename: filename,
-      width: 1000,
-      height: 1500
+      width: 500,
+      height: 750
     }).then(() => {
       if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
       updateExportStatus('PNG scaricato!');
@@ -286,7 +323,8 @@ function exportPNG() {
     setTimeout(() => updateExportStatus(''), 2000);
   }
   
-  save(canvas, filename);
+  // Save using p5.js save function
+  save(pg, filename);
 }
 
 function updateExportStatus(message) {
