@@ -7,8 +7,10 @@ let params = {
   posterH: 750,
   pixelSize: 10,
   hue: 0,
-  hueEnabled: false,
-  // removed bgHue
+  bgHue: 0,
+  animate: true,
+  animationSpeed: 0.02,
+  animationAmount: 0.12
 };
 
 let isAnimating = true;
@@ -50,7 +52,8 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  const bgCol = getBgColor();
+  background(bgCol);
   
   if (sourceMedia) {
     if (mediaType === 'video' && videoElement) {
@@ -92,6 +95,13 @@ function draw() {
       if (f === 150) finishGif();
     }
   }
+}
+
+function getBgColor() {
+  const h = params.bgHue;
+  if (h === 0) return color(0, 0, 0); // black
+  if (h === 360) return color(0, 0, 100); // white
+  return color(h, 50, 90); // vivid background so the change is clearly visible
 }
 
 function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
@@ -229,8 +239,8 @@ function applyPixelation(img) {
       // Keep original color by default
       let rr = r, gg = g, bb = b;
       
-      // Optional hue tint: only when enabled
-      if (params.hueEnabled && params.hue > 0 && params.hue < 360) {
+      // Apply hue tint when hue is not 0
+      if (params.hue > 0 && params.hue < 360) {
         const c = color(r, g, b);
         const s = 80;
         const br = brightness(c);
@@ -271,13 +281,9 @@ function setupControls() {
   bindRange('pixelSize', v=>params.pixelSize=v);
   // removed colorDepth control for lighter processing
   bindRange('hue', v=>params.hue=v);
-  // removed bgHue binding
+  bindRange('bgHue', v=>params.bgHue=v);
   bindRange('animationSpeed', v=>params.animationSpeed=v, v=>v.toFixed(2));
   bindRange('animationAmount', v=>params.animationAmount=v, v=>v.toFixed(2));
-  const hueToggle = q('hueEnabled');
-  if (hueToggle) hueToggle.addEventListener('change', e=>{ params.hueEnabled = e.target.checked; if (mediaType==='image') redraw(); });
-  const animateToggle = q('animate');
-  if (animateToggle) animateToggle.addEventListener('change', e=>{ params.animate = e.target.checked; if (params.animate) loop(); else if(mediaType!=='video') noLoop(); });
   
   const fileInput = q('fileInput');
   if (fileInput) {

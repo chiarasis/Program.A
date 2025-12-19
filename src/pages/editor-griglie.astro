@@ -13,15 +13,31 @@ import HeaderFixed from '../components/HeaderFixed.astro';
           <h2>Trame visuali</h2>
         </div>
         <div class="control-section">
-          <h3>Parametri</h3>
           <div class="control-group">
             <label for="seed">Nome</label>
-            <input type="text" id="seed" value="12345" placeholder="Il tuo nome o numero">
+            <input type="text" id="seed" placeholder="Il tuo nome o numero">
           </div>
+
+          <h3>Griglia</h3>
           <div class="control-group">
             <label for="gridSize">Dimensione griglia</label>
-            <input type="range" id="gridSize" min="5" max="30" value="12" step="1">
+            <input type="range" id="gridSize" min="1" max="30" value="12" step="1">
             <span class="value-display" id="gridSizeValue">12</span>
+          </div>
+          <div class="control-group">
+            <label for="lineSpacing">Spaziatura linee</label>
+            <input type="range" id="lineSpacing" min="3" max="50" value="15" step="1">
+            <span class="value-display" id="lineSpacingValue">15</span>
+          </div>
+          <div class="control-group">
+            <label for="layerCount">Numero layer</label>
+            <input type="range" id="layerCount" min="1" max="15" value="4" step="1">
+            <span class="value-display" id="layerCountValue">4</span>
+          </div>
+          <div class="control-group">
+            <label for="layerRotation">Rotazione layer (°)</label>
+            <input type="range" id="layerRotation" min="0" max="180" value="45" step="1">
+            <span class="value-display" id="layerRotationValue">45</span>
           </div>
           <div class="control-group">
             <label for="rotationSpeed">Velocità rotazione</label>
@@ -33,58 +49,38 @@ import HeaderFixed from '../components/HeaderFixed.astro';
             <select id="rotationDirection">
               <option value="1">Orario</option>
               <option value="-1">Antiorario</option>
-              <option value="0">Statico</option>
             </select>
+          </div>
+          <div class="control-group">
+            <label for="mouseForce">Forza Click</label>
+            <input type="range" id="mouseForce" min="0" max="50" value="12" step="1">
+            <span class="value-display" id="mouseForceValue">12</span>
+          </div>
+          <div class="control-group">
+            <label for="mouseRadius">Raggio Interazione</label>
+            <input type="range" id="mouseRadius" min="50" max="300" value="200" step="10">
+            <span class="value-display" id="mouseRadiusValue">200</span>
           </div>
         </div>
 
         <div class="control-section">
           <h3>Colore</h3>
           <div class="control-group">
-            <label for="bgColor">Colore sfondo</label>
-            <select id="bgColor">
-              <option value="black">Nero</option>
-              <option value="white">Bianco</option>
-            </select>
-          </div>
-          <div class="control-group">
-            <label for="lineColor">Colore linee</label>
-            <select id="lineColor">
-              <option value="black">Nero</option>
-              <option value="white" selected>Bianco</option>
-              <option value="color">Colore</option>
-            </select>
-          </div>
-          <div class="control-group">
-            <label for="hue">Tonalità</label>
+            <label for="hue">Colore Linee</label>
             <input type="range" id="hue" min="0" max="360" value="200" step="1">
             <span class="value-display" id="hueValue">200</span>
           </div>
-        </div>
-
-        <div class="control-section">
-          <h3>Layer</h3>
           <div class="control-group">
-            <label for="lineSpacing">Spaziatura linee</label>
-            <input type="range" id="lineSpacing" min="5" max="50" value="15" step="1">
-            <span class="value-display" id="lineSpacingValue">15</span>
-          </div>
-          <div class="control-group">
-            <label for="layerCount">Numero layer</label>
-            <input type="range" id="layerCount" min="2" max="15" value="4" step="1">
-            <span class="value-display" id="layerCountValue">4</span>
-          </div>
-          <div class="control-group">
-            <label for="layerRotation">Rotazione layer (°)</label>
-            <input type="range" id="layerRotation" min="0" max="180" value="45" step="1">
-            <span class="value-display" id="layerRotationValue">45</span>
+            <label for="bgHue">Colore Sfondo</label>
+            <input type="range" id="bgHue" min="0" max="360" value="0" step="1">
+            <span class="value-display" id="bgHueValue">0</span>
           </div>
         </div>
 
         <div class="button-group">
           <button id="regenerate" class="btn-primary">Rigenera</button>
-          <button id="downloadPNG" class="btn-secondary">Scarica PNG</button>
-          <button id="downloadGIF" class="btn-secondary">Scarica GIF (5s)</button>
+          <button id="downloadPNG" class="btn-secondary">Scarica immagine</button>
+          <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 
         <a href="/editor" class="back-link">← Torna ai generatori</a>

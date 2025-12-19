@@ -14,16 +14,14 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="control-section">
-          <h3>Parametri</h3>
           <div class="control-group">
             <label for="seed">Nome</label>
-            <input type="text" id="seed" value="12345" placeholder="Il tuo nome o numero">
+            <input type="text" id="seed" placeholder="Il tuo nome o numero">
           </div>
-          <button id="regenerate" class="btn-secondary" style="margin-bottom: 16px;">Rigenera Seed</button>
         </div>
 
         <div class="control-section">
-          <h3>Distribuzione</h3>
+          <h3>Particelle</h3>
           <div class="control-group">
             <label for="particleCount">Numero Particelle</label>
             <input type="range" id="particleCount" min="500" max="6000" value="2200" step="100">
@@ -31,25 +29,25 @@ import HeaderFixed from '../components/HeaderFixed.astro';
           </div>
           <div class="control-group">
             <label for="particleSize">Dimensione Base</label>
-            <input type="range" id="particleSize" min="2" max="16" value="6" step="1">
+            <input type="range" id="particleSize" min="2" max="20" value="6" step="1">
             <span class="value-display" id="particleSizeValue">6</span>
           </div>
           <div class="control-group">
             <label for="particleSizeJitter">Variazione Dimensione</label>
-            <input type="range" id="particleSizeJitter" min="0" max="16" value="8" step="1">
+            <input type="range" id="particleSizeJitter" min="0" max="20" value="8" step="1">
             <span class="value-display" id="particleSizeJitterValue">8</span>
           </div>
         </div>
 
         <div class="control-section">
-          <h3>Animazione</h3>
+          <h3>Movimento</h3>
           <div class="control-group">
-            <label for="wobbleAmp">Ampiezza Wobble</label>
+            <label for="wobbleAmp">Ampiezza oscillazione</label>
             <input type="range" id="wobbleAmp" min="0" max="40" value="10" step="1">
             <span class="value-display" id="wobbleAmpValue">10</span>
           </div>
           <div class="control-group">
-            <label for="noiseFlow">Noise Flow</label>
+            <label for="noiseFlow">Variazione turbolenza</label>
             <input type="range" id="noiseFlow" min="0" max="0.6" value="0.12" step="0.02">
             <span class="value-display" id="noiseFlowValue">0.12</span>
           </div>
@@ -58,12 +56,12 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         <div class="control-section">
           <h3>Colore</h3>
           <div class="control-group">
-            <label for="hue">Tonalità Particelle</label>
+            <label for="hue">Colore Particelle</label>
             <input type="range" id="hue" min="0" max="360" value="0" step="1">
             <span class="value-display" id="hueValue">0</span>
           </div>
           <div class="control-group">
-            <label for="bgHue">Tonalità Sfondo</label>
+            <label for="bgHue">Colore Sfondo</label>
             <input type="range" id="bgHue" min="0" max="360" value="360" step="1">
             <span class="value-display" id="bgHueValue">360</span>
           </div>
@@ -91,11 +89,8 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="button-group">
-          <button id="playPause" class="btn-control">Pausa</button>
-        </div>
-
-        <div class="button-group">
-          <button id="downloadPNG" class="btn-primary">Scarica PNG</button>
+          <button id="regenerate" class="btn-primary">Rigenera</button>
+          <button id="downloadPNG" class="btn-primary">Scarica immagine</button>
           <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 

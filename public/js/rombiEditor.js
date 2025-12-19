@@ -9,14 +9,11 @@ let params = {
   lineCount: 120,
   strokeWeight: 1,
   scale: 1,
-  colorMode: 'rgb',
-  hue: 190
+  hue: 190,
+  bgHue: 0,
+  pulseSpeed: 1,
+  pulseAmount: 0.25
 };
-
-// pulsing gradient parameters
-let pulse = 0;
-params.pulseSpeed = 1;
-params.pulseAmount = 0.25;
 
 function setup() {
   const canvas = createCanvas(500, 750);
@@ -36,7 +33,8 @@ function windowResized() {
 
 function draw() {
   // black background (HSB: hue=0,sat=0,bright=0)
-  background(0, 0, 0);
+  const bgCol = getBgColor();
+  background(bgCol);
   push();
   translate(width / 2, height / 2);
   scale(params.scale);
@@ -81,8 +79,15 @@ function draw() {
 
 function min(a, b) { return a < b ? a : b; }
 
+function getBgColor() {
+  const h = params.bgHue;
+  if (h === 0) return color(0, 0, 0); // black
+  if (h === 360) return color(0, 0, 100); // white
+  return color(h, 60, 30); // color with lower saturation/brightness
+}
+
 function setupControls() {
-  const ids = ['rotationSpeed','lineCount','strokeWeight','scale','hue','pulseSpeed','pulseAmount'];
+  const ids = ['rotationSpeed','lineCount','strokeWeight','scale','hue','bgHue','pulseSpeed','pulseAmount'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     const disp = document.getElementById(id + 'Value');
@@ -95,11 +100,6 @@ function setupControls() {
     el.addEventListener('input', update);
     update();
   });
-
-  const colorModeEl = document.getElementById('colorMode');
-  if (colorModeEl) {
-    colorModeEl.addEventListener('change', (e) => { params.colorMode = e.target.value; });
-  }
 
   const toggle = document.getElementById('toggleAnimate');
   if (toggle) {

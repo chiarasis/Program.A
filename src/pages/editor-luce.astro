@@ -14,14 +14,13 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="control-section">
-          <h3>Parametri</h3>
           <div class="control-group">
             <label for="seed">Nome</label>
-            <input type="text" id="seed" value="12345" placeholder="Il tuo nome o numero">
+            <input type="text" id="seed" placeholder="Il tuo nome o numero">
         </div>
-
+        <h3>Griglia</h3>
         <div class="control-group">
-          <label for="patternType">Tipo Pattern</label>
+          <label for="patternType">Pattern</label>
           <select id="patternType">
             <option value="diagonal-grid">Griglia Diagonale</option>
             <option value="moire">Effetto Moiré</option>
@@ -30,19 +29,19 @@ import HeaderFixed from '../components/HeaderFixed.astro';
 
         <div class="control-group">
           <label for="gridRows">Righe Griglia</label>
-          <input type="range" id="gridRows" min="3" max="20" value="8" step="1">
+          <input type="range" id="gridRows" min="3" max="30" value="8" step="1">
           <span class="value-display" id="gridRowsValue">8</span>
         </div>
 
         <div class="control-group">
           <label for="gridCols">Colonne Griglia</label>
-          <input type="range" id="gridCols" min="3" max="15" value="7" step="1">
+          <input type="range" id="gridCols" min="3" max="30" value="7" step="1">
           <span class="value-display" id="gridColsValue">7</span>
         </div>
 
         <div class="control-group">
           <label for="lineCount">Numero Linee</label>
-          <input type="range" id="lineCount" min="5" max="50" value="20" step="1">
+          <input type="range" id="lineCount" min="1" max="50" value="20" step="1">
           <span class="value-display" id="lineCountValue">20</span>
         </div>
 
@@ -54,47 +53,29 @@ import HeaderFixed from '../components/HeaderFixed.astro';
 
         <div class="control-group">
           <label for="animationSpeed">Velocità Animazione</label>
-          <input type="range" id="animationSpeed" min="0" max="2" value="0.3" step="0.1">
+          <input type="range" id="animationSpeed" min="0" max="5" value="0.3" step="0.1">
           <span class="value-display" id="animationSpeedValue">0.3</span>
-        </div>
-
-        <div class="control-group">
-          <label for="depth">Profondità</label>
-          <input type="range" id="depth" min="0" max="100" value="50" step="5">
-          <span class="value-display" id="depthValue">50</span>
-        </div>
-
-        <div class="control-group">
-          <label for="perspective">Prospettiva</label>
-          <input type="range" id="perspective" min="0" max="100" value="40" step="5">
-          <span class="value-display" id="perspectiveValue">40</span>
         </div>
         </div>
 
         <div class="control-section">
           <h3>Colore</h3>
           <div class="control-group">
-            <label for="colorScheme">Schema Colore</label>
-          <select id="colorScheme">
-            <option value="green">Verde</option>
-            <option value="blue">Blu</option>
-            <option value="cyan">Ciano</option>
-            <option value="white">Bianco</option>
-            <option value="yellow">Giallo</option>
-            <option value="orange">Arancione</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="brightness">Luminosità</label>
-          <input type="range" id="brightness" min="0" max="100" value="80" step="5">
-          <span class="value-display" id="brightnessValue">80</span>
-        </div>
+            <label for="hue">Colore Linee</label>
+            <input type="range" id="hue" min="0" max="360" value="120" step="1">
+            <span class="value-display" id="hueValue">120</span>
+          </div>
+          <div class="control-group">
+            <label for="bgHue">Colore Sfondo</label>
+            <input type="range" id="bgHue" min="0" max="360" value="0" step="1">
+            <span class="value-display" id="bgHueValue">0</span>
+          </div>
         </div>
 
         <div class="button-group">
           <button id="regenerate" class="btn-primary">Rigenera</button>
-          <button id="downloadPNG" class="btn-secondary">Scarica PNG</button>
+          <button id="downloadPNG" class="btn-secondary">Scarica immagine</button>
+          <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 
         <a href="/editor" class="back-link">← Torna ai generatori</a>

@@ -11,14 +11,18 @@ let angle = 0;
 let params = {
   rotationSpeed: 1,
   rotationDirection: 1,
-  bgColor: 'black',
-  lineColor: 'white',
   hue: 200,
+  bgHue: 0,
   lineSpacing: 15,
   layerCount: 4,
   layerRotation: 45,
-  gridSize: 1
+  gridSize: 1,
+  mouseForce: 12,
+  mouseRadius: 200
 };
+
+const WARP_FADE_MS = 250;
+let warpTrail = [];
 
 // GIF recording
 let gifRecorder;
@@ -71,18 +75,11 @@ function mulberry32(a) {
 
 function drawPattern() {
   // Background
-  const bgCol = params.bgColor === 'black' ? color(0) : color(255);
+  const bgCol = getBgColor();
   background(bgCol);
   
   // Line colors
-  let lineCol;
-  if (params.lineColor === 'black') {
-    lineCol = color(0);
-  } else if (params.lineColor === 'white') {
-    lineCol = color(255);
-  } else { // color
-    lineCol = color(params.hue, 80, 90);
-  }
+  const lineCol = getColor();
   
   stroke(lineCol);
   strokeWeight(1.5);
@@ -91,28 +88,85 @@ function drawPattern() {
   // Draw overlapping line layers
   push();
   translate(width / 2, height / 2);
+
+  // Mouse position relative to center
+  const mx = mouseX - width / 2;
+  const my = mouseY - height / 2;
+
+  const now = millis();
+  updateWarpTrail(mx, my, now);
+  const activeTrail = getWarpTrail(now);
   
   for (let layer = 0; layer < params.layerCount; layer++) {
     const baseOffset = layer * params.layerRotation * PI / 180;
     const randomOffset = (rng() - 0.5) * 0.3; // Random variation up to ±0.15 radians (~±8.6°)
     const layerAngle = angle + baseOffset + randomOffset;
     
+    // Rotate mouse into layer space to keep interaction aligned after rotation
+    const layerTrail = activeTrail.map(w => rotatePointWithIntensity(w, -layerAngle));
     push();
     rotate(layerAngle);
     // Pass layer index for mixed mode pattern selection
     window.currentLayerIndex = layer;
-    drawLineGrid();
+    drawLineGrid(layerTrail);
     pop();
   }
   
   pop();
 }
 
-function drawLineGrid() {
+function rotatePoint(x, y, angle) {
+  const cosA = cos(angle);
+  const sinA = sin(angle);
+  return {
+    x: x * cosA - y * sinA,
+    y: x * sinA + y * cosA
+  };
+}
+
+function rotatePointWithIntensity(pt, angle) {
+  const rotated = rotatePoint(pt.x, pt.y, angle);
+  return { x: rotated.x, y: rotated.y, intensity: pt.intensity };
+}
+
+function updateWarpTrail(mx, my, now) {
+  if (!mouseIsPressed) {
+    warpTrail = [];
+    return;
+  }
+  warpTrail.push({ x: mx, y: my, time: now });
+  if (warpTrail.length > 120) warpTrail.shift();
+  // Drop expired points
+  warpTrail = warpTrail.filter(w => now - w.time <= WARP_FADE_MS);
+}
+
+function getWarpTrail(now) {
+  return warpTrail.map(w => {
+    const age = now - w.time;
+    const intensity = max(0, 1 - age / WARP_FADE_MS);
+    return { x: w.x, y: w.y, intensity };
+  }).filter(w => w.intensity > 0);
+}
+
+function getColor() {
+  const h = params.hue;
+  if (h === 0) return color(0, 0, 0); // black
+  if (h === 360) return color(0, 0, 100); // white
+  return color(h, 80, 90); // color with saturation
+}
+
+function getBgColor() {
+  const h = params.bgHue;
+  if (h === 0) return color(0, 0, 0); // black
+  if (h === 360) return color(0, 0, 100); // white
+  return color(h, 60, 30); // color with lower saturation/brightness
+}
+
+function drawLineGrid(warpSources) {
   const maxDim = max(width, height);
   const spacing = params.lineSpacing * params.gridSize;
-  
-  // Mixed mode: first layer is circles, rest are lines
+  const segment = max(6, spacing * 0.5);
+
   const layerIndex = window.currentLayerIndex || 0;
   const drawCircles = (layerIndex === 0);
   const drawLines = (layerIndex !== 0);
@@ -127,10 +181,25 @@ function drawLineGrid() {
       const pos = offset + i * spacing;
       if (linePattern === 0) {
         // Horizontal lines
-        line(-maxDim/2, pos, maxDim/2, pos);
+        beginShape();
+        for (let x = -maxDim/2; x <= maxDim/2; x += segment) {
+          const offsetY = liquifyOffsetAt(x, pos, warpSources, 'y');
+          vertex(x, pos + offsetY);
+        }
+        // Ensure the endpoint lands on the canvas edge
+        const offsetEdgeY = liquifyOffsetAt(maxDim/2, pos, warpSources, 'y');
+        vertex(maxDim/2, pos + offsetEdgeY);
+        endShape();
       } else {
         // Vertical lines
-        line(pos, -maxDim/2, pos, maxDim/2);
+        beginShape();
+        for (let y = -maxDim/2; y <= maxDim/2; y += segment) {
+          const offsetX = liquifyOffsetAt(pos, y, warpSources, 'x');
+          vertex(pos + offsetX, y);
+        }
+        const offsetEdgeX = liquifyOffsetAt(pos, maxDim/2, warpSources, 'x');
+        vertex(pos + offsetEdgeX, maxDim/2);
+        endShape();
       }
     }
   }
@@ -142,9 +211,51 @@ function drawLineGrid() {
     
     for (let i = 1; i <= count; i++) {
       const radius = i * spacing;
-      ellipse(0, 0, radius * 2, radius * 2);
+      const steps = max(32, floor((TWO_PI * radius) / segment));
+      beginShape();
+      for (let s = 0; s <= steps; s++) {
+        const a = (s / steps) * TWO_PI;
+        const px = cos(a) * radius;
+        const py = sin(a) * radius;
+        const offset = liquifyOffsetAt(px, py, warpSources, 'both');
+        const ox = px + offset.x;
+        const oy = py + offset.y;
+        vertex(ox, oy);
+      }
+      endShape();
     }
   }
+}
+
+function liquifyOffsetAt(x, y, sources, axis) {
+  if (!sources || sources.length === 0 || params.mouseForce <= 0 || params.mouseRadius <= 0) {
+    if (axis === 'both') return { x: 0, y: 0 };
+    return 0;
+  }
+  let bestForce = 0;
+  let bestDx = 0;
+  let bestDy = 0;
+  for (const s of sources) {
+    const dx = x - s.x;
+    const dy = y - s.y;
+    const dist = sqrt(dx * dx + dy * dy);
+    if (dist > params.mouseRadius || dist < 1e-6) continue;
+    const falloff = 1 - dist / params.mouseRadius;
+    const force = params.mouseForce * falloff * falloff * s.intensity;
+    const normForce = force / dist;
+    if (normForce > bestForce) {
+      bestForce = normForce;
+      bestDx = dx;
+      bestDy = dy;
+    }
+  }
+  if (bestForce === 0) {
+    if (axis === 'both') return { x: 0, y: 0 };
+    return 0;
+  }
+  if (axis === 'x') return bestDx * bestForce;
+  if (axis === 'y') return bestDy * bestForce;
+  return { x: bestDx * bestForce, y: bestDy * bestForce };
 }
 
 function drawLineGridToGraphics(pg, w, h) {
@@ -195,7 +306,10 @@ function setupControls() {
   const controls = {
     gridSize: { display: true, decimals: 1 },
     rotationSpeed: { display: true, decimals: 1 },
+    mouseForce: { display: true },
+    mouseRadius: { display: true },
     hue: { display: true },
+    bgHue: { display: true },
     lineSpacing: { display: true },
     layerCount: { display: true },
     layerRotation: { display: true }
@@ -229,22 +343,6 @@ function setupControls() {
   if (directionEl) {
     directionEl.addEventListener('change', (e) => {
       params.rotationDirection = parseInt(e.target.value);
-    });
-  }
-  
-  // Background color
-  const bgColorEl = document.getElementById('bgColor');
-  if (bgColorEl) {
-    bgColorEl.addEventListener('change', (e) => {
-      params.bgColor = e.target.value;
-    });
-  }
-  
-  // Line color
-  const lineColorEl = document.getElementById('lineColor');
-  if (lineColorEl) {
-    lineColorEl.addEventListener('change', (e) => {
-      params.lineColor = e.target.value;
     });
   }
   

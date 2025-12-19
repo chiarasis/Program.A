@@ -10,9 +10,9 @@ let params = {
   gridCols: 7,
   lineCount: 20,
   rotationAngle: 45,
-  brightness: 85,
+  hue: 120,
+  bgHue: 0,
   depth: 50,
-  colorScheme: 'green',
   animationSpeed: 0.3,
   perspective: 40
 };
@@ -44,7 +44,9 @@ function mulberry32(a) {
 
 function draw() {
   rng = mulberry32(seedValue);
-  background(0);
+  
+  const bgCol = getBgColor();
+  background(bgCol);
   
   const time = frameCount * 0.01 * params.animationSpeed;
   
@@ -88,11 +90,11 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
 }
 
 function drawDiagonalGrid(time) {
-  const baseHue = getColorHue();
+  const baseHue = params.hue;
   const cellW = width / params.gridCols;
   const cellH = height / params.gridRows;
   
-  blendMode(ADD);
+  blendMode(BLEND);
   
   for (let row = 0; row < params.gridRows; row++) {
     for (let col = 0; col < params.gridCols; col++) {
@@ -112,32 +114,23 @@ function drawDiagonalGrid(time) {
       
       for (let i = -numLines/2; i < numLines/2; i++) {
         const pos = i * spacing;
-        const brightness = map(params.brightness, 0, 100, 40, 100);
+        const brightness = 80;
         
-        // Multiple layers for glow
-        for (let layer = 2; layer >= 0; layer--) {
-          const thickness = 1 + layer;
-          const alpha = map(params.brightness, 0, 100, 8, 20) / (layer + 1);
-          
-          stroke(baseHue, 80, brightness, alpha);
-          strokeWeight(thickness);
-          line(-cellW, pos, cellW, pos);
-        }
+        // Draw lines
+        stroke(baseHue, 80, brightness);
+        strokeWeight(0.8);
+        line(-cellW, pos, cellW, pos);
       }
       
       pop();
     }
   }
-  
-  blendMode(BLEND);
 }
 
 function drawMoireGrid(time) {
-  const baseHue = getColorHue();
+  const baseHue = params.hue;
   const cellW = width / params.gridCols;
   const cellH = height / params.gridRows;
-  
-  background(0, 0, 10);
   
   for (let row = 0; row < params.gridRows; row++) {
     for (let col = 0; col < params.gridCols; col++) {
@@ -154,9 +147,9 @@ function drawMoireGrid(time) {
       // First layer - horizontal
       for (let i = -numLines/2; i < numLines/2; i++) {
         const pos = i * spacing;
-        const brightness1 = map(params.brightness, 0, 100, 60, 100);
+        const brightness1 = 80;
         
-        stroke(0, 0, brightness1, 30);
+        stroke(0, 0, brightness1);
         strokeWeight(2);
         line(-cellW/2, pos, cellW/2, pos);
       }
@@ -167,9 +160,9 @@ function drawMoireGrid(time) {
       
       for (let i = -numLines/2; i < numLines/2; i++) {
         const pos = i * spacing;
-        const brightness2 = map(params.brightness, 0, 100, 60, 100);
+        const brightness2 = 80;
         
-        stroke(baseHue, 70, brightness2, 30);
+        stroke(baseHue, 70, brightness2);
         strokeWeight(2);
         line(-cellW/2, pos, cellW/2, pos);
       }
@@ -178,43 +171,22 @@ function drawMoireGrid(time) {
       pop();
     }
   }
-  
-  // Add subtle glow where lines intersect
-  blendMode(ADD);
-  for (let row = 0; row < params.gridRows; row++) {
-    for (let col = 0; col < params.gridCols; col++) {
-      const x = col * cellW + cellW/2;
-      const y = row * cellH + cellH/2;
-      
-      const glowSize = params.depth;
-      for (let layer = 3; layer > 0; layer--) {
-        const size = glowSize * (layer / 3);
-        const alpha = 5 / layer;
-        
-        noStroke();
-        fill(baseHue, 60, map(params.brightness, 0, 100, 70, 100), alpha);
-        ellipse(x, y, size, size);
-      }
-    }
-  }
-  blendMode(BLEND);
 }
 
 function getColorHue() {
-  switch (params.colorScheme) {
-    case 'green': return 140;
-    case 'blue': return 210;
-    case 'cyan': return 180;
-    case 'white': return 0;
-    case 'yellow': return 60;
-    case 'orange': return 30;
-    default: return 140;
-  }
+  return params.hue;
+}
+
+function getBgColor() {
+  const h = params.bgHue;
+  if (h === 0) return color(0, 0, 0); // black
+  if (h === 360) return color(0, 0, 100); // white
+  return color(h, 60, 30); // color with lower saturation/brightness
 }
 
 function setupControls() {
   const rangeControls = ['gridRows', 'gridCols', 'lineCount', 'rotationAngle', 
-                         'brightness', 'depth', 'animationSpeed', 'perspective'];
+                         'depth', 'animationSpeed', 'perspective', 'hue', 'bgHue'];
   
   rangeControls.forEach(id => {
     const input = document.getElementById(id);
@@ -235,13 +207,6 @@ function setupControls() {
   if (patternTypeEl) {
     patternTypeEl.addEventListener('change', (e) => {
       params.patternType = e.target.value;
-    });
-  }
-  
-  const colorSchemeEl = document.getElementById('colorScheme');
-  if (colorSchemeEl) {
-    colorSchemeEl.addEventListener('change', (e) => {
-      params.colorScheme = e.target.value;
     });
   }
   
@@ -293,12 +258,25 @@ function exportPNG() {
   updateExportStatus('Esportazione PNG in corso...');
   const filename = `light-effects-${seedValue}.png`;
   
-  // Snapshot current canvas
-  const snapshot = get(0, 0, width, height);
-
-  // Create graphics and paste snapshot
+  // Create high-res graphics
   const pg = createGraphics(500, 750);
-  pg.image(snapshot, 0, 0, 500, 750);
+  pg.colorMode(HSB, 360, 100, 100, 100);
+  pg.background(getBgColor());
+  
+  // Re-seed and redraw pattern at high resolution
+  let rngLocal = mulberry32(seedValue);
+  const time = frameCount * 0.01 * params.animationSpeed;
+  
+  // Temporarily override for redraw
+  window.rngForExport = rngLocal;
+  
+  // Draw pattern based on current selection
+  if (params.patternType === 'diagonal-grid') {
+    drawDiagonalGridForExport(pg, time);
+  } else {
+    drawMoireGridForExport(pg, time);
+  }
+  
   drawPosterInfo(pg, 500, 750, 1, 'luce');
   const dataURL = pg.canvas.toDataURL('image/png');
   
@@ -327,9 +305,117 @@ function exportPNG() {
   save(pg, filename);
 }
 
+function drawDiagonalGridForExport(pg, time) {
+  const baseHue = params.hue;
+  const cellW = 500 / params.gridCols;
+  const cellH = 750 / params.gridRows;
+  
+  pg.blendMode(pg.ADD);
+  
+  for (let row = 0; row < params.gridRows; row++) {
+    for (let col = 0; col < params.gridCols; col++) {
+      const x = col * cellW;
+      const y = row * cellH;
+      
+      pg.push();
+      pg.translate(x + cellW/2, y + cellH/2);
+      
+      const rotationOffset = Math.sin(time + row * 0.3 + col * 0.3) * 0.2;
+      const angleRad = (params.rotationAngle + rotationOffset * 30) * Math.PI / 180;
+      pg.rotate(angleRad);
+      
+      const numLines = params.lineCount;
+      const spacing = Math.min(cellW, cellH) / numLines;
+      
+      for (let i = -numLines/2; i < numLines/2; i++) {
+        const pos = i * spacing;
+        const brightness = 80;
+        
+        for (let layer = 2; layer >= 0; layer--) {
+          const thickness = 1 + layer;
+          const alpha = 15 / (layer + 1);
+          
+          pg.stroke(baseHue, 80, brightness, alpha);
+          pg.strokeWeight(thickness);
+          pg.line(-cellW, pos, cellW, pos);
+        }
+      }
+      
+      pg.pop();
+    }
+  }
+  
+  pg.blendMode(pg.BLEND);
+}
+
+function drawMoireGridForExport(pg, time) {
+  const baseHue = params.hue;
+  const cellW = 500 / params.gridCols;
+  const cellH = 750 / params.gridRows;
+  
+  for (let row = 0; row < params.gridRows; row++) {
+    for (let col = 0; col < params.gridCols; col++) {
+      const x = col * cellW;
+      const y = row * cellH;
+      
+      pg.push();
+      pg.translate(x + cellW/2, y + cellH/2);
+      
+      const numLines = params.lineCount;
+      const spacing = Math.min(cellW, cellH) / numLines;
+      
+      for (let i = -numLines/2; i < numLines/2; i++) {
+        const pos = i * spacing;
+        const brightness1 = 80;
+        
+        pg.stroke(0, 0, brightness1, 30);
+        pg.strokeWeight(2);
+        pg.line(-cellW/2, pos, cellW/2, pos);
+      }
+      
+      pg.push();
+      const rotAngleRad = params.rotationAngle * Math.PI / 180;
+      pg.rotate(rotAngleRad + time * 0.5);
+      
+      for (let i = -numLines/2; i < numLines/2; i++) {
+        const pos = i * spacing;
+        const brightness2 = 80;
+        
+        pg.stroke(baseHue, 70, brightness2, 30);
+        pg.strokeWeight(2);
+        pg.line(-cellW/2, pos, cellW/2, pos);
+      }
+      
+      pg.pop();
+      pg.pop();
+    }
+  }
+  
+  pg.blendMode(pg.ADD);
+  for (let row = 0; row < params.gridRows; row++) {
+    for (let col = 0; col < params.gridCols; col++) {
+      const x = col * cellW + cellW/2;
+      const y = row * cellH + cellH/2;
+      
+      const glowSize = params.depth;
+      for (let layer = 3; layer > 0; layer--) {
+        const size = glowSize * (layer / 3);
+        const alpha = 5 / layer;
+        
+        pg.noStroke();
+        pg.fill(baseHue, 60, 85, alpha);
+        pg.ellipse(x, y, size, size);
+      }
+    }
+  }
+  pg.blendMode(pg.BLEND);
+}
+
 function updateExportStatus(message) {
   const statusEl = document.getElementById('exportStatus');
   if (statusEl) {
     statusEl.textContent = message;
   }
 }
+
+window.addEventListener('load', setupControls);

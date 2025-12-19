@@ -14,10 +14,9 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="control-section">
-          <h3>Parametri</h3>
           <div class="control-group">
             <label for="seed">Nome</label>
-            <input type="text" id="seed" value="12345" placeholder="Il tuo nome o numero">
+            <input type="text" id="seed" placeholder="Il tuo nome o numero">
           </div>
         </div>
 
@@ -30,32 +29,11 @@ import HeaderFixed from '../components/HeaderFixed.astro';
         </div>
 
         <div class="control-section">
-          <h3>Pixelazione</h3>
+          <h3>Pixel</h3>
           <div class="control-group">
             <label for="pixelSize">Dimensione Pixel</label>
             <input type="range" id="pixelSize" min="1" max="50" value="10" step="1">
             <span class="value-display" id="pixelSizeValue">10</span>
-          </div>
-        </div>
-
-        <div class="control-section">
-          <h3>Colore</h3>
-          <div class="control-group">
-            <label for="hueEnabled">Abilita Tinta</label>
-            <input type="checkbox" id="hueEnabled">
-          </div>
-          <div class="control-group">
-            <label for="hue">Tonalità</label>
-            <input type="range" id="hue" min="0" max="360" value="0" step="1">
-            <span class="value-display" id="hueValue">0</span>
-          </div>
-        </div>
-
-        <div class="control-section">
-          <h3>Animazione</h3>
-          <div class="control-group">
-            <label for="animate">Abilita Animazione</label>
-            <input type="checkbox" id="animate">
           </div>
           <div class="control-group">
             <label for="animationSpeed">Velocità</label>
@@ -69,13 +47,18 @@ import HeaderFixed from '../components/HeaderFixed.astro';
           </div>
         </div>
 
-        <div class="button-group">
-          <button id="playPause" class="btn-control">Pausa</button>
-          <button id="reset" class="btn-control">Reset</button>
+        <div class="control-section">
+          <h3>Colore</h3>
+          <div class="control-group">
+            <label for="hue">Colore Pixel</label>
+            <input type="range" id="hue" min="0" max="360" value="0" step="1">
+            <span class="value-display" id="hueValue">0</span>
+          </div>
         </div>
 
         <div class="button-group">
-          <button id="downloadPNG" class="btn-primary">Scarica PNG</button>
+          <button id="regenerate" class="btn-primary">Rigenera</button>
+          <button id="downloadPNG" class="btn-primary">Scarica immagine</button>
           <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 
