@@ -1,5 +1,5 @@
 ---
-import homeCssUrl from '../assets/home.css?url';
+import '../assets/home.css';
 
 interface Props {
   includeStyles?: boolean;
@@ -7,7 +7,6 @@ interface Props {
 
 const { includeStyles = true } = Astro.props;
 ---
-{includeStyles && <link rel="stylesheet" href={homeCssUrl} />}
 
 <footer class="site-footer">
   <div class="footer-col footer-section">

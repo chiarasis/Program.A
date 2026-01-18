@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
+import '../assets/editor.css';
 ---
 
 <Layout>
@@ -78,7 +79,7 @@ import HeaderFixed from '../components/HeaderFixed.astro';
           <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 
-        <a href="/editor" class="back-link">← Torna ai generatori</a>
+        <a href="/editor/" class="back-link">← Torna ai generatori</a>
       </aside>
 
       <section class="canvas-section">
@@ -94,7 +95,3 @@ import HeaderFixed from '../components/HeaderFixed.astro';
   <script src="/js/downloadNotification.js" is:inline></script>
   <script src="/js/lightEffectsEditor.js" is:inline></script>
 </Layout>
-
-<style>
-  @import '../assets/editor.css';
-</style>

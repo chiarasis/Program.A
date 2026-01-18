@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
+import '../assets/editor.css';
 ---
 
 <Layout>
@@ -62,7 +63,7 @@ import HeaderFixed from '../components/HeaderFixed.astro';
           <button id="downloadGIF" class="btn-secondary">Scarica GIF</button>
         </div>
 
-        <a href="/editor" class="back-link">← Torna ai generatori</a>
+        <a href="/editor/" class="back-link">← Torna ai generatori</a>
       </aside>
 
       <section class="canvas-section">
@@ -79,8 +80,6 @@ import HeaderFixed from '../components/HeaderFixed.astro';
 </Layout>
 
 <style>
-  @import '../assets/editor.css';
-  
   input[type="file"] {
     background: var(--acc-color);
     color: var(--text-light);

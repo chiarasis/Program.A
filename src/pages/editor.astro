@@ -2,24 +2,20 @@
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
 import Footer from '../components/Footer.astro';
+import '../assets/base.css';
 
 const editors = [
   { title: 'Trame visuali', description: `Intrecci costruiti per sovrapposizione di linee rette e curve.
-Variazione parametrica di intensità e rotazione.`, url: '/editor-griglie', style: 'Griglie / Dinamismo' },
+Variazione parametrica di intensità e rotazione.`, url: '/editor-griglie/', style: 'Griglie / Dinamismo' },
   { title: 'Cinetismi luminosi', description: `Griglie generate da sovrapposizioni di rettangoli ordinati in righe e colonne. Variazione parametrica di rotazione 
-e intensità luminosa.`, url: '/editor-luce', style: 'Luce / Frequenza' },
+e intensità luminosa.`, url: '/editor-luce/', style: 'Luce / Frequenza' },
   { title: 'Spazi magnetici', description: `Configurazioni spaziali di particelle generate da forze attrattive e repulsive. 
-Variazione parametrica di intensità e densità.`, url: '/editor-crashclock', style: 'Punti / Polarità' },
+Variazione parametrica di intensità e densità.`, url: '/editor-crashclock/', style: 'Punti / Polarità' },
   { title: 'Strutture discretizzate', description: `Composizioni ottenute attraverso pixelizzazione dell’immagine. 
-Variazione parametrica di scala e posizione dei moduli.`, url: '/editor-pixel', style: 'Mosaico / Astrazione' },
-  { title: 'Dinamiche ottiche', description: `Superfici romboidali cromaticamente caratterizzate. Variazione di pulsazioni crea un effetto visivo di profondità.`, url: '/editor-rombi', style: 'Rombi / Gradienti' },
+Variazione parametrica di scala e posizione dei moduli.`, url: '/editor-pixel/', style: 'Mosaico / Astrazione' },
+  { title: 'Dinamiche ottiche', description: `Superfici romboidali cromaticamente caratterizzate. Variazione di pulsazioni crea un effetto visivo di profondità.`, url: '/editor-rombi/', style: 'Rombi / Gradienti' },
 ];
 ---
-
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="/src/assets/base.css">
-</head>
 
     <Layout>
       <HeaderFixed />

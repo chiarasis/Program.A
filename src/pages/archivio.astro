@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeaderFixed from '../components/HeaderFixed.astro';
+import '../assets/archivio.css';
 
 const opereRaw = await import('../data/opere.json').then(m => m.default);
 
@@ -21,12 +22,12 @@ const opere = [...opereRaw].sort((a, b) => {
 });
 
 const editorMap = {
-  'trame visuali': { url: '/editor-griglie', label: 'Editor Griglie' },
-  'trame': { url: '/editor-griglie', label: 'Editor Griglie' },
-  'cinetismi luminosi': { url: '/editor-luce', label: 'Editor Luce' },
-  'spazi magnetici': { url: '/editor-crashclock', label: 'Editor Crash Clock' },
-  'strutture discretizzate': { url: '/editor-pixel', label: 'Editor Pixel' },
-  'dinamiche ottiche': { url: '/editor-rombi', label: 'Editor Rombi' }
+  'trame visuali': { url: '/editor-griglie/', label: 'Editor Griglie' },
+  'trame': { url: '/editor-griglie/', label: 'Editor Griglie' },
+  'cinetismi luminosi': { url: '/editor-luce/', label: 'Editor Luce' },
+  'spazi magnetici': { url: '/editor-crashclock/', label: 'Editor Crash Clock' },
+  'strutture discretizzate': { url: '/editor-pixel/', label: 'Editor Pixel' },
+  'dinamiche ottiche': { url: '/editor-rombi/', label: 'Editor Rombi' }
 };
 
 const pickEditor = (opera) => {
@@ -35,13 +36,11 @@ const pickEditor = (opera) => {
   if (key && editorMap[key]) {
     return editorMap[key];
   }
-  return { url: '/editor', label: 'Editor generale' };
+  return { url: '/editor/', label: 'Editor generale' };
 };
 ---
 <head>
 	<meta charset="UTF-8">
-  <link rel="stylesheet" href="/src/assets/archivio.css">
-
 </head>
 <Layout>
   <HeaderFixed currentPage="archivio" />
