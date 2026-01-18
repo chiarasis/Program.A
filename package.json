@@ -9,6 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "astro": "^5.15.9"
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.13.4"
   }
 }
