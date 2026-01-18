@@ -179,7 +179,7 @@ color: var(--acc-color);}
   width: calc(80%);
   height: 54%;
   bottom: -1px;
-  right: -2px;
+  right: 10px;
 }
 
 .clock-container.fixed #live-clock { color: var(--bg-dark); }

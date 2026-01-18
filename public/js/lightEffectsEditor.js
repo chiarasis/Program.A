@@ -3,6 +3,29 @@ let seedText = '';
 let seedValue = 12345;
 let rng;
 
+// Download helper to ensure stable, single download per click
+function downloadCanvas(canvas, filename, mime = 'image/png') {
+  const link = document.createElement('a');
+  link.download = filename;
+  if (canvas.toBlob) {
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }, mime, 0.95);
+  } else {
+    const dataURL = canvas.toDataURL(mime, 0.95);
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+}
+
 // Parameters
 let params = {
   patternType: 'diagonal-grid',
@@ -81,7 +104,8 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   // Bottom left: Seed info
   pg.textAlign(pg.LEFT, pg.BOTTOM);
   pg.textSize(10 * scale);
-  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+  pg.text(userLabel, 20 * scale, exportHeight - 20 * scale);
   
   // Bottom right: Editor name
   pg.textAlign(pg.RIGHT, pg.BOTTOM);
@@ -255,7 +279,7 @@ function updateURL() {
 }
 
 function exportPNG() {
-  updateExportStatus('Esportazione PNG in corso...');
+  // Status message disabled (avoids overlay text in canvas area)
   const filename = `light-effects-${seedValue}.png`;
   
   // Create high-res graphics
@@ -289,20 +313,15 @@ function exportPNG() {
       height: 750
     }).then(() => {
       if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
-      updateExportStatus('PNG scaricato!');
-      setTimeout(() => updateExportStatus(''), 2000);
     }).catch(err => {
       console.error('Failed to save poster:', err);
-      updateExportStatus('PNG scaricato!');
-      setTimeout(() => updateExportStatus(''), 2000);
     });
   } else {
-    updateExportStatus('PNG scaricato!');
-    setTimeout(() => updateExportStatus(''), 2000);
+    // no-op
   }
   
-  // Save using p5.js save function
-  save(pg, filename);
+  // Single, reliable download trigger
+  downloadCanvas(pg.canvas, filename, 'image/png');
 }
 
 function drawDiagonalGridForExport(pg, time) {
@@ -411,11 +430,7 @@ function drawMoireGridForExport(pg, time) {
   pg.blendMode(pg.BLEND);
 }
 
-function updateExportStatus(message) {
-  const statusEl = document.getElementById('exportStatus');
-  if (statusEl) {
-    statusEl.textContent = message;
-  }
-}
+// Status updates disabled to avoid overlay text appearing in the editor view
+function updateExportStatus(_) {}
 
 window.addEventListener('load', setupControls);

@@ -28,6 +28,29 @@ let startFrame = 0;
 let particles = [];
 let dragging = false;
 
+// Download helper for consistent single downloads per click
+function downloadCanvas(canvas, filename, mime = 'image/png') {
+  const link = document.createElement('a');
+  link.download = filename;
+  if (canvas.toBlob) {
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }, mime, 0.95);
+  } else {
+    const dataURL = canvas.toDataURL(mime, 0.95);
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+}
+
 function setup() {
   const c = createCanvas(params.posterW, params.posterH);
   c.parent('canvasContainer');
@@ -187,7 +210,7 @@ function setupControls() {
     }
 
     // Save using p5.js save function
-    save(pg, filename);
+      downloadCanvas(pg.canvas, filename);
   });
   
   const gifBtn = q('downloadGIF');
@@ -235,7 +258,8 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   // Bottom left: Seed info
   pg.textAlign(pg.LEFT, pg.BOTTOM);
   pg.textSize(10 * scale);
-  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+  pg.text(userLabel, 20 * scale, exportHeight - 20 * scale);
   
   // Bottom right: Editor name
   pg.textAlign(pg.RIGHT, pg.BOTTOM);

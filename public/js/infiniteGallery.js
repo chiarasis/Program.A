@@ -135,6 +135,7 @@ function createPosterCard(poster, x, y) {
 
   const editorName = poster.editor.charAt(0).toUpperCase() + poster.editor.slice(1);
   const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
+  const userLabel = (poster.seed ?? '').toString().trim();
 
   card.innerHTML = `
     <div class="poster-preview">
@@ -148,7 +149,7 @@ function createPosterCard(poster, x, y) {
     <div class="poster-info">
       <h3>${editorName}</h3>
       <p>${date}</p>
-        ${poster.seed ? `<p class="poster-seed">Seed: ${poster.seed}</p>` : ''}
+        ${userLabel ? `<p class="poster-seed">${userLabel}</p>` : ''}
       <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
     </div>
   `;
