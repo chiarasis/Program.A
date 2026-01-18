@@ -15,6 +15,29 @@ let params = {
   pulseAmount: 0.25
 };
 
+// Download helper to keep PNG exports reliable across repeated clicks
+function downloadCanvas(canvas, filename, mime = 'image/png') {
+  const link = document.createElement('a');
+  link.download = filename;
+  if (canvas.toBlob) {
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }, mime, 0.95);
+  } else {
+    const dataURL = canvas.toDataURL(mime, 0.95);
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+}
+
 function setup() {
   const canvas = createCanvas(500, 750);
   canvas.parent('canvasContainer');
@@ -155,7 +178,8 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   // Bottom left: Seed info
   pg.textAlign(pg.LEFT, pg.BOTTOM);
   pg.textSize(10 * scale);
-  pg.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+  pg.text(userLabel, 20 * scale, exportHeight - 20 * scale);
   
   // Bottom right: Editor name
   pg.textAlign(pg.RIGHT, pg.BOTTOM);
@@ -172,7 +196,14 @@ function exportPNG() {
   const pg = createGraphics(W, H);
   pg.colorMode(HSB, 360, 100, 100, 100);
   pg.angleMode(DEGREES);
-  pg.background(0, 0, 0);
+  // Match preview background (HSB): 0 = black, 360 = white, else hue with low saturation/brightness
+  if (params.bgHue === 0) {
+    pg.background(0, 0, 0);
+  } else if (params.bgHue === 360) {
+    pg.background(0, 0, 100);
+  } else {
+    pg.background(params.bgHue, 60, 30);
+  }
   pg.push();
   pg.translate(W/2, H/2);
   pg.scale(params.scale * (W / width));
@@ -229,18 +260,13 @@ function exportPNG() {
       if (window.showDownloadSuccess) {
         window.showDownloadSuccess('Rombi');
       }
-      // Download the file
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = filename;
-      link.click();
     }).catch(err => {
       console.error('Failed to save poster:', err);
     });
   }
-  
-  // save the graphics
-  save(pg, filename);
+
+  // Single, reliable download trigger
+  downloadCanvas(pg.canvas, filename);
 }
 
 function exportGIF() {

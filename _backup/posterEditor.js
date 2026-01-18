@@ -56,6 +56,65 @@ function getParams() {
   };
 }
 
+// Determine high-contrast text color based on background
+function getTextColor(bgColor) {
+  if (!bgColor) return '#000000';
+  // Expecting #RRGGBB; fallback to black if parsing fails
+  const hex = bgColor.trim();
+  const normalized = hex.startsWith('#') ? hex.slice(1) : hex;
+  const full = normalized.length === 3
+    ? normalized.split('').map(c => c + c).join('')
+    : normalized;
+  if (full.length !== 6) return '#000000';
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  if ([r, g, b].some(v => Number.isNaN(v))) return '#000000';
+  // Relative luminance per WCAG
+  const srgb = [r, g, b].map(v => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  const luminance = 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+  return luminance > 0.5 ? '#000000' : '#FFFFFF';
+}
+
+// Build user label (prefer text input, fallback to numeric seed)
+function getUserLabel(params) {
+  const raw = controls.seed?.value || '';
+  const trimmed = raw.trim();
+  if (trimmed) return trimmed;
+  return params.seed.toString();
+}
+
+// Overlay with title, date, user label, editor name
+function drawPosterInfo(ctx, w, h, scale, params) {
+  const textColor = getTextColor(params.bgColor);
+  const label = getUserLabel(params);
+
+  ctx.fill(textColor);
+  ctx.noStroke();
+  ctx.textFont('monospace');
+
+  ctx.textAlign(ctx.LEFT, ctx.TOP);
+  ctx.textSize(16 * scale);
+  ctx.text('Program.A', 20 * scale, 20 * scale);
+
+  ctx.textAlign(ctx.RIGHT, ctx.TOP);
+  ctx.textSize(12 * scale);
+  const today = new Date();
+  const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+  ctx.text(dateStr, w - 20 * scale, 20 * scale);
+
+  ctx.textAlign(ctx.LEFT, ctx.BOTTOM);
+  ctx.textSize(10 * scale);
+  ctx.text(label, 20 * scale, h - 20 * scale);
+
+  ctx.textAlign(ctx.RIGHT, ctx.BOTTOM);
+  ctx.textSize(14 * scale);
+  ctx.text('POSTER EDITOR', w - 20 * scale, h - 20 * scale);
+}
+
 // Update output displays
 function updateOutputs() {
   outputs.shapeCount.textContent = controls.shapeCount.value;
@@ -191,6 +250,8 @@ const sketch = (p) => {
   
   // Export high-res
   p.exportHighRes = (scale = 2) => {
+    // Re-read params at click time to avoid stale values
+    params = getParams();
     const baseW = 1000;
     const baseH = 1500;
     const exportW = baseW * scale;
@@ -206,18 +267,25 @@ const sketch = (p) => {
     };
     
     drawPoster(g, exportW, exportH, scaledParams);
+    drawPosterInfo(g, exportW, exportH, scale, scaledParams);
     
     try {
       const dataURL = g.canvas.toDataURL('image/jpeg', 0.95);
       const a = document.createElement('a');
       a.href = dataURL;
-      a.download = `poster-seed${params.seed}-${exportW}x${exportH}.jpg`;
+      const label = getUserLabel(params).replace(/\s+/g, '-');
+      a.download = `poster-${label}-${exportW}x${exportH}.jpg`;
       document.body.appendChild(a);
       a.click();
       a.remove();
     } catch (err) {
       console.error('Export failed:', err);
       alert('Export fallito: ' + err.message);
+    } finally {
+      // Clean up the offscreen graphics to avoid memory leaks on repeated downloads
+      if (g && typeof g.remove === 'function') {
+        g.remove();
+      }
     }
   };
   

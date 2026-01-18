@@ -7,6 +7,11 @@ let seedText = '';
 let rng;
 let angle = 0;
 
+function getUserLabel() {
+  const t = (seedText || '').trim();
+  return t || seedValue.toString();
+}
+
 // Parameters
 let params = {
   rotationSpeed: 1,
@@ -485,9 +490,14 @@ function exportPosterWithFrame() {
   const posterCanvas = createGraphics(exportWidth, exportHeight);
   posterCanvas.colorMode(HSB, 360, 100, 100, 100);
   
-  // Background
-  const bgCol = params.bgColor === 'black' ? posterCanvas.color(0) : posterCanvas.color(255);
-  posterCanvas.background(bgCol);
+  // Background (match preview hue control)
+  if (params.bgHue === 0) {
+    posterCanvas.background(0, 0, 0);
+  } else if (params.bgHue === 360) {
+    posterCanvas.background(0, 0, 100);
+  } else {
+    posterCanvas.background(params.bgHue, 60, 30);
+  }
   
   // Line colors
   let lineCol;
@@ -523,7 +533,8 @@ function exportPosterWithFrame() {
   posterCanvas.pop();
   
   // Add overlaid text information
-  const textCol = params.bgColor === 'black' ? 255 : 0; // Text color opposite of bg
+  // Text color: choose contrast based on background hue
+  const textCol = (params.bgHue === 0) ? 255 : (params.bgHue === 360 ? 0 : 255);
   posterCanvas.fill(textCol);
   posterCanvas.noStroke();
   posterCanvas.textAlign(LEFT, TOP);
@@ -545,7 +556,7 @@ function exportPosterWithFrame() {
   // Bottom left: Seed info
   posterCanvas.textAlign(LEFT, BOTTOM);
   posterCanvas.textSize(10 * scale);
-  posterCanvas.text(`SEED: ${seedValue}`, 20 * scale, exportHeight - 20 * scale);
+  posterCanvas.text(getUserLabel(), 20 * scale, exportHeight - 20 * scale);
   
   // Bottom right: Griglie
   posterCanvas.textAlign(RIGHT, BOTTOM);
