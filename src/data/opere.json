@@ -107,7 +107,7 @@
     "technique": "Acciao, metacrilato, cm 50x50",
     "location": "Deposito GAM Torino",
     "image": "/drive-opere/Devecchi_Strutturazione triangolare.jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
     "id": 11,
@@ -118,7 +118,7 @@
     "technique": "Alluminio, metacrilato trasparente, motore, cm 50 (diametro)",
     "location": "Francoforte, V.A.F. Collection",
     "image": "/drive-opere/Devecchi_Deformazione Kerki .jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
     "id": 12,
@@ -129,7 +129,7 @@
     "technique": "Legno, lamiera nera traforata, PCV bianco, motorino elettrico, cm 60x60x10",
     "location": "",
     "image": "/drive-opere/Devecchi_u.r.m.n.t..jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
     "id": 13,
@@ -150,7 +150,7 @@
     "group": "Gruppo T",
     "technique": "Legno, specchi, Plexiglas, lampade, motore, cm 360 x 360 x 250",
     "location": "Milano, Museo del Novecento",
-    "image": "/drive-opere/Boriani_Ambiente stroboscopico n° 4.jpg",
+    "image": "/drive-opere/Boriani_Ambiente stroboscopico n. 4.jpg",
     "editorTitle": ""
   },
   {
@@ -184,7 +184,7 @@
     "technique": "Ferro, vetro, animazione elettromeccanica, cm 60 × 45 × 15",
     "location": "",
     "image": "/drive-opere/Colombo_Strutturazione fluida.jpg",
-    "editorTitle": ""
+    "editorTitle": "Spazi Magnetici"
   },
   {
     "id": 18,
@@ -307,7 +307,17 @@
     "image": "/drive-opere/Mari_Opera n.649.png",
     "editorTitle": "Strutture discretizzate"
   },
-  
+  {
+    "id": 29,
+    "title": "Senza titolo",
+    "artist": "Alberto Biasi, Edoardo Landi",
+    "year": "1964",
+    "group": "Gruppo N",
+    "technique": "Collage su base serigrafica, cm 64,5x65,5",
+    "location": "",
+    "image": "/drive-opere/Biasi_Landi_Senza titolo.jpg",
+    "editorTitle": "Strutture discretizzate"
+  },
   {
     "id": 30,
     "title": "Dinamica visuale",
@@ -369,7 +379,7 @@
     "artist": "Ennio Chiggio",
     "year": "1966",
     "group": "Gruppo N",
-    "technique": "Doppia lastra in plexiglas aerografato, cornice in legno, cm 47x47x10",
+    "technique": "Doppia lastra in plexiglass aerografato, cornice in legno, cm 47x47x10",
     "location": "",
     "image": "/drive-opere/Chiggio_interferenza lineare 13.2.jpg",
     "editorTitle": "Strutture discretizzate"
@@ -405,7 +415,7 @@
     "technique": "Lastra in plexiglass fluorescente giallo trasparente incisa al laser, cm 45x45x5",
     "location": "",
     "image": "/drive-opere/Chiggio_Interferenza lineare 2 .jpg",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
     "id": 39,
@@ -449,7 +459,7 @@
     "technique": "Vetro belga a tramatura tonda lenticolare, disegno su pellicola tipografica, cornice di legno laminato, cm 42x42x6",
     "location": "",
     "image": "/drive-opere/Chiggio_Diffrazione Mobile a Losanghe.jpg",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
     "id": 43,
@@ -471,7 +481,7 @@
     "technique": "Tecnica mista su carta, 18,8cm x 18,8cm",
     "location": "",
     "image": "/drive-opere/Landi_Struttura visuale + influenza cromatica.jpg",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
     "id": 45,
@@ -482,7 +492,7 @@
     "technique": "Acrilico ed elastico su tavola, 71.5 x 71.5 cm",
     "location": "",
     "image": "/drive-opere/Landi_Struttura visuale.jpg",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
     "id": 46,
@@ -493,7 +503,7 @@
     "technique": "olio e tecnica mista su cartoncino cm.24x24",
     "location": "",
     "image": "/drive-opere/Landi_Struttura visuale + influenza cromatica.jpg",
-    "editorTitle": ""
+    "editorTitle": "Dinamiche ottiche"
   },
   {
     "id": 47,
@@ -515,7 +525,7 @@
     "technique": "Collage di cartoncini colorati su carta, 14 x 14 cm",
     "location": "",
     "image": "/drive-opere/Landi_Senza titolo.png",
-    "editorTitle": ""
+    "editorTitle": "Strutture discretizzate"
   },
   {
     "id": 49,
@@ -530,17 +540,6 @@
   },
   {
     "id": 50,
-    "title": "Senza titolo",
-    "artist": "Edoardo Landi, Alberto Biasi",
-    "year": "1964",
-    "group": "Gruppo N",
-    "technique": "serigrafia e collage su cartone, 50 x 50 cm",
-    "location": "",
-    "image": "/drive-opere/Biasi_Landi_Senza titolo.jpg",
-    "editorTitle": ""
-  },
-  {
-    "id": 51,
     "title": "Riflessione sferica verticale",
     "artist": "Edoardo Landi",
     "year": "1967",
@@ -548,10 +547,10 @@
     "technique": "Semisfere in acciaio cromato e cartoncini serigrafati su legno dipinto, cm 70x70x8,5",
     "location": "",
     "image": "/drive-opere/Landi_Riflessione sferica verticale.jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
-    "id": 52,
+    "id": 51,
     "title": "Cineriflessione sferica variabile",
     "artist": "Edoardo Landi",
     "year": "1967-69",
@@ -559,10 +558,10 @@
     "technique": "Acciaio cromato e cartone stampato, 74 × 73 × 9 cm",
     "location": "",
     "image": "/drive-opere/Landi_Cineriflessione sferica variabile.webp",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
-    "id": 53,
+    "id": 52,
     "title": "Senza titolo",
     "artist": "Edoardo Landi",
     "year": "1972",
@@ -573,7 +572,7 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 54,
+    "id": 53,
     "title": "S. O. 64.",
     "artist": "Edoardo Landi",
     "year": "1971",
@@ -584,7 +583,7 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 55,
+    "id": 54,
     "title": "Struttura visuale",
     "artist": "Edoardo Landi",
     "year": "1961-1962",
@@ -592,21 +591,10 @@
     "technique": "Acrilico ed elastico su tavola, 100 × 100 × 2 cm",
     "location": "",
     "image": "/drive-opere/Landi_Struttura visuale 01.png",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
-    "id": 56,
-    "title": "Senza titolo",
-    "artist": "Alberto Biasi e Edoardo Landi",
-    "year": "1964",
-    "group": "Gruppo N",
-    "technique": "(cm 45x45)",
-    "location": "",
-    "image": "/drive-opere/Landi_Senza titolo.png",
-    "editorTitle": "Strutture discretizzate"
-  },
-  {
-    "id": 57,
+    "id": 55,
     "title": "Light prisms",
     "artist": "Alberto Biasi",
     "year": "1967",
@@ -614,10 +602,10 @@
     "technique": "Legno, acrilico, specchi, plexiglass, motore, cm 50 x 38 x 68",
     "location": "",
     "image": "/drive-opere/Biasi_light prisms.jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
-    "id": 58,
+    "id": 56,
     "title": "Dinamica o Gocce",
     "artist": "Alberto Biasi",
     "year": "1968",
@@ -628,7 +616,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 59,
+    "id": 57,
     "title": "Rilievo ottico dinamico",
     "artist": "Alberto Biasi",
     "year": "1964",
@@ -639,7 +627,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 60,
+    "id": 58,
     "title": "Politipo",
     "artist": "Alberto Biasi",
     "year": "1971",
@@ -650,7 +638,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 61,
+    "id": 59,
     "title": "Trama",
     "artist": "Alberto Biasi",
     "year": "1959",
@@ -661,7 +649,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 62,
+    "id": 60,
     "title": "Trama, oltre il velo di Trono Ludovisi...la nascita di Afrodite Trama",
     "artist": "Alberto Biasi",
     "year": "1960",
@@ -672,7 +660,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 63,
+    "id": 61,
     "title": "Trame",
     "artist": "Alberto Biasi",
     "year": "1960",
@@ -683,7 +671,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 64,
+    "id": 62,
     "title": "Dinamica visiva triangolare",
     "artist": "Alberto Biasi",
     "year": "1965-1978",
@@ -694,7 +682,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 65,
+    "id": 63,
     "title": "Immaginazione dinamica",
     "artist": "Alberto Biasi",
     "year": "1965-68",
@@ -705,7 +693,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 66,
+    "id": 64,
     "title": "Oggetto ottico-dinamico",
     "artist": "Alberto Biasi",
     "year": "1960",
@@ -716,7 +704,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 67,
+    "id": 65,
     "title": "Dinamica visuale",
     "artist": "Alberto Biasi",
     "year": "1959",
@@ -727,7 +715,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 68,
+    "id": 66,
     "title": "Dinamica romboidale",
     "artist": "Alberto Biasi",
     "year": "1968",
@@ -738,7 +726,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 69,
+    "id": 67,
     "title": "Struttura a quadrati rotati",
     "artist": "Manfredo Massironi",
     "year": "1964",
@@ -746,32 +734,32 @@
     "technique": "Scultura in legno sagomato (cm 52x52x5,5)",
     "location": "",
     "image": "/drive-opere/Massironi_struttura a quadrati rotati.png",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
-    "id": 70,
+    "id": 68,
     "title": "Assemblaggio",
     "artist": "Manfredo Massironi",
     "year": "1965",
     "group": "Gruppo N",
-    "technique": "Alluminio, legno, plexiglas (cm 60x60)",
+    "technique": "Alluminio, legno, plexiglass (cm 60x60)",
     "location": "",
     "image": "/drive-opere/massironi_assemblaggio.webp",
-    "editorTitle": ""
+    "editorTitle": "Trame Visuali"
   },
   {
-    "id": 71,
-    "title": "Ipercubo Plexiglass",
+    "id": 69,
+    "title": "Ipercubo Plexiglas",
     "artist": "Manfredo Massironi",
     "year": "1963",
     "group": "Gruppo N",
-    "technique": "Plexiglas (cm 40,9x37,5x37,5)",
+    "technique": "Plexiglass (cm 40,9x37,5x37,5)",
     "location": "",
     "image": "/drive-opere/massiron_ipercubo plexiglass.png",
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 72,
+    "id": 70,
     "title": "C + Q2 - M",
     "artist": "Manfredo Massironi",
     "year": "1965",
@@ -782,7 +770,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 73,
+    "id": 71,
     "title": "C + Q2 - M",
     "artist": "Manfredo Massironi",
     "year": "1965",
@@ -793,7 +781,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 74,
+    "id": 72,
     "title": "C + Q2 - M",
     "artist": "Manfredo Massironi",
     "year": "1965",
@@ -804,7 +792,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 75,
+    "id": 73,
     "title": "Fotoriflessione variabile",
     "artist": "Manfredo Massironi",
     "year": "1962",
@@ -812,10 +800,10 @@
     "technique": "Legno, specchio, lampadine (cm 51,5x50x30)",
     "location": "",
     "image": "/drive-opere/massironi_fotoriflessione variabile.jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
-    "id": 76,
+    "id": 74,
     "title": "Fotoriflessione variabile",
     "artist": "Manfredo Massironi",
     "year": "1962",
@@ -823,10 +811,10 @@
     "technique": "Elettromotore, specchi e lampade  (cm 51x48x28)",
     "location": "",
     "image": "/drive-opere/massironi_fotoriflessione variabile_2.jpg",
-    "editorTitle": ""
+    "editorTitle": "Cinetismi Luminosi"
   },
   {
-    "id": 77,
+    "id": 75,
     "title": "Linea",
     "artist": "Toni Costa",
     "year": "1969",
@@ -837,7 +825,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 78,
+    "id": 76,
     "title": "Dinamica visuale",
     "artist": "Toni Costa",
     "year": "1969",
@@ -848,7 +836,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 79,
+    "id": 77,
     "title": "Dinamica Visuale",
     "artist": "Toni Costa",
     "year": "1967",
@@ -859,7 +847,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 80,
+    "id": 78,
     "title": "Alternazione Visuale",
     "artist": "Toni Costa",
     "year": "1967",
@@ -870,7 +858,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 81,
+    "id": 79,
     "title": "Struttura 862",
     "artist": "Enzo Mari",
     "year": "1967",
@@ -881,18 +869,18 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 82,
+    "id": 80,
     "title": "Struttura 918",
     "artist": "Enzo Mari",
     "year": "1968",
     "group": "In nessun gruppo",
     "technique": "Alluminio anodittato naturale e nero (cm 91x 91x 11,5)",
     "location": "",
-    "image": "/drive-opere/Mari_struttura 1918.jpg",
+    "image": "/drive-opere/Mari_struttura 918.jpg",
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 83,
+    "id": 81,
     "title": "Ambiente Torviscosa",
     "artist": "Enzo Mari",
     "year": "1963",
@@ -903,7 +891,7 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 84,
+    "id": 82,
     "title": "Sruttura 726",
     "artist": "Enzo Mari",
     "year": "1963",
@@ -914,7 +902,7 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 85,
+    "id": 83,
     "title": "Struttura 444",
     "artist": "Enzo Mari",
     "year": "1958",
@@ -925,7 +913,7 @@
     "editorTitle": ""
   },
   {
-    "id": 86,
+    "id": 84,
     "title": "Struttura 527",
     "artist": "Enzo Mari",
     "year": "1958",
@@ -936,7 +924,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 87,
+    "id": 85,
     "title": "Struttura 725",
     "artist": "Enzo Mari",
     "year": "",
@@ -947,7 +935,7 @@
     "editorTitle": "Strutture discretizzate"
   },
   {
-    "id": 88,
+    "id": 86,
     "title": "Visione dinamica",
     "artist": "Gruppo N",
     "year": "1962",
@@ -958,7 +946,7 @@
     "editorTitle": "Trame Visuali"
   },
   {
-    "id": 89,
+    "id": 87,
     "title": "Interferenza geometrica",
     "artist": "Gruppo N",
     "year": "1962",
@@ -969,7 +957,7 @@
     "editorTitle": "Dinamiche ottiche"
   },
   {
-    "id": 90,
+    "id": 88,
     "title": "Spazio instabile",
     "artist": "Gruppo N",
     "year": "1962",

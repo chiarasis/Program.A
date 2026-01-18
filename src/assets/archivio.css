@@ -80,7 +80,7 @@
     width: 50%;
     height: calc(100vh - 50px);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 80px 60px;
     z-index: 5;
@@ -90,6 +90,7 @@
     max-width: 500px;
     width: 100%;
     position: relative;
+    transform: translateY(15vh);
   }
 
   .opera-details {
@@ -214,6 +215,10 @@
     .details-container {
       width: 100%;
       position: relative;
+    }
+
+    .details-content {
+      transform: none;
     }
 
     .rolodex-container {

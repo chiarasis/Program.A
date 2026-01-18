@@ -4,7 +4,7 @@ import json
 import os
 import glob
 
-csv_path = '/Users/afe28/Downloads/Culturiamoci Archivio Foglio1 (1).csv'
+csv_path = '/Users/afe28/Downloads/Culturiamoci Archivio Foglio1 (2).csv'
 output_path = '/Users/afe28/Documents/GitHub/Program.A/src/data/opere.json'
 images_dir = '/Users/afe28/Documents/GitHub/Program.A/public/drive-opere'
 
