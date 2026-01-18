@@ -1,19 +1,21 @@
 ---
+import homeCssUrl from '../assets/home.css?url';
+
 interface Props {
   includeStyles?: boolean;
 }
 
 const { includeStyles = true } = Astro.props;
 ---
-{includeStyles && <link rel="stylesheet" href="/src/assets/home.css" />}
+{includeStyles && <link rel="stylesheet" href={homeCssUrl} />}
 
 <footer class="site-footer">
   <div class="footer-col footer-section">
     <ul class="footer-links">
-      <li><a href="index.html" class="nav-link footer">home</a></li>
-      <li><a href="archivio.html" class="nav-link footer">archivio</a></li>
-      <li><a href="editor.html" class="nav-link footer">editor</a></li>
-      <li><a href="galleria.html" class="nav-link footer">galleria</a></li>
+      <li><a href="/" class="nav-link footer">home</a></li>
+      <li><a href="/archivio/" class="nav-link footer">archivio</a></li>
+      <li><a href="/editor/" class="nav-link footer">editor</a></li>
+      <li><a href="/public-work/" class="nav-link footer">galleria</a></li>
     </ul>
   </div>
 
@@ -42,7 +44,7 @@ const { includeStyles = true } = Astro.props;
   </div>
 
   <div class="footer-col footer-right">
-    <img src="/public/Logo_Politecnico_Milano.png" alt="Politecnico di Milano" class="footer-logo" />
+    <img src="/Logo_Politecnico_Milano.png" alt="Politecnico di Milano" class="footer-logo" />
   </div>
 </footer>
 

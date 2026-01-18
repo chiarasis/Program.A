@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Ensure trailing slash behavior is preserved. Netlify serves directories as /path/
+# Astro already outputs with trailingSlash = "always".
+# Optional: Add redirects if needed in future.

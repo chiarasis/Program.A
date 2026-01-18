@@ -1,4 +1,6 @@
 ---
+import homeCssUrl from '../assets/home.css?url';
+
 interface Props {
   fixed?: boolean;
   includeStyles?: boolean;
@@ -9,14 +11,14 @@ const { fixed = false, includeStyles = true } = Astro.props;
 const headerClass = `site-header${fixed ? ' fixed' : ''}`;
 const clockClass = `clock-container${fixed ? ' fixed' : ''}`;
 ---
-{includeStyles && <link rel="stylesheet" href="/src/assets/home.css" />}
+{includeStyles && <link rel="stylesheet" href={homeCssUrl} />}
 
 <header class={headerClass}>
   <nav class="header-nav">
     <a href="/" class="nav-link">Home</a>
-    <a href="/archivio" class="nav-link">Archivio</a>
-    <a href="/editor" class="nav-link">Editor</a>
-    <a href="/public-work" class="nav-link">Galleria</a>
+    <a href="/archivio/" class="nav-link">Archivio</a>
+    <a href="/editor/" class="nav-link">Editor</a>
+    <a href="/public-work/" class="nav-link">Galleria</a>
   </nav>
 </header>
 
