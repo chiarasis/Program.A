@@ -239,7 +239,7 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   const textCol = 255; // White text
   pg.fill(textCol);
   pg.noStroke();
-  pg.textFont('monospace');
+  pg.textFont('Funnel Display');
   
   // Top left: Program.A logo
   pg.textAlign(pg.LEFT, pg.TOP);
@@ -320,7 +320,7 @@ function exportPNG() {
   pg.pop();
   
   // Add info overlay
-  drawPosterInfo(pg, W, H, 1, 'rombi');
+  drawPosterInfo(pg, W, H, 1, 'Dinamiche ottiche');
   
   // Get canvas data URL for storage (JPEG 70% for smaller file size)
   const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
@@ -372,7 +372,12 @@ function exportGIF() {
   }
   
   console.log('Creazione GIF avviata');
-  createGIF();
+  const start = () => createGIF();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(start);
+  } else {
+    start();
+  }
 
   function createGIF() {
     console.log('createGIF interno avviato');
@@ -380,6 +385,8 @@ function exportGIF() {
     const W = 500; 
     const H = 750;
     const off = createGraphics(W, H);
+    // Ensure canvas size matches GIF target exactly (avoid HiDPI cropping)
+    if (off.pixelDensity) off.pixelDensity(1);
     off.colorMode(HSB, 360, 100, 100, 100);
     off.angleMode(DEGREES);
 
@@ -434,7 +441,7 @@ function exportGIF() {
       off.pop();
       
       // Add poster info overlay to each frame
-      drawPosterInfo(off, W, H, 1, 'rombi');
+      drawPosterInfo(off, W, H, 1, 'Dinamiche ottiche');
       
       gif.addFrame(off.canvas, {copy: true, delay: 33});
     }
@@ -452,6 +459,7 @@ function exportGIF() {
       const W = 500;
       const H = 750;
       const pg = createGraphics(W, H);
+      if (pg.pixelDensity) pg.pixelDensity(1);
       pg.colorMode(HSB, 360, 100, 100, 100);
       pg.angleMode(DEGREES);
       
@@ -495,7 +503,7 @@ function exportGIF() {
       }
       pg.pop();
       
-      drawPosterInfo(pg, W, H, 1, 'rombi');
+      drawPosterInfo(pg, W, H, 1, 'Dinamiche ottiche');
       const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
       
       if (window.PosterStorage) {

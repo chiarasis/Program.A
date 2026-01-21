@@ -27,6 +27,7 @@ let frames = [];
 let startFrame = 0;
 let particles = [];
 let dragging = false;
+const DISPLAY_NAME = 'Spazi magnetici';
 
 // Download helper for consistent single downloads per click
 function downloadCanvas(canvas, filename, mime = 'image/png') {
@@ -194,8 +195,8 @@ function setupControls() {
     const pg = createGraphics(500, 750);
     pg.colorMode(HSB, 360, 100, 100, 100);
     pg.image(snapshot, 0, 0, 500, 750);
-    drawPosterInfo(pg, 500, 750, 1, 'crashclock');
-    const dataURL = pg.canvas.toDataURL('image/png');
+    drawPosterInfo(pg, 500, 750, 1, DISPLAY_NAME);
+    const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
 
     if (window.PosterStorage) {
       window.PosterStorage.savePoster(dataURL, {
@@ -205,7 +206,7 @@ function setupControls() {
         width: 500,
         height: 750
       }).then(() => {
-        if (window.showDownloadSuccess) window.showDownloadSuccess('Crash Clock');
+        if (window.showDownloadSuccess) window.showDownloadSuccess(DISPLAY_NAME);
         // Redirect to gallery after 2 seconds
         setTimeout(() => {
           window.location.href = '/public-work/';
@@ -245,7 +246,7 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   const textCol = 255; // White text on dark bg
   pg.fill(textCol);
   pg.noStroke();
-  pg.textFont('monospace');
+  pg.textFont('Funnel Display');
   
   // Top left: Program.A logo
   pg.textAlign(pg.LEFT, pg.TOP);
@@ -268,7 +269,8 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   // Bottom right: Editor name
   pg.textAlign(pg.RIGHT, pg.BOTTOM);
   pg.textSize(14 * scale);
-  pg.text(editorName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
+  const label = editorName || DISPLAY_NAME;
+  pg.text(label.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
 }
 
 function downloadPosterWithInfo(editorName) {
@@ -323,16 +325,16 @@ function finishGif(){
       // Draw the captured frame
       ctx.drawImage(f.canvas, 0, 0);
       
-      // Add overlay text
+      // Add overlay text (shared style)
       ctx.fillStyle = 'white';
-      ctx.font = '16px monospace';
+      ctx.font = '16px "Funnel Display", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('Program.A', 20, 20);
       
       // Date
       ctx.textAlign = 'right';
-      ctx.font = '12px monospace';
+      ctx.font = '12px "Funnel Display", monospace';
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
       ctx.fillText(dateStr, 480, 20);
@@ -340,14 +342,14 @@ function finishGif(){
       // Bottom left: Seed
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.font = '10px monospace';
+      ctx.font = '10px "Funnel Display", monospace';
       const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
       ctx.fillText(userLabel, 20, 730);
       
       // Bottom right: Editor name
       ctx.textAlign = 'right';
-      ctx.font = '14px monospace';
-      ctx.fillText('CRASHCLOCK', 480, 730);
+      ctx.font = '14px "Funnel Display", monospace';
+      ctx.fillText(DISPLAY_NAME, 480, 730);
       
       gif.addFrame(tempCanvas, {delay:33, copy:true});
     }
@@ -371,23 +373,23 @@ function finishGif(){
         
         // Add overlay
         ctx.fillStyle = 'white';
-        ctx.font = '16px monospace';
+        ctx.font = '16px "Funnel Display", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('Program.A', 20, 20);
         ctx.textAlign = 'right';
-        ctx.font = '12px monospace';
+        ctx.font = '12px "Funnel Display", monospace';
         const today = new Date();
         const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
         ctx.fillText(dateStr, 480, 20);
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
-        ctx.font = '10px monospace';
+        ctx.font = '10px "Funnel Display", monospace';
         const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
         ctx.fillText(userLabel, 20, 730);
         ctx.textAlign = 'right';
-        ctx.font = '14px monospace';
-        ctx.fillText('Spazi magnetici', 480, 730);
+        ctx.font = '14px "Funnel Display", monospace';
+        ctx.fillText(DISPLAY_NAME, 480, 730);
         
         const dataURL = tempCanvas.toDataURL('image/jpeg', 0.7);
         window.PosterStorage.savePoster(dataURL, {
@@ -397,7 +399,7 @@ function finishGif(){
           width: 500,
           height: 750
         }).then(() => {
-          if (window.showDownloadSuccess) window.showDownloadSuccess('Spazi magnetici GIF');
+          if (window.showDownloadSuccess) window.showDownloadSuccess(`${DISPLAY_NAME} GIF`);
           setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
         }).catch(err => console.error('Failed to save poster:', err));
       }

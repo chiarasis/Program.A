@@ -10,7 +10,9 @@ let params = {
   bgHue: 0,
   animate: true,
   animationSpeed: 0.02,
-  animationAmount: 0.12
+  animationAmount: 0.12,
+  mouseForce: 12,
+  mouseRadius: 200
 };
 
 let isAnimating = true;
@@ -23,8 +25,6 @@ let videoElement = null;
 
 // Bulge effect variables (for click interaction - deforms entire image)
 let bulgePoints = []; // Array of {x, y, radius, strength, decay}
-const MAX_BULGE_RADIUS = 180;
-const BULGE_STRENGTH = 0.4;
 
 // Download helper to avoid duplicate download triggers and stay stable across browsers
 function downloadCanvas(canvas, filename, mime = 'image/png') {
@@ -61,8 +61,8 @@ function setup() {
       bulgePoints.push({
         x: mouseX,
         y: mouseY,
-        radius: MAX_BULGE_RADIUS,
-        strength: BULGE_STRENGTH,
+        radius: params.mouseRadius,
+        strength: Math.min(0.8, (params.mouseForce || 0) / 30),
         time: 0,
         maxTime: 200
       });
@@ -131,7 +131,7 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   const textCol = 255; // White text
   pg.fill(textCol);
   pg.noStroke();
-  pg.textFont('monospace');
+  pg.textFont('Funnel Display');
   
   // Top left: Program.A logo
   pg.textAlign(pg.LEFT, pg.TOP);
@@ -308,6 +308,8 @@ function setupControls() {
   bindRange('bgHue', v=>params.bgHue=v);
   bindRange('animationSpeed', v=>params.animationSpeed=v, v=>v.toFixed(2));
   bindRange('animationAmount', v=>params.animationAmount=v, v=>v.toFixed(2));
+  bindRange('mouseForce', v=>params.mouseForce=v);
+  bindRange('mouseRadius', v=>params.mouseRadius=v);
   
   const fileInput = q('fileInput');
   if (fileInput) {
@@ -358,7 +360,7 @@ function setupControls() {
     // Create graphics and paste snapshot
     const pg = createGraphics(params.posterW, params.posterH);
     pg.image(snapshot, 0, 0, params.posterW, params.posterH);
-    drawPosterInfo(pg, params.posterW, params.posterH, 1, 'pixel');
+    drawPosterInfo(pg, params.posterW, params.posterH, 1, 'Strutture discretizzate');
     const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
     
     if (window.PosterStorage) {
@@ -477,14 +479,14 @@ function finishGif(){
       
       // Add overlay text
       ctx.fillStyle = 'white';
-      ctx.font = '16px monospace';
+      ctx.font = '16px "Funnel Display", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('Program.A', 20, 20);
       
       // Date
       ctx.textAlign = 'right';
-      ctx.font = '12px monospace';
+      ctx.font = '12px "Funnel Display", monospace';
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
       ctx.fillText(dateStr, 480, 20);
@@ -492,13 +494,13 @@ function finishGif(){
       // Bottom left: Seed
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.font = '10px monospace';
+      ctx.font = '10px "Funnel Display", monospace';
       const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
       ctx.fillText(userLabel, 20, 730);
       
       // Bottom right: Editor name
       ctx.textAlign = 'right';
-      ctx.font = '14px monospace';
+      ctx.font = '14px "Funnel Display", monospace';
       ctx.fillText('Strutture discretizzate', 480, 730);
       
       gif.addFrame(tempCanvas, {delay:33, copy:true});
@@ -523,22 +525,22 @@ function finishGif(){
         
         // Add overlay
         ctx.fillStyle = 'white';
-        ctx.font = '16px monospace';
+        ctx.font = '16px "Funnel Display", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('Program.A', 20, 20);
         ctx.textAlign = 'right';
-        ctx.font = '12px monospace';
+        ctx.font = '12px "Funnel Display", monospace';
         const today = new Date();
         const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
         ctx.fillText(dateStr, 480, 20);
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
-        ctx.font = '10px monospace';
+        ctx.font = '10px "Funnel Display", monospace';
         const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
         ctx.fillText(userLabel, 20, 730);
         ctx.textAlign = 'right';
-        ctx.font = '14px monospace';
+        ctx.font = '14px "Funnel Display", monospace';
         ctx.fillText('Strutture discretizzate', 480, 730);
         
         const dataURL = tempCanvas.toDataURL('image/jpeg', 0.7);

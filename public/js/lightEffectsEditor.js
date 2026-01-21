@@ -147,7 +147,7 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   const textCol = 255; // White text
   pg.fill(textCol);
   pg.noStroke();
-  pg.textFont('monospace');
+  pg.textFont('Funnel Display');
   
   // Top left: Program.A logo
   pg.textAlign(pg.LEFT, pg.TOP);

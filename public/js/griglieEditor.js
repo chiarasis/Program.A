@@ -407,14 +407,9 @@ function updateURL() {
 
 function startGIFRecording() {
   if (isRecordingGIF) return;
-  
   const btn = document.getElementById('downloadGIF');
-  btn.textContent = 'Registrando';
+  btn.textContent = 'Preparazione';
   btn.disabled = true;
-  
-  isRecordingGIF = true;
-  gifFrames = [];
-  gifFrameCount = 0;
   
   // Initialize GIF recorder with balanced quality
   gifRecorder = new GIF({
@@ -445,7 +440,7 @@ function startGIFRecording() {
       const scale = 1;
       pg.fill(255);
       pg.noStroke();
-      pg.textFont('monospace');
+      pg.textFont('Funnel Display');
       pg.textAlign(LEFT, TOP);
       pg.textSize(16 * scale);
       pg.text('Program.A', 20 * scale, 20 * scale);
@@ -488,6 +483,19 @@ function startGIFRecording() {
     btn.disabled = false;
     isRecordingGIF = false;
   });
+  
+  // Wait for custom fonts to be ready before capturing frames
+  const startRecording = () => {
+    isRecordingGIF = true;
+    gifFrames = [];
+    gifFrameCount = 0;
+    btn.textContent = 'Registrando';
+  };
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(startRecording);
+  } else {
+    startRecording();
+  }
 }
 
 function captureGIFFrame() {
@@ -501,20 +509,22 @@ function captureGIFFrame() {
       const ctx = tempCanvas.getContext('2d');
       
       // Draw the p5 canvas onto the temp canvas (will scale automatically)
-      const p5Canvas = canvas.elt || canvas.canvas || canvas;
-      ctx.drawImage(p5Canvas, 0, 0, 800, 1200);
+      const p5Canvas = document.querySelector('canvas');
+      if (p5Canvas) {
+        ctx.drawImage(p5Canvas, 0, 0, 800, 1200);
+      }
       
       // Add poster info overlay
       const scale = 800 / 500;
       ctx.fillStyle = 'white';
-      ctx.font = `${16 * scale}px monospace`;
+      ctx.font = `${16 * scale}px "Funnel Display", monospace`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('Program.A', 20 * scale, 20 * scale);
       
       // Date
       ctx.textAlign = 'right';
-      ctx.font = `${12 * scale}px monospace`;
+      ctx.font = `${12 * scale}px "Funnel Display", monospace`;
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
       ctx.fillText(dateStr, 800 - 20 * scale, 20 * scale);
@@ -522,14 +532,14 @@ function captureGIFFrame() {
       // Bottom left: Seed
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.font = `${10 * scale}px monospace`;
+      ctx.font = `${10 * scale}px "Funnel Display", monospace`;
       const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
       ctx.fillText(userLabel, 20 * scale, 1200 - 20 * scale);
       
       // Bottom right: Editor name
       ctx.textAlign = 'right';
-      ctx.font = `${14 * scale}px monospace`;
-      ctx.fillText('GRIGLIE', 800 - 20 * scale, 1200 - 20 * scale);
+      ctx.font = `${14 * scale}px "Funnel Display", monospace`;
+      ctx.fillText('Trame visuali', 800 - 20 * scale, 1200 - 20 * scale);
       
       // Add the frame with 30ms delay for faster playback
       gifRecorder.addFrame(tempCanvas, {delay: 30});
@@ -606,7 +616,7 @@ function exportPosterWithFrame() {
   posterCanvas.noStroke();
   posterCanvas.textAlign(LEFT, TOP);
   posterCanvas.textSize(12 * scale);
-  posterCanvas.textFont('monospace');
+  posterCanvas.textFont('Funnel Display');
   
   // Top left: Program.A logo
   posterCanvas.textAlign(LEFT, TOP);
