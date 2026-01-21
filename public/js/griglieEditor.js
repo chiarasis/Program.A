@@ -435,6 +435,46 @@ function startGIFRecording() {
     link.click();
     document.body.removeChild(link);
     
+    // Save current canvas as PNG (GIF too large)
+    if (window.PosterStorage) {
+      const snapshot = get();
+      const pg = createGraphics(800, 1200);
+      pg.image(snapshot, 0, 0, 800, 1200);
+      
+      // Add overlay
+      const scale = 800 / 500;
+      pg.fill(255);
+      pg.noStroke();
+      pg.textFont('monospace');
+      pg.textAlign(LEFT, TOP);
+      pg.textSize(16 * scale);
+      pg.text('Program.A', 20 * scale, 20 * scale);
+      pg.textAlign(RIGHT, TOP);
+      pg.textSize(12 * scale);
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+      pg.text(dateStr, 800 - 20 * scale, 20 * scale);
+      pg.textAlign(LEFT, BOTTOM);
+      pg.textSize(10 * scale);
+      const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+      pg.text(userLabel, 20 * scale, 1200 - 20 * scale);
+      pg.textAlign(RIGHT, BOTTOM);
+      pg.textSize(14 * scale);
+      pg.text('GRIGLIE', 800 - 20 * scale, 1200 - 20 * scale);
+      
+      const dataURL = pg.canvas.toDataURL('image/png');
+      window.PosterStorage.savePoster(dataURL, {
+        editor: 'griglie',
+        seed: seedText || seedValue.toString(),
+        filename: `griglie-${Date.now()}.png`,
+        width: 800,
+        height: 1200
+      }).then(() => {
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Griglie GIF');
+        setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
+      }).catch(err => console.error('Failed to save poster:', err));
+    }
+    
     setTimeout(() => {
       URL.revokeObjectURL(url);
       btn.textContent = 'Scarica GIF (5s)';
@@ -607,6 +647,10 @@ function exportPosterWithFrame() {
       if (window.showDownloadSuccess) {
         window.showDownloadSuccess('Griglie');
       }
+      // Redirect to gallery after 2 seconds
+      setTimeout(() => {
+        window.location.href = '/public-work/';
+      }, 2000);
     }).catch(err => {
       console.error('Failed to save poster:', err);
     });

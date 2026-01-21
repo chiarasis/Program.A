@@ -137,14 +137,40 @@ function createPosterCard(poster, x, y) {
   const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
   const userLabel = (poster.seed ?? '').toString().trim();
 
-  card.innerHTML = `
-    <div class="poster-preview">
+  // Create image or GIF element
+  let imageHTML = '';
+  if (poster.isGif) {
+    // For GIFs: show static image on default, animate on hover
+    imageHTML = `
+      <img 
+        src="${poster.dataURL}"
+        alt="${poster.filename}"
+        loading="lazy"
+        class="poster-image poster-static"
+        data-gif="${poster.dataURL}"
+      />
+      <img 
+        src="${poster.dataURL}"
+        alt="${poster.filename}"
+        class="poster-image poster-animated"
+        style="display: none;"
+      />
+    `;
+  } else {
+    // For PNGs: show normally
+    imageHTML = `
       <img 
         src="${poster.dataURL}"
         alt="${poster.filename}"
         loading="lazy"
         class="poster-image"
       />
+    `;
+  }
+
+  card.innerHTML = `
+    <div class="poster-preview">
+      ${imageHTML}
     </div>
     <div class="poster-info">
       <h3>${editorName}</h3>
@@ -153,6 +179,22 @@ function createPosterCard(poster, x, y) {
       <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
     </div>
   `;
+
+  // Add GIF hover effect if it's a GIF
+  if (poster.isGif) {
+    const staticImg = card.querySelector('.poster-static');
+    const animatedImg = card.querySelector('.poster-animated');
+    
+    card.addEventListener('mouseenter', () => {
+      if (staticImg) staticImg.style.display = 'none';
+      if (animatedImg) animatedImg.style.display = 'block';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      if (staticImg) staticImg.style.display = 'block';
+      if (animatedImg) animatedImg.style.display = 'none';
+    });
+  }
 
   // Add delete handler
   const deleteBtn = card.querySelector('.delete-btn');

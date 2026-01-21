@@ -6,7 +6,7 @@
   left: 0;
   width: 100vw;
   height: calc(100vh - 50px);
-  background: #0a0a0a;
+  background: #000000;
   overflow: hidden;
   cursor: grab;
 }
@@ -187,11 +187,12 @@
   position: fixed;
   bottom: 40px;
   right: 40px;
-  color: #666;
   font-size: 0.85rem;
   letter-spacing: 1px;
   text-align: right;
   pointer-events: none;
+  color: #666;
+
 }
 
 @media (max-width: 768px) {
@@ -273,3 +274,4 @@
   background: rgba(220, 38, 38, 0.2);
   border-color: rgba(220, 38, 38, 0.5);
 }
+

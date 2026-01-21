@@ -407,6 +407,10 @@ function exportPNG() {
       height: 750
     }).then(() => {
       if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
+      // Redirect to gallery after 2 seconds
+      setTimeout(() => {
+        window.location.href = '/public-work/';
+      }, 2000);
     }).catch(err => {
       console.error('Failed to save poster:', err);
     });
@@ -576,6 +580,33 @@ function exportGIF() {
       a.download = `light-effects-${seedValue}.gif`;
       a.click();
       URL.revokeObjectURL(url);
+      
+      // Save first frame as PNG to gallery (GIF too large)
+      if (window.PosterStorage) {
+        const pg = createGraphics(w, h);
+        const time = 0;
+        pg.background(getBgColorForExport(pg));
+        
+        if (params.patternType === 'diagonal-grid') {
+          drawDiagonalGridForExport(pg, time);
+        } else {
+          drawMoireGridForExport(pg, time);
+        }
+        
+        drawPosterInfo(pg, w, h, 1, 'luce');
+        
+        const dataURL = pg.canvas.toDataURL('image/png');
+        window.PosterStorage.savePoster(dataURL, {
+          editor: 'luce',
+          seed: seedText || seedValue.toString(),
+          filename: `light-effects-${Date.now()}.png`,
+          width: 800,
+          height: 1200
+        }).then(() => {
+          if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce GIF');
+          setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
+        }).catch(err => console.error('Failed to save poster:', err));
+      }
       
       if (btn) {
         btn.textContent = 'Scarica GIF';

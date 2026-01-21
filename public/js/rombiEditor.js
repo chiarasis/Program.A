@@ -339,6 +339,10 @@ function exportPNG() {
       if (window.showDownloadSuccess) {
         window.showDownloadSuccess('Rombi');
       }
+      // Redirect to gallery after 2 seconds
+      setTimeout(() => {
+        window.location.href = '/public-work/';
+      }, 2000);
     }).catch(err => {
       console.error('Failed to save poster:', err);
     });
@@ -443,6 +447,73 @@ function exportGIF() {
       a.download = `rombi-${Date.now()}.gif`;
       a.click();
       URL.revokeObjectURL(url);
+      
+      // Save only first frame as PNG to gallery (GIF is too large for API)
+      const W = 500;
+      const H = 750;
+      const pg = createGraphics(W, H);
+      pg.colorMode(HSB, 360, 100, 100, 100);
+      pg.angleMode(DEGREES);
+      
+      // Draw first frame
+      if (params.bgHue === 0) {
+        pg.background(0, 0, 0);
+      } else if (params.bgHue === 360) {
+        pg.background(0, 0, 100);
+      } else {
+        pg.background(params.bgHue, 60, 30);
+      }
+      
+      pg.push();
+      pg.translate(W/2, H/2);
+      pg.scale(params.scale);
+      
+      const pulseF = map(Math.sin(0), -1, 1, 1 - params.pulseAmount, 1 + params.pulseAmount);
+      const minSize = W * 0.02;
+      const maxSize = Math.min(W, H) * 0.65;
+      const stepFrame = (maxSize - minSize) / Math.max(1, params.lineCount);
+      
+      for (let i = params.lineCount - 1; i >= 0; i--) {
+        const t = i / params.lineCount;
+        const baseSize = minSize + i * stepFrame;
+        const sz = baseSize * pulseF;
+        
+        pg.push();
+        const baseH = (params.hue + (1 - t) * 120) % 360;
+        const oscill = Math.sin(i * 0.08) * 30;
+        const h = (baseH + oscill * pulseF) % 360;
+        pg.stroke(h, 100, 100);
+        pg.strokeWeight(params.strokeWeight);
+        pg.noFill();
+        pg.beginShape();
+        pg.vertex(-sz / 2, 0);
+        pg.vertex(0, -sz / 2);
+        pg.vertex(sz / 2, 0);
+        pg.vertex(0, sz / 2);
+        pg.endShape(CLOSE);
+        pg.pop();
+      }
+      pg.pop();
+      
+      drawPosterInfo(pg, W, H, 1, 'rombi');
+      const dataURL = pg.canvas.toDataURL('image/png');
+      
+      if (window.PosterStorage) {
+        window.PosterStorage.savePoster(dataURL, {
+          editor: 'rombi',
+          seed: seedText || seedValue.toString(),
+          filename: `rombi-${Date.now()}.png`,
+          width: W,
+          height: H
+        }).then(() => {
+          if (window.showDownloadSuccess) {
+            window.showDownloadSuccess('Rombi GIF');
+          }
+          setTimeout(() => {
+            window.location.href = '/public-work/';
+          }, 2000);
+        }).catch(err => console.error('Failed to save poster:', err));
+      }
       
       const btn = document.getElementById('downloadGIF');
       if (btn) {

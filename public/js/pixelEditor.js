@@ -370,6 +370,10 @@ function setupControls() {
         height: params.posterH
       }).then(() => {
         if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel');
+        // Redirect to gallery after 2 seconds
+        setTimeout(() => {
+          window.location.href = '/public-work/';
+        }, 2000);
       }).catch(err => console.error('Failed to save poster:', err));
     }
     
@@ -507,6 +511,49 @@ function finishGif(){
       a.download='pixel.gif'; 
       a.click();
       URL.revokeObjectURL(url);
+      
+      // Save first frame as PNG to gallery (GIF too large)
+      if (frames.length > 0 && window.PosterStorage) {
+        const firstFrame = frames[0];
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 500;
+        tempCanvas.height = 750;
+        const ctx = tempCanvas.getContext('2d');
+        ctx.drawImage(firstFrame.canvas, 0, 0);
+        
+        // Add overlay
+        ctx.fillStyle = 'white';
+        ctx.font = '16px monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Program.A', 20, 20);
+        ctx.textAlign = 'right';
+        ctx.font = '12px monospace';
+        const today = new Date();
+        const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+        ctx.fillText(dateStr, 480, 20);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.font = '10px monospace';
+        const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+        ctx.fillText(userLabel, 20, 730);
+        ctx.textAlign = 'right';
+        ctx.font = '14px monospace';
+        ctx.fillText('PIXEL', 480, 730);
+        
+        const dataURL = tempCanvas.toDataURL('image/png');
+        window.PosterStorage.savePoster(dataURL, {
+          editor: 'pixel',
+          seed: seedText || seedValue.toString(),
+          filename: `pixel-${Date.now()}.png`,
+          width: 500,
+          height: 750
+        }).then(() => {
+          if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel GIF');
+          setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
+        }).catch(err => console.error('Failed to save poster:', err));
+      }
+      
       if (gifBtn){ gifBtn.textContent='Scarica GIF'; gifBtn.disabled=false; }
       frames=[];
     });
