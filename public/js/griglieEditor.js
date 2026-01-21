@@ -409,7 +409,7 @@ function startGIFRecording() {
   if (isRecordingGIF) return;
   
   const btn = document.getElementById('downloadGIF');
-  btn.textContent = 'Registrando... Interagisci con il mouse!';
+  btn.textContent = 'Registrando';
   btn.disabled = true;
   
   isRecordingGIF = true;
@@ -419,7 +419,7 @@ function startGIFRecording() {
   // Initialize GIF recorder with balanced quality
   gifRecorder = new GIF({
     workers: 2,
-    quality: 5,
+    quality: 10,
     width: 800,
     height: 1200,
     workerScript: '/gif.worker.js'
@@ -438,11 +438,11 @@ function startGIFRecording() {
     // Save current canvas as PNG (GIF too large)
     if (window.PosterStorage) {
       const snapshot = get();
-      const pg = createGraphics(800, 1200);
-      pg.image(snapshot, 0, 0, 800, 1200);
+      const pg = createGraphics(500, 750);
+      pg.image(snapshot, 0, 0, 500, 750);
       
       // Add overlay
-      const scale = 800 / 500;
+      const scale = 1;
       pg.fill(255);
       pg.noStroke();
       pg.textFont('monospace');
@@ -453,22 +453,22 @@ function startGIFRecording() {
       pg.textSize(12 * scale);
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
-      pg.text(dateStr, 800 - 20 * scale, 20 * scale);
+      pg.text(dateStr, 500 - 20 * scale, 20 * scale);
       pg.textAlign(LEFT, BOTTOM);
       pg.textSize(10 * scale);
       const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
-      pg.text(userLabel, 20 * scale, 1200 - 20 * scale);
+      pg.text(userLabel, 20 * scale, 750 - 20 * scale);
       pg.textAlign(RIGHT, BOTTOM);
       pg.textSize(14 * scale);
-      pg.text('GRIGLIE', 800 - 20 * scale, 1200 - 20 * scale);
+      pg.text('GRIGLIE', 500 - 20 * scale, 750 - 20 * scale);
       
       const dataURL = pg.canvas.toDataURL('image/png');
       window.PosterStorage.savePoster(dataURL, {
         editor: 'griglie',
         seed: seedText || seedValue.toString(),
         filename: `griglie-${Date.now()}.png`,
-        width: 800,
-        height: 1200
+        width: 500,
+        height: 750
       }).then(() => {
         if (window.showDownloadSuccess) window.showDownloadSuccess('Griglie GIF');
         setTimeout(() => { window.location.href = '/public-work/'; }, 2000);

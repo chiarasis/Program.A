@@ -126,7 +126,7 @@ function draw() {
     if (f <= 90) {
       frames.push(get());
       const btn = document.getElementById('downloadGIF');
-      if (btn) btn.textContent = `Registrando... ${f}/90`;
+      if (btn) btn.textContent = `Registrando`;
       if (f === 90) finishGif();
     }
   }
@@ -307,7 +307,7 @@ function finishGif(){
   setTimeout(()=>{
     const gif = new GIF({
       workers:2, 
-      quality:5, 
+      quality:10, 
       width:500, 
       height:750,
       workerScript:'/gif.worker.js'

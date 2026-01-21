@@ -356,7 +356,7 @@ function exportGIF() {
   console.log('exportGIF chiamata');
   const btn = document.getElementById('downloadGIF');
   if (btn) {
-    btn.textContent = 'Generando GIF...';
+    btn.textContent = 'Registrando';
     btn.disabled = true;
   }
   
@@ -376,14 +376,14 @@ function exportGIF() {
 
   function createGIF() {
     console.log('createGIF interno avviato');
-    const frames = 60;
+    const frames = 20;
     const W = 500; 
     const H = 750;
     const off = createGraphics(W, H);
     off.colorMode(HSB, 360, 100, 100, 100);
     off.angleMode(DEGREES);
 
-    const gif = new GIF({ workers: 2, quality: 5, width: W, height: H, workerScript: '/gif.worker.js' });
+    const gif = new GIF({ workers: 2, quality: 10, width: W, height: H, workerScript: '/gif.worker.js' });
     console.log('GIF instance creata');
 
     for (let f = 0; f < frames; f++) {

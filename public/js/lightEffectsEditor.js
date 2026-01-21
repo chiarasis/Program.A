@@ -534,12 +534,12 @@ function updateExportStatus(_) {}
 function exportGIF() {
   const btn = document.getElementById('downloadGIF');
   if (btn) {
-    btn.textContent = 'Generando GIF...';
+    btn.textContent = 'Registrando';
     btn.disabled = true;
   }
   
   setTimeout(() => {
-    const frames = 60; // 2 seconds at 30fps
+    const frames = 20; // 2 seconds at 30fps
     const w = 800;
     const h = 1200;
     const pg = createGraphics(w, h);
@@ -547,7 +547,7 @@ function exportGIF() {
     
     const gif = new GIF({
       workers: 2,
-      quality: 5,
+      quality: 10,
       width: w,
       height: h,
       workerScript: '/gif.worker.js'
@@ -583,7 +583,7 @@ function exportGIF() {
       
       // Save first frame as PNG to gallery (GIF too large)
       if (window.PosterStorage) {
-        const pg = createGraphics(w, h);
+        const pg = createGraphics(500, 750);
         const time = 0;
         pg.background(getBgColorForExport(pg));
         
@@ -593,15 +593,15 @@ function exportGIF() {
           drawMoireGridForExport(pg, time);
         }
         
-        drawPosterInfo(pg, w, h, 1, 'luce');
+        drawPosterInfo(pg, 500, 750, 1, 'luce');
         
         const dataURL = pg.canvas.toDataURL('image/png');
         window.PosterStorage.savePoster(dataURL, {
           editor: 'luce',
           seed: seedText || seedValue.toString(),
           filename: `light-effects-${Date.now()}.png`,
-          width: 800,
-          height: 1200
+          width: 500,
+          height: 750
         }).then(() => {
           if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce GIF');
           setTimeout(() => { window.location.href = '/public-work/'; }, 2000);

@@ -459,7 +459,7 @@ function finishGif(){
   setTimeout(()=>{
     const gif = new GIF({
       workers:2, 
-      quality:5, 
+      quality:10, 
       width:500, 
       height:750,
       workerScript:'/gif.worker.js'
@@ -573,7 +573,7 @@ let recordedChunks = [];
 
 function startVideoRecording(){
   const btn = document.getElementById('downloadGIF');
-  if (btn){ btn.textContent='Registrando Video...'; btn.disabled=true; }
+  if (btn){ btn.textContent='Registrando'; btn.disabled=true; }
   const canvasEl = document.querySelector('canvas');
   if (!canvasEl) return;
   const stream = canvasEl.captureStream(30); // 30 fps
