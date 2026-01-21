@@ -111,11 +111,11 @@ function draw() {
   // GIF recording
   if (isRecording) {
     const f = frameCount - startFrame;
-    if (f <= 150) {
+    if (f <= 90) {
       frames.push(get());
       const btn = document.getElementById('downloadGIF');
-      if (btn) btn.textContent = `Registrando... ${f}/150`;
-      if (f === 150) finishGif();
+      if (btn) btn.textContent = `Registrando... ${f}/90`;
+      if (f === 90) finishGif();
     }
   }
 }
@@ -441,7 +441,7 @@ function startGif(){
   if (!sourceMedia) return;
   frames=[]; isRecording=true; startFrame=frameCount;
   const gifBtn = document.getElementById('downloadGIF');
-  if (gifBtn){ gifBtn.textContent='Registrando... 0/150'; gifBtn.disabled=true; }
+  if (gifBtn){ gifBtn.textContent='Registrando... 0/90'; gifBtn.disabled=true; }
   if (mediaType === 'image') {
     // For images, just capture multiple frames with slight variations
     loop();
@@ -455,14 +455,51 @@ function finishGif(){
   setTimeout(()=>{
     const gif = new GIF({
       workers:2, 
-      quality:10, 
-      width:params.posterW, 
-      height:params.posterH,
-      workerScript:'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js'
+      quality:5, 
+      width:500, 
+      height:750,
+      workerScript:'/gif.worker.js'
     });
+    
+    // Add poster info overlay to each frame
     for (let f of frames) {
-      gif.addFrame(f.canvas, {delay:33, copy:true});
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 500;
+      tempCanvas.height = 750;
+      const ctx = tempCanvas.getContext('2d');
+      
+      // Draw the captured frame
+      ctx.drawImage(f.canvas, 0, 0);
+      
+      // Add overlay text
+      ctx.fillStyle = 'white';
+      ctx.font = '16px monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Program.A', 20, 20);
+      
+      // Date
+      ctx.textAlign = 'right';
+      ctx.font = '12px monospace';
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+      ctx.fillText(dateStr, 480, 20);
+      
+      // Bottom left: Seed
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.font = '10px monospace';
+      const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+      ctx.fillText(userLabel, 20, 730);
+      
+      // Bottom right: Editor name
+      ctx.textAlign = 'right';
+      ctx.font = '14px monospace';
+      ctx.fillText('PIXEL', 480, 730);
+      
+      gif.addFrame(tempCanvas, {delay:33, copy:true});
     }
+    
     gif.on('finished', (blob)=>{
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a'); 

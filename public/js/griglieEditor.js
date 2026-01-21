@@ -34,7 +34,7 @@ let gifRecorder;
 let isRecordingGIF = false;
 let gifFrames = [];
 let gifFrameCount = 0;
-const GIF_DURATION = 5; // seconds
+const GIF_DURATION = 4; // seconds - reduced for faster generation
 const GIF_FPS = 15; // Reduced FPS for smoother animation
 
 function setup() {
@@ -409,19 +409,19 @@ function startGIFRecording() {
   if (isRecordingGIF) return;
   
   const btn = document.getElementById('downloadGIF');
-  btn.textContent = 'Recording...';
+  btn.textContent = 'Registrando... Interagisci con il mouse!';
   btn.disabled = true;
   
   isRecordingGIF = true;
   gifFrames = [];
   gifFrameCount = 0;
   
-  // Initialize GIF recorder - lower resolution for better performance
+  // Initialize GIF recorder with balanced quality
   gifRecorder = new GIF({
-    workers: 1,
-    quality: 20,
-    width: 300,
-    height: 450,
+    workers: 2,
+    quality: 5,
+    width: 800,
+    height: 1200,
     workerScript: '/gif.worker.js'
   });
   
@@ -451,21 +451,48 @@ function startGIFRecording() {
 }
 
 function captureGIFFrame() {
-  // Capture frame at lower resolution
+  // Capture frame at balanced resolution
   if (isRecordingGIF && gifRecorder) {
     try {
-      // Create a smaller canvas (300x450) from the main canvas
+      // Create a canvas (800x1200) from the main canvas
       const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = 300;
-      tempCanvas.height = 450;
+      tempCanvas.width = 800;
+      tempCanvas.height = 1200;
       const ctx = tempCanvas.getContext('2d');
       
       // Draw the p5 canvas onto the temp canvas (will scale automatically)
       const p5Canvas = canvas.elt || canvas.canvas || canvas;
-      ctx.drawImage(p5Canvas, 0, 0, 300, 450);
+      ctx.drawImage(p5Canvas, 0, 0, 800, 1200);
       
-      // Add the frame
-      gifRecorder.addFrame(tempCanvas, {delay: 1000 / GIF_FPS});
+      // Add poster info overlay
+      const scale = 800 / 500;
+      ctx.fillStyle = 'white';
+      ctx.font = `${16 * scale}px monospace`;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Program.A', 20 * scale, 20 * scale);
+      
+      // Date
+      ctx.textAlign = 'right';
+      ctx.font = `${12 * scale}px monospace`;
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+      ctx.fillText(dateStr, 800 - 20 * scale, 20 * scale);
+      
+      // Bottom left: Seed
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.font = `${10 * scale}px monospace`;
+      const userLabel = (seedText && seedText.trim()) ? seedText.trim() : seedValue.toString();
+      ctx.fillText(userLabel, 20 * scale, 1200 - 20 * scale);
+      
+      // Bottom right: Editor name
+      ctx.textAlign = 'right';
+      ctx.font = `${14 * scale}px monospace`;
+      ctx.fillText('GRIGLIE', 800 - 20 * scale, 1200 - 20 * scale);
+      
+      // Add the frame with 30ms delay for faster playback
+      gifRecorder.addFrame(tempCanvas, {delay: 30});
       gifFrameCount++;
     } catch (e) {
       console.error('Error capturing frame:', e);

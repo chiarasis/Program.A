@@ -61,6 +61,20 @@ import '../assets/editor.css';
         </div>
 
         <div class="control-section">
+          <h3>Interazione</h3>
+          <div class="control-group">
+            <label for="mouseForce">Forza Click</label>
+            <input type="range" id="mouseForce" min="0" max="50" value="15" step="1">
+            <span class="value-display" id="mouseForceValue">15</span>
+          </div>
+          <div class="control-group">
+            <label for="mouseRadius">Raggio Interazione</label>
+            <input type="range" id="mouseRadius" min="0" max="300" value="150" step="10">
+            <span class="value-display" id="mouseRadiusValue">150</span>
+          </div>
+        </div>
+
+        <div class="control-section">
           <h3>Colore</h3>
           <div class="control-group">
             <label for="hue">Colore Rombi</label>
@@ -90,6 +104,7 @@ import '../assets/editor.css';
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" is:inline></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js" is:inline></script>
   <script src="/js/posterStorage.js" is:inline></script>
   <script src="/js/downloadNotification.js" is:inline></script>
   <script src="/js/rombiEditor.js" is:inline></script>
