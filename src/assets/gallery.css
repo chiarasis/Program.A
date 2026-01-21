@@ -193,11 +193,11 @@ body {
   bottom: 24px;
   right: 24px;
   font-size: 11px;
-  color: var(--muted);
   font-family: 'Basier Square Mono', monospace;
   text-align: right;
   max-width: 300px;
   pointer-events: none;
+  color: white;
 }
 
 .navigation-hint p {
