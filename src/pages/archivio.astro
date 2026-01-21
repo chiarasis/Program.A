@@ -177,6 +177,7 @@ const pickEditor = (opera) => {
     let filteredDetails = [];
     let groupIntroCards = [];
     let groupIntroDetails = [];
+    let pageEl = null;
 
     // Helper: parse earliest year from strings like "1959", "1959-1962", "1970–2013"
     function parseYearStartStr(y) {
@@ -222,6 +223,13 @@ const pickEditor = (opera) => {
       if (spacer) {
         spacer.style.height = `${filterH}px`;
       }
+    }
+
+    function ensurePageHeight() {
+      if (!pageEl) return;
+      const cardsForHeight = Math.max(cardCount, 8);
+      const targetVH = Math.max(1200, cardsForHeight * 25);
+      pageEl.style.minHeight = `${targetVH}vh`;
     }
 
     function filterCards(group) {
@@ -295,6 +303,7 @@ const pickEditor = (opera) => {
       // Update card count and re-position
       cardCount = filteredCards.length;
       anglePerCard = 360 / cardCount;
+      ensurePageHeight();
 
       // Re-position visible cards in 3D in filtered order
       filteredCards.forEach((card, index) => {
@@ -316,6 +325,7 @@ const pickEditor = (opera) => {
     function init() {
       rolodex = document.getElementById('rolodex');
       if (!rolodex) return;
+      pageEl = document.querySelector('.archivio-page');
 
       // Suppress image 404 errors in console
       const allImages = document.querySelectorAll('.card img');
@@ -360,6 +370,7 @@ const pickEditor = (opera) => {
       
       cardCount = cards.length;
       anglePerCard = 360 / cardCount;
+      ensurePageHeight();
 
       // Position cards in 3D space
       cards.forEach((card, index) => {
@@ -419,7 +430,13 @@ const pickEditor = (opera) => {
 
     function handleScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const scrollHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight,
+        document.documentElement.offsetHeight,
+        document.body.offsetHeight
+      );
+      const maxScroll = Math.max(scrollHeight - window.innerHeight, 1);
       const scrollProgress = Math.min(scrollTop / maxScroll, 1);
 
       targetRotation = -scrollProgress * 360 * ((cardCount - 1) / cardCount);
