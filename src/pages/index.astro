@@ -108,7 +108,51 @@ import '../assets/home.css';
 	</div>
 	</section>
 
-	<Footer includeStyles={false} />
+		<section class="mostra-section">
+			<div class="mostra-wrapper">
+				<div class="mostra-header">
+					<h2>Museo del novecento, mostra arte programmata</h2>
+				</div>
+
+				<div class="mostra-carousel" aria-label="Carosello fotografico mostra">
+					<div class="mostra-track" role="list">
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Sala principale con visitatori</div>
+							<img src="/mostra/_MG_9374.jpg" alt="Mostra Arte Programmata - sala con opere e visitatori" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Installazione luminosa</div>
+							<img src="/mostra/_MG_9379.jpg" alt="Mostra Arte Programmata - opere luminose" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Spazio espositivo e pubblico</div>
+							<img src="/mostra/_MG_9380.jpg" alt="Mostra Arte Programmata - installazione e pubblico" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Dettaglio opera programmata</div>
+							<img src="/mostra/_MG_9381.jpg" alt="Mostra Arte Programmata - dettaglio di opera ottica" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Visitatori nello spazio</div>
+							<img src="/mostra/_MG_9385.jpg" alt="Mostra Arte Programmata - visitatori nella sala" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Prospettiva della galleria</div>
+							<img src="/mostra/_MG_9392.jpg" alt="Mostra Arte Programmata - prospettiva sulle installazioni" loading="lazy" />
+						</div>
+						<!-- Duplicate slides for seamless infinite loop -->
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Sala principale con visitatori</div>
+							<img src="/mostra/_MG_9374.jpg" alt="Mostra Arte Programmata - sala con opere e visitatori" loading="lazy" />
+						</div>
+						<div class="mostra-slide" role="listitem">
+							<div class="mostra-caption">Installazione luminosa</div>
+							<img src="/mostra/_MG_9379.jpg" alt="Mostra Arte Programmata - opere luminose" loading="lazy" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>	<Footer includeStyles={false} />
 
 	<script type="module" src="/js/p5-boot.mjs" is:inline></script>
 	<script src="/js/scroll-animations.js" is:inline></script>
@@ -130,6 +174,53 @@ import '../assets/home.css';
 			
 			// Force play on load
 			introVideo.play().catch(err => console.log('Autoplay prevented:', err));
+		}
+
+		// Mostra carousel - continuous infinite smooth scroll
+		const mostraCarousel = document.querySelector('.mostra-carousel');
+		if (mostraCarousel) {
+			const track = mostraCarousel.querySelector('.mostra-track');
+			const slides = Array.from(mostraCarousel.querySelectorAll('.mostra-slide'));
+			const originalCount = 6; // Original slides before duplication
+			
+			let position = 0;
+			let isScrolling = true;
+			let lastTime = Date.now();
+
+			const slideWidth = slides[0].offsetWidth;
+			const gap = parseInt(getComputedStyle(track).gap) || 0;
+			const slideStep = slideWidth + gap;
+			const totalDistance = originalCount * slideStep;
+
+			const animate = () => {
+				const now = Date.now();
+				const elapsed = now - lastTime;
+				lastTime = now;
+
+				if (isScrolling) {
+					// Slower speed: 30px per second instead of 60px
+					position -= (120 * elapsed) / 1000;
+					
+					// Seamless loop: reset without visual jump
+					if (position <= -totalDistance) {
+						position = 0;
+					}
+					
+					track.style.transform = `translateX(${position}px)`;
+				}
+				requestAnimationFrame(animate);
+			};
+
+			animate();
+
+			// Pause on hover
+			mostraCarousel.addEventListener('mouseenter', () => {
+				isScrolling = false;
+			});
+
+			mostraCarousel.addEventListener('mouseleave', () => {
+				isScrolling = true;
+			});
 		}
 	</script>
 </Layout>
