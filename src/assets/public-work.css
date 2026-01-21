@@ -187,11 +187,17 @@
   position: fixed;
   bottom: 40px;
   right: 40px;
-  font-size: 0.85rem;
+  font-size: 0.65rem;
   letter-spacing: 1px;
   text-align: right;
   pointer-events: none;
   color: #666;
+}
+
+.navigation-hint p {
+  color: #666;
+    font-size: 0.85rem;
+
 
 }
 
@@ -221,6 +227,7 @@
     bottom: 24px;
     left: 24px;
     right: auto;
+    color: #666;
     font-size: 0.75rem;
   }
 

@@ -117,13 +117,16 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     border: 2px solid var(--acc-color);
+    box-sizing: border-box;
     border-radius: 0;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
   }
 
   .editor-link-btn:hover {
     background: var(--text-light);
-    color: var(--acc-color);
+    color: var(--bg-dark);
+    transform: translateY(-1px);
+    border-color: var(--acc-color);
   }
 
   .opera-details.active {
