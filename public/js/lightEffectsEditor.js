@@ -3,6 +3,10 @@ let seedText = '';
 let seedValue = 12345;
 let rng;
 
+const EDITOR_DISPLAY_NAMES = {
+  'luce': 'cinetismi luminosi'
+};
+
 // Download helper to ensure stable, single download per click
 function downloadCanvas(canvas, filename, mime = 'image/png') {
   const link = document.createElement('a');
@@ -166,7 +170,8 @@ function drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName) {
   // Bottom right: Editor name
   pg.textAlign(pg.RIGHT, pg.BOTTOM);
   pg.textSize(14 * scale);
-  pg.text(editorName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
+  const displayName = EDITOR_DISPLAY_NAMES[editorName] || editorName;
+  pg.text(displayName.toUpperCase(), exportWidth - 20 * scale, exportHeight - 20 * scale);
 }
 
 function drawDiagonalGrid(time, activeTrail) {
@@ -396,7 +401,7 @@ function exportPNG() {
   }
   
   drawPosterInfo(pg, 500, 750, 1, 'luce');
-  const dataURL = pg.canvas.toDataURL('image/png');
+  const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
   
   if (window.PosterStorage) {
     window.PosterStorage.savePoster(dataURL, {
@@ -406,7 +411,7 @@ function exportPNG() {
       width: 500,
       height: 750
     }).then(() => {
-      if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce');
+      if (window.showDownloadSuccess) window.showDownloadSuccess('cinetismi luminosi');
       // Redirect to gallery after 2 seconds
       setTimeout(() => {
         window.location.href = '/public-work/';
@@ -595,7 +600,7 @@ function exportGIF() {
         
         drawPosterInfo(pg, 500, 750, 1, 'luce');
         
-        const dataURL = pg.canvas.toDataURL('image/png');
+        const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
         window.PosterStorage.savePoster(dataURL, {
           editor: 'luce',
           seed: seedText || seedValue.toString(),
@@ -603,7 +608,7 @@ function exportGIF() {
           width: 500,
           height: 750
         }).then(() => {
-          if (window.showDownloadSuccess) window.showDownloadSuccess('Effetti di Luce GIF');
+          if (window.showDownloadSuccess) window.showDownloadSuccess('cinetismi luminosi GIF');
           setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
         }).catch(err => console.error('Failed to save poster:', err));
       }

@@ -162,13 +162,13 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
+  border: 2px solid var(--acc-color);
+
 }
 
 .control-btn:hover {
   background: var(--text-light);
   color: var(--bg-dark);
-  border: 2px solid var(--acc-color);
-  transform: translateY(-1px);
 }
 
 .ui-info {

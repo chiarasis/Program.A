@@ -322,9 +322,9 @@ function exportPNG() {
   // Add info overlay
   drawPosterInfo(pg, W, H, 1, 'rombi');
   
-  // Get canvas data URL for storage
-  const dataURL = pg.canvas.toDataURL('image/png');
-  const filename = `rombi-poster-${seedValue}.png`;
+  // Get canvas data URL for storage (JPEG 70% for smaller file size)
+  const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
+  const filename = `rombi-poster-${seedValue}.jpg`;
   
   // Save to IndexedDB
   if (window.PosterStorage) {
@@ -496,18 +496,18 @@ function exportGIF() {
       pg.pop();
       
       drawPosterInfo(pg, W, H, 1, 'rombi');
-      const dataURL = pg.canvas.toDataURL('image/png');
+      const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
       
       if (window.PosterStorage) {
         window.PosterStorage.savePoster(dataURL, {
           editor: 'rombi',
           seed: seedText || seedValue.toString(),
-          filename: `rombi-${Date.now()}.png`,
+          filename: `rombi-${Date.now()}.jpg`,
           width: W,
           height: H
         }).then(() => {
           if (window.showDownloadSuccess) {
-            window.showDownloadSuccess('Rombi GIF');
+            window.showDownloadSuccess('Dinamiche ottiche GIF');
           }
           setTimeout(() => {
             window.location.href = '/public-work/';

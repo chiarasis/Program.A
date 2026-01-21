@@ -286,7 +286,7 @@ function downloadPosterWithInfo(editorName) {
   // Add info overlay
   drawPosterInfo(pg, exportWidth, exportHeight, scale, editorName);
   
-  return pg.canvas.toDataURL('image/png');
+  return pg.canvas.toDataURL('image/jpeg', 0.7);
 }
 
 
@@ -387,9 +387,9 @@ function finishGif(){
         ctx.fillText(userLabel, 20, 730);
         ctx.textAlign = 'right';
         ctx.font = '14px monospace';
-        ctx.fillText('CRASHCLOCK', 480, 730);
+        ctx.fillText('Spazi magnetici', 480, 730);
         
-        const dataURL = tempCanvas.toDataURL('image/png');
+        const dataURL = tempCanvas.toDataURL('image/jpeg', 0.7);
         window.PosterStorage.savePoster(dataURL, {
           editor: 'crashclock',
           seed: seedText || seedValue.toString(),
@@ -397,7 +397,7 @@ function finishGif(){
           width: 500,
           height: 750
         }).then(() => {
-          if (window.showDownloadSuccess) window.showDownloadSuccess('CrashClock GIF');
+          if (window.showDownloadSuccess) window.showDownloadSuccess('Spazi magnetici GIF');
           setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
         }).catch(err => console.error('Failed to save poster:', err));
       }

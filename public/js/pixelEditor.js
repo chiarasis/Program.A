@@ -359,7 +359,7 @@ function setupControls() {
     const pg = createGraphics(params.posterW, params.posterH);
     pg.image(snapshot, 0, 0, params.posterW, params.posterH);
     drawPosterInfo(pg, params.posterW, params.posterH, 1, 'pixel');
-    const dataURL = pg.canvas.toDataURL('image/png');
+    const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
     
     if (window.PosterStorage) {
       window.PosterStorage.savePoster(dataURL, {
@@ -369,7 +369,7 @@ function setupControls() {
         width: params.posterW,
         height: params.posterH
       }).then(() => {
-        if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel');
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Strutture discretizzate');
         // Redirect to gallery after 2 seconds
         setTimeout(() => {
           window.location.href = '/public-work/';
@@ -499,7 +499,7 @@ function finishGif(){
       // Bottom right: Editor name
       ctx.textAlign = 'right';
       ctx.font = '14px monospace';
-      ctx.fillText('PIXEL', 480, 730);
+      ctx.fillText('Strutture discretizzate', 480, 730);
       
       gif.addFrame(tempCanvas, {delay:33, copy:true});
     }
@@ -539,9 +539,9 @@ function finishGif(){
         ctx.fillText(userLabel, 20, 730);
         ctx.textAlign = 'right';
         ctx.font = '14px monospace';
-        ctx.fillText('PIXEL', 480, 730);
+        ctx.fillText('Strutture discretizzate', 480, 730);
         
-        const dataURL = tempCanvas.toDataURL('image/png');
+        const dataURL = tempCanvas.toDataURL('image/jpeg', 0.7);
         window.PosterStorage.savePoster(dataURL, {
           editor: 'pixel',
           seed: seedText || seedValue.toString(),
@@ -549,7 +549,7 @@ function finishGif(){
           width: 500,
           height: 750
         }).then(() => {
-          if (window.showDownloadSuccess) window.showDownloadSuccess('Pixel GIF');
+          if (window.showDownloadSuccess) window.showDownloadSuccess('Strutture discretizzate GIF');
           setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
         }).catch(err => console.error('Failed to save poster:', err));
       }

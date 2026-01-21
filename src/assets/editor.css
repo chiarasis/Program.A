@@ -183,7 +183,7 @@
   transition: all 0.2s;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-    border: 2px solid var(--acc-color);
+  border: 2px solid var(--acc-color);
   }
 
 .btn-primary:hover,

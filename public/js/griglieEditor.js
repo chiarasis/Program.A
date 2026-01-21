@@ -460,9 +460,9 @@ function startGIFRecording() {
       pg.text(userLabel, 20 * scale, 750 - 20 * scale);
       pg.textAlign(RIGHT, BOTTOM);
       pg.textSize(14 * scale);
-      pg.text('GRIGLIE', 500 - 20 * scale, 750 - 20 * scale);
+      pg.text('Trame visuali', 500 - 20 * scale, 750 - 20 * scale);
       
-      const dataURL = pg.canvas.toDataURL('image/png');
+      const dataURL = pg.canvas.toDataURL('image/jpeg', 0.7);
       window.PosterStorage.savePoster(dataURL, {
         editor: 'griglie',
         seed: seedText || seedValue.toString(),
@@ -470,7 +470,7 @@ function startGIFRecording() {
         width: 500,
         height: 750
       }).then(() => {
-        if (window.showDownloadSuccess) window.showDownloadSuccess('Griglie GIF');
+        if (window.showDownloadSuccess) window.showDownloadSuccess('Trame visuali GIF');
         setTimeout(() => { window.location.href = '/public-work/'; }, 2000);
       }).catch(err => console.error('Failed to save poster:', err));
     }
@@ -625,14 +625,14 @@ function exportPosterWithFrame() {
   posterCanvas.textSize(10 * scale);
   posterCanvas.text(getUserLabel(), 20 * scale, exportHeight - 20 * scale);
   
-  // Bottom right: Griglie
+  // Bottom right: Editor name
   posterCanvas.textAlign(RIGHT, BOTTOM);
   posterCanvas.textSize(14 * scale);
-  posterCanvas.text('GRIGLIE', exportWidth - 20 * scale, exportHeight - 20 * scale);
+  posterCanvas.text('Trame visuali', exportWidth - 20 * scale, exportHeight - 20 * scale);
   
   // Get canvas data URL for storage
-  const dataURL = posterCanvas.canvas.toDataURL('image/png');
-  const filename = `griglie-poster-${seedValue}.png`;
+  const dataURL = posterCanvas.canvas.toDataURL('image/jpeg', 0.7);
+  const filename = `griglie-poster-${seedValue}.jpg`;
   
   // Save to IndexedDB
   if (window.PosterStorage) {

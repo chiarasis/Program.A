@@ -125,6 +125,17 @@ async function loadUserPosters() {
   }
 }
 
+function getDisplayName(editorKey) {
+  const names = {
+    'griglie': 'Trame visuali',
+    'luce': 'cinetismi luminosi',
+    'crashclock': 'Spazi magnetici',
+    'pixel': 'Strutture discretizzate',
+    'rombi': 'Dinamiche ottiche'
+  };
+  return names[editorKey] || editorKey;
+}
+
 function createPosterCard(poster, x, y) {
   const card = document.createElement('div');
   card.className = 'poster-card';
@@ -133,7 +144,7 @@ function createPosterCard(poster, x, y) {
   card.style.left = `${x}px`;
   card.style.top = `${y}px`;
 
-  const editorName = poster.editor.charAt(0).toUpperCase() + poster.editor.slice(1);
+  const editorName = getDisplayName(poster.editor);
   const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
   const userLabel = (poster.seed ?? '').toString().trim();
 
