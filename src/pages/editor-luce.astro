@@ -60,6 +60,20 @@ import '../assets/editor.css';
         </div>
 
         <div class="control-section">
+          <h3>Interazione</h3>
+          <div class="control-group">
+            <label for="mouseForce">Forza Click</label>
+            <input type="range" id="mouseForce" min="0" max="50" value="12" step="1">
+            <span class="value-display" id="mouseForceValue">12</span>
+          </div>
+          <div class="control-group">
+            <label for="mouseRadius">Raggio Interazione</label>
+            <input type="range" id="mouseRadius" min="0" max="300" value="200" step="10">
+            <span class="value-display" id="mouseRadiusValue">200</span>
+          </div>
+        </div>
+
+        <div class="control-section">
           <h3>Colore</h3>
           <div class="control-group">
             <label for="hue">Colore Linee</label>

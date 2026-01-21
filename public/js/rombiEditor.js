@@ -1,19 +1,40 @@
 // Rombi editor - p5 sketch
 // Preview canvas and controls. Export PNG (500x750) and short GIF if gif.js present.
 
+const BASE_WIDTH = 500;  // Base export width
+const BASE_HEIGHT = 750; // Base export height
+
 let seedValue = 12345;
 let seedText = '';
 let rotation = 0;
+
+function stringToSeed(str) {
+  if (!str) return 12345;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
 let params = {
   rotationSpeed: 0.0,
-  lineCount: 120,
+  lineCount: 60,
   strokeWeight: 1,
   scale: 1,
   hue: 190,
   bgHue: 0,
   pulseSpeed: 1,
-  pulseAmount: 0.25
+  pulseAmount: 0.25,
+  mouseForce: 15,
+  mouseRadius: 150
 };
+
+// Mouse interaction
+let warpTrail = [];
+const WARP_FADE_MS = 250;
 
 // Download helper to keep PNG exports reliable across repeated clicks
 function downloadCanvas(canvas, filename, mime = 'image/png') {
@@ -58,6 +79,12 @@ function draw() {
   // black background (HSB: hue=0,sat=0,bright=0)
   const bgCol = getBgColor();
   background(bgCol);
+  
+  // Update mouse warp trail
+  const now = millis();
+  updateWarpTrail(now);
+  const activeTrail = getWarpTrail(now);
+  
   push();
   translate(width / 2, height / 2);
   scale(params.scale);
@@ -73,7 +100,7 @@ function draw() {
   noStroke();
   // compute min/max sizes and per-band step (bands spacing independent from strokeWeight)
   const minSize = width * 0.02;
-  const maxSize = min(width, height) * 0.95;
+  const maxSize = min(width, height) * 0.65; // Reduced from 0.95 to fit properly
   const step = (maxSize - minSize) / Math.max(1, total);
 
   for (let i = total - 1; i >= 0; i--) {
@@ -88,16 +115,67 @@ function draw() {
     strokeWeight(params.strokeWeight);
     noFill();
 
-    // draw diamond outline
+    // Draw diamond with optional warp
     beginShape();
-    vertex(-sz / 2, 0);
-    vertex(0, -sz / 2);
-    vertex(sz / 2, 0);
-    vertex(0, sz / 2);
+    const p0 = warpPoint(-sz / 2, 0, activeTrail);
+    vertex(p0.x, p0.y);
+    const p1 = warpPoint(0, -sz / 2, activeTrail);
+    vertex(p1.x, p1.y);
+    const p2 = warpPoint(sz / 2, 0, activeTrail);
+    vertex(p2.x, p2.y);
+    const p3 = warpPoint(0, sz / 2, activeTrail);
+    vertex(p3.x, p3.y);
     endShape(CLOSE);
   }
 
   pop();
+}
+
+function updateWarpTrail(now) {
+  if (!mouseIsPressed) {
+    warpTrail = [];
+    return;
+  }
+  const mx = mouseX - width / 2;
+  const my = mouseY - height / 2;
+  warpTrail.push({ x: mx, y: my, time: now });
+  if (warpTrail.length > 120) warpTrail.shift();
+  warpTrail = warpTrail.filter(w => now - w.time <= WARP_FADE_MS);
+}
+
+function getWarpTrail(now) {
+  return warpTrail.map(w => {
+    const age = now - w.time;
+    const intensity = max(0, 1 - age / WARP_FADE_MS);
+    return { x: w.x, y: w.y, intensity };
+  }).filter(w => w.intensity > 0);
+}
+
+function warpPoint(x, y, sources) {
+  if (!sources || sources.length === 0 || params.mouseForce <= 0 || params.mouseRadius <= 0) {
+    return { x, y };
+  }
+  let bestForce = 0;
+  let bestDx = 0;
+  let bestDy = 0;
+  for (const s of sources) {
+    const dx = x - s.x;
+    const dy = y - s.y;
+    const dist = sqrt(dx * dx + dy * dy);
+    if (dist > params.mouseRadius || dist < 1e-6) continue;
+    const falloff = 1 - dist / params.mouseRadius;
+    const force = params.mouseForce * falloff * falloff * s.intensity;
+    const normForce = force / dist;
+    if (normForce > bestForce) {
+      bestForce = normForce;
+      bestDx = dx;
+      bestDy = dy;
+    }
+  }
+  if (bestForce === 0) {
+    return { x, y };
+  }
+  return { x: x + bestDx * bestForce, y: y + bestDy * bestForce };
 }
 
 function min(a, b) { return a < b ? a : b; }
@@ -110,7 +188,7 @@ function getBgColor() {
 }
 
 function setupControls() {
-  const ids = ['rotationSpeed','lineCount','strokeWeight','scale','hue','bgHue','pulseSpeed','pulseAmount'];
+  const ids = ['rotationSpeed','lineCount','strokeWeight','scale','hue','bgHue','pulseSpeed','pulseAmount','mouseForce','mouseRadius'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     const disp = document.getElementById(id + 'Value');
@@ -206,7 +284,8 @@ function exportPNG() {
   }
   pg.push();
   pg.translate(W/2, H/2);
-  pg.scale(params.scale * (W / width));
+  const pngScaleFactor = W / width;
+  pg.scale(params.scale * pngScaleFactor);
 
   // compute pulse for export using current time
   const now = Date.now();
@@ -215,7 +294,7 @@ function exportPNG() {
 
   for (let i = params.lineCount - 1; i >= 0; i--) {
     const t = i / params.lineCount;
-    const maxSize = Math.min(W, H) * 0.95;
+    const maxSize = Math.min(W, H) * 0.65;
     const minSize = W * 0.02;
     const stepLocal = (maxSize - minSize) / Math.max(1, params.lineCount);
     const baseSize = minSize + i * stepLocal;
@@ -225,7 +304,7 @@ function exportPNG() {
     const oscill = Math.sin(i * 0.08 + now * 0.001 * 0.02) * 30;
     const h = (params.hue + (1 - t) * 120 + oscill * pulseLocal + hueShiftLocal) % 360;
     pg.stroke(h, 100, 100);
-    pg.strokeWeight(params.strokeWeight * (W / width));
+    pg.strokeWeight(params.strokeWeight * pngScaleFactor);
     pg.noFill();
     pg.beginShape();
     pg.vertex(-sz / 2, 0);
@@ -270,42 +349,65 @@ function exportPNG() {
 }
 
 function exportGIF() {
-  // try to use gif.js if available; otherwise fallback to PNG
-  if (typeof GIF === 'undefined') {
-    // try to load gif.js dynamically
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/gif.js.optimized/dist/gif.min.js';
-    s.onload = () => createGIF();
-    s.onerror = () => { alert('GIF library failed to load — exporting PNG instead'); exportPNG(); };
-    document.head.appendChild(s);
-  } else {
-    createGIF();
+  console.log('exportGIF chiamata');
+  const btn = document.getElementById('downloadGIF');
+  if (btn) {
+    btn.textContent = 'Generando GIF...';
+    btn.disabled = true;
   }
+  
+  // Check if GIF library is available
+  if (typeof GIF === 'undefined') {
+    console.error('GIF library non definita');
+    alert('Libreria GIF non disponibile');
+    if (btn) {
+      btn.textContent = 'Scarica GIF';
+      btn.disabled = false;
+    }
+    return;
+  }
+  
+  console.log('Creazione GIF avviata');
+  createGIF();
 
   function createGIF() {
-    const frames = 36; // short loop
-    const w = 500; const h = 750; // smaller to keep size reasonable
-    const off = createGraphics(w, h);
+    console.log('createGIF interno avviato');
+    const frames = 60;
+    const W = 500; 
+    const H = 750;
+    const off = createGraphics(W, H);
     off.colorMode(HSB, 360, 100, 100, 100);
     off.angleMode(DEGREES);
 
-    const gif = new GIF({ workers: 2, quality: 10, width: w, height: h });
+    const gif = new GIF({ workers: 2, quality: 5, width: W, height: H, workerScript: '/gif.worker.js' });
+    console.log('GIF instance creata');
 
-    let savedRotation = rotation;
     for (let f = 0; f < frames; f++) {
+      // Background color (match preview)
+      const bgCol = getBgColor();
+      if (params.bgHue === 0) {
+        off.background(0, 0, 0);
+      } else if (params.bgHue === 360) {
+        off.background(0, 0, 100);
+      } else {
+        off.background(params.bgHue, 60, 30);
+      }
+      
       off.push();
-      off.background(0,0,0);
-      off.translate(w/2, h/2);
+      off.translate(W/2, H/2);
+      off.scale(params.scale);
 
       // pulse for this frame
       const pulseF = map(Math.sin((f / frames) * Math.PI * 2 * params.pulseSpeed), -1, 1, 1 - params.pulseAmount, 1 + params.pulseAmount);
       const hueF = (f * 0.5) % 360;
 
+      // Use same size calculations as preview (based on canvas dimensions)
+      const minSize = W * 0.02;
+      const maxSize = Math.min(W, H) * 0.65;
+      const stepFrame = (maxSize - minSize) / Math.max(1, params.lineCount);
+
       for (let i = params.lineCount - 1; i >= 0; i--) {
         const t = i / params.lineCount;
-        const maxSize = Math.min(w, h) * 0.95;
-        const minSize = w * 0.02;
-        const stepFrame = (maxSize - minSize) / Math.max(1, params.lineCount);
         const baseSize = minSize + i * stepFrame;
         const sz = baseSize * pulseF;
 
@@ -324,20 +426,41 @@ function exportGIF() {
         off.endShape(CLOSE);
         off.pop();
       }
+      
       off.pop();
-      off.blendMode(off.BLEND);
-      gif.addFrame(off.canvas, {copy: true, delay: 30});
+      
+      // Add poster info overlay to each frame
+      drawPosterInfo(off, W, H, 1, 'rombi');
+      
+      gif.addFrame(off.canvas, {copy: true, delay: 33});
     }
 
     gif.on('finished', function(blob) {
+      console.log('GIF completata, download in corso');
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `rombi-${Date.now()}.gif`;
       a.click();
       URL.revokeObjectURL(url);
+      
+      const btn = document.getElementById('downloadGIF');
+      if (btn) {
+        btn.textContent = 'Scarica GIF';
+        btn.disabled = false;
+      }
+    });
+    
+    gif.on('error', function(error) {
+      console.error('Errore GIF:', error);
+      const btn = document.getElementById('downloadGIF');
+      if (btn) {
+        btn.textContent = 'Errore - Riprova';
+        btn.disabled = false;
+      }
     });
 
+    console.log('Rendering GIF...');
     gif.render();
   }
 }
