@@ -33,11 +33,28 @@ if (typeof window !== 'undefined') {
 
     // Otherwise inject p5 script and run after load
     const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js';
+    // Use full p5 library instead of minified for better Safari compatibility
+    script.src = 'https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js';
     script.async = false;
     script.defer = false;
-    script.onload = () => runSketch();
-    script.onerror = (e) => console.error('Failed to load p5 library', e);
+    script.type = 'text/javascript';
+    script.onload = () => {
+      // Small delay to ensure p5 is fully ready
+      setTimeout(runSketch, 100);
+    };
+    script.onerror = (e) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load p5 library', e);
+      // Try minified version as fallback
+      const fallbackScript = document.createElement('script');
+      fallbackScript.src = 'https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js';
+      fallbackScript.async = false;
+      fallbackScript.defer = false;
+      fallbackScript.onload = () => {
+        setTimeout(runSketch, 100);
+      };
+      document.head.appendChild(fallbackScript);
+    };
     document.head.appendChild(script);
   });
 }

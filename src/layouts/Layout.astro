@@ -20,6 +20,22 @@ const { page = '' } = Astro.props;
 	<body data-page={page}>
 			<slot />
 			<script src="/js/clock.js" is:inline></script>
+			<script is:inline>
+			//<![CDATA[
+				const menuToggle = document.getElementById('menu-toggle');
+				const headerNav = document.querySelector('.header-nav');
+				if (menuToggle && headerNav) {
+					menuToggle.addEventListener('click', () => {
+						headerNav.classList.toggle('active');
+					});
+					headerNav.querySelectorAll('.nav-link').forEach(link => {
+						link.addEventListener('click', () => {
+							headerNav.classList.remove('active');
+						});
+					});
+				}
+			//]]>
+			</script>
 	</body>
 </html>
 

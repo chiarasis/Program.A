@@ -9,12 +9,17 @@ import '../assets/home.css';
 	<section class="hero-section">
 		<!-- Video intro overlay (inside hero section) -->
 		<div id="video-intro" class="video-intro-overlay">
-			<video id="intro-video" autoplay muted playsinline>
-				<source src="/programa%20.webm" type="video/webm">
+			<video id="intro-video" autoplay muted playsinline preload="auto" crossorigin="anonymous">
+				<source src="/programa.webm" type="video/webm">
+				<source src="/programa.mp4" type="video/mp4">
+				Tuo browser non supporta il formato video.
 			</video>
 		</div>
 		
 		<div id="p5-root" aria-hidden="true"></div>
+		
+		<!-- Hero title -->
+		<h1 class="hero-title">Program.A</h1>
 	</section>
 
 	<Header includeStyles={false} />
@@ -165,20 +170,58 @@ import '../assets/home.css';
 	<script src="/js/geometricShapes.js" is:inline></script>
 	
 	<script is:inline>
+	//<![CDATA[
 		// Video intro handler
 		const videoIntro = document.getElementById('video-intro');
 		const introVideo = document.getElementById('intro-video');
+		const heroTitle = document.querySelector('.hero-title');
+		
+		// Detect Safari browser
+		const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|Firefox|Edge/.test(navigator.userAgent);
 		
 		if (videoIntro && introVideo) {
-			// When video ends, freeze on last frame and overlay on hero section
-			introVideo.addEventListener('ended', () => {
-				videoIntro.classList.add('video-ended');
-				// Allow interaction through the video overlay
-				videoIntro.style.pointerEvents = 'none';
-			});
-			
-			// Force play on load
-			introVideo.play().catch(err => console.log('Autoplay prevented:', err));
+			// On Safari, hide video and show title instead
+			if (isSafari) {
+				introVideo.style.display = 'none';
+				if (heroTitle) {
+					heroTitle.classList.add('show');
+				}
+			} else {
+				// On other browsers, use video normally
+				// When video ends, keep it frozen on last frame
+				introVideo.addEventListener('ended', () => {
+					introVideo.pause();
+					console.log('Video ended and frozen on last frame');
+				});
+
+				// Handle video load success
+				introVideo.addEventListener('loadeddata', () => {
+					console.log('Video loaded successfully');
+				});
+
+				// Handle video error - show title as fallback
+				introVideo.addEventListener('error', (e) => {
+					console.error('Video error:', e, introVideo.error);
+					if (heroTitle) {
+						heroTitle.classList.add('show');
+					}
+				});
+
+				// Force play on load
+				introVideo.play().catch(err => {
+					console.log('Autoplay prevented or video failed:', err);
+					if (heroTitle && introVideo.readyState === introVideo.HAVE_NOTHING) {
+						heroTitle.classList.add('show');
+					}
+				});
+				
+				// Timeout fallback
+				setTimeout(() => {
+					if (introVideo.readyState === introVideo.HAVE_NOTHING && heroTitle) {
+						heroTitle.classList.add('show');
+					}
+				}, 2000);
+			}
 		}
 
 		// Mostra carousel - continuous infinite smooth scroll
@@ -227,5 +270,6 @@ import '../assets/home.css';
 				isScrolling = true;
 			});
 		}
+	//]]>
 	</script>
 </Layout>
