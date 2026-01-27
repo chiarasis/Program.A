@@ -24,6 +24,13 @@ let lastMoveTime = 0;
 const FRICTION = 0.92;
 const VELOCITY_THRESHOLD = 0.5;
 
+// Pinch zoom for mobile
+let isPinching = false;
+let lastPinchDistance = 0;
+let pinchStartScale = 1;
+let pinchCenterX = 0;
+let pinchCenterY = 0;
+
 // Double click to toggle overview
 let clickCount = 0;
 let clickTimer = null;
@@ -143,6 +150,14 @@ function createPosterCard(poster, x, y) {
   card.dataset.editor = poster.editor;
   card.style.left = `${x}px`;
   card.style.top = `${y}px`;
+  card.dataset.posX = x;
+  card.dataset.posY = y;
+
+  // Track touch to detect tap vs drag
+  let cardTouchStartX = 0;
+  let cardTouchStartY = 0;
+  let cardTouchStartTime = 0;
+  let isAnimating = false;
 
   const editorName = getDisplayName(poster.editor);
   const date = new Date(poster.timestamp).toLocaleDateString('it-IT');
@@ -187,15 +202,17 @@ function createPosterCard(poster, x, y) {
       <h3>${editorName}</h3>
       <p>${date}</p>
         ${userLabel ? `<p class="poster-seed">${userLabel}</p>` : ''}
-      <button class="delete-btn" data-poster-id="${poster.id}">Elimina</button>
     </div>
   `;
 
   // Add GIF hover effect if it's a GIF
+  let staticImg = null;
+  let animatedImg = null;
   if (poster.isGif) {
-    const staticImg = card.querySelector('.poster-static');
-    const animatedImg = card.querySelector('.poster-animated');
+    staticImg = card.querySelector('.poster-static');
+    animatedImg = card.querySelector('.poster-animated');
     
+    // Desktop: hover
     card.addEventListener('mouseenter', () => {
       if (staticImg) staticImg.style.display = 'none';
       if (animatedImg) animatedImg.style.display = 'block';
@@ -207,37 +224,44 @@ function createPosterCard(poster, x, y) {
     });
   }
 
-  // Add delete handler
-  const deleteBtn = card.querySelector('.delete-btn');
-  deleteBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    deletePoster(poster.id);
-  });
+  card.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    cardTouchStartX = touch.clientX;
+    cardTouchStartY = touch.clientY;
+    cardTouchStartTime = Date.now();
+  }, { passive: true });
+
+  card.addEventListener('touchend', (e) => {
+    const touch = e.changedTouches[0];
+    const deltaX = Math.abs(touch.clientX - cardTouchStartX);
+    const deltaY = Math.abs(touch.clientY - cardTouchStartY);
+    const duration = Date.now() - cardTouchStartTime;
+
+    // Treat as tap if movement is small and quick, and no pinch is active
+    if (deltaX < 10 && deltaY < 10 && duration < 400 && !isPinching) {
+      e.preventDefault();
+      e.stopPropagation();
+      isDragging = false;
+      velocityX = 0;
+      velocityY = 0;
+
+      // Toggle GIF animation on tap for mobile
+      if (poster.isGif) {
+        isAnimating = !isAnimating;
+        if (isAnimating) {
+          if (staticImg) staticImg.style.display = 'none';
+          if (animatedImg) animatedImg.style.display = 'block';
+        } else {
+          if (staticImg) staticImg.style.display = 'block';
+          if (animatedImg) animatedImg.style.display = 'none';
+        }
+      }
+
+      focusCard(card);
+    }
+  }, { passive: false });
 
   container.appendChild(card);
-}
-
-async function deletePoster(posterId) {
-  if (!confirm('Eliminare questo poster?')) return;
-  
-  try {
-    await window.PosterStorage.deletePoster(posterId);
-    
-    // Remove from DOM
-    const card = container.querySelector(`[data-id="${posterId}"]`);
-    if (card) card.remove();
-    
-    // Update count
-    const remainingCards = container.querySelectorAll('.poster-card');
-    updatePosterCount(remainingCards.length);
-    
-    if (remainingCards.length === 0) {
-      showEmptyState();
-    }
-  } catch (error) {
-    console.error('Failed to delete poster:', error);
-    alert('Errore durante l\'eliminazione del poster');
-  }
 }
 
 function showEmptyState() {
@@ -370,6 +394,25 @@ function handleTouchStart(e) {
     lastMoveTime = Date.now();
     velocityX = 0;
     velocityY = 0;
+  } else if (e.touches.length === 2) {
+    // Pinch zoom start
+    e.preventDefault();
+    isDragging = false;
+    isPinching = true;
+    
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    
+    lastPinchDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+    
+    pinchStartScale = scale;
+    
+    // Center point between two fingers
+    pinchCenterX = (touch1.clientX + touch2.clientX) / 2;
+    pinchCenterY = (touch1.clientY + touch2.clientY) / 2;
   }
 }
 
@@ -400,34 +443,67 @@ function handleDragMove(e) {
 }
 
 function handleTouchMove(e) {
-  if (!isDragging || e.touches.length !== 1) return;
-  
-  e.preventDefault();
-  const touch = e.touches[0];
-  const now = Date.now();
-  const dt = now - lastMoveTime;
-  
-  currentX = touch.clientX - startX;
-  currentY = touch.clientY - startY;
-  
-  if (dt > 0) {
-    velocityX = (touch.clientX - lastMoveX) / dt * 16;
-    velocityY = (touch.clientY - lastMoveY) / dt * 16;
+  if (e.touches.length === 2 && isPinching) {
+    // Pinch zoom
+    e.preventDefault();
+    
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    
+    const currentDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+    
+    const distanceRatio = currentDistance / lastPinchDistance;
+    
+    // Calculate new scale
+    const newScale = pinchStartScale * distanceRatio;
+    const clampedScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale));
+    
+    // Calculate zoom center point relative to container
+    const beforeX = (pinchCenterX - translateX) / scale;
+    const beforeY = (pinchCenterY - translateY) / scale;
+    
+    scale = clampedScale;
+    
+    // Adjust translate to zoom towards pinch center
+    translateX = pinchCenterX - beforeX * scale;
+    translateY = pinchCenterY - beforeY * scale;
+    
+    updateTransform();
+    updatePositionDisplay();
+    
+  } else if (e.touches.length === 1 && isDragging && !isPinching) {
+    // Single finger drag
+    e.preventDefault();
+    const touch = e.touches[0];
+    const now = Date.now();
+    const dt = now - lastMoveTime;
+    
+    currentX = touch.clientX - startX;
+    currentY = touch.clientY - startY;
+    
+    if (dt > 0) {
+      velocityX = (touch.clientX - lastMoveX) / dt * 16;
+      velocityY = (touch.clientY - lastMoveY) / dt * 16;
+    }
+    
+    translateX = currentX;
+    translateY = currentY;
+    
+    lastMoveX = touch.clientX;
+    lastMoveY = touch.clientY;
+    lastMoveTime = now;
+    
+    updateTransform();
+    updatePositionDisplay();
   }
-  
-  translateX = currentX;
-  translateY = currentY;
-  
-  lastMoveX = touch.clientX;
-  lastMoveY = touch.clientY;
-  lastMoveTime = now;
-  
-  updateTransform();
-  updatePositionDisplay();
 }
 
 function handleDragEnd() {
   isDragging = false;
+  isPinching = false;
   canvas.style.cursor = 'grab';
   document.body.classList.remove('dragging');
 }
@@ -502,6 +578,15 @@ function zoomOut() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   zoomToPoint(centerX, centerY, -ZOOM_AMOUNT);
+}
+
+function focusCard(card) {
+  // Toggle focus class to enlarge only the tapped poster
+  const alreadyFocused = card.classList.contains('focused');
+  container.querySelectorAll('.poster-card.focused').forEach((c) => c.classList.remove('focused'));
+  if (!alreadyFocused) {
+    card.classList.add('focused');
+  }
 }
 
 function resetView() {

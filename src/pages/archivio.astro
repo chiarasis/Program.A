@@ -100,7 +100,7 @@ const pickEditor = (opera) => {
           </div>
           <div class="group-intro-text">
             <blockquote>"Consideriamo quindi la realtà come continuo divenire di fenomeni che noi percepiamo nella variazione."</blockquote>
-            <p>Il gruppo T, nasce nel 1961, attorno alle personalità di Giovanni Anceschi, Davide Boriani, Gianni Colombo, Gabriele Devecchi, e Grazia Varisco. Tutti i membri del Gruppo milanese, sono accomunati da un fortissimo senso di appartenenza al gruppo, e dalla medesima visione di un'arte specchio dei rapidi cambiamenti sociali.</p>
+            <p>Il gruppo T, nasce nel 1959, attorno alle personalità di Giovanni Anceschi, Davide Boriani, Gianni Colombo, Gabriele Devecchi, e Grazia Varisco. Tutti i membri del Gruppo milanese, sono accomunati da un fortissimo senso di appartenenza al gruppo, e dalla medesima visione di un'arte specchio dei rapidi cambiamenti sociali.</p>
             <p>L'arte sconfina nel campo dalla scienza, e non può più prescindere dalla ricerca del dinamismo intrinseco alla realtà.</p>
             <p>Affianco al concetto di cinetismo emerge quello di continua trasformazione, tanto dei materiali quanto delle variabili spaziali.</p>
             <p>In questo contesto si inseriscono i Percorsi fluidi di Anceschi, stranianti e resi interattivi dalla rotazione e dallo spostamento manuale, o le Superfici magnetiche di Boriani, che, nella loro precisione scientifica, stimolano la sensorialità dello spettatore; allo stesso modo i pulsanti Schemi Luminosi Varabili di Grazia Varisco e gli URMNT, le lamiere forate di DeVecchi, che confermano uno studio avanzato sulle potenzialità dei materiali e si dimostrano esempi validissimi di soluzioni autonome, individuali, all'interno di una poetica comune.</p>
@@ -114,7 +114,7 @@ const pickEditor = (opera) => {
           </div>
           <div class="group-intro-text">
             <blockquote>"La dicitura enne distingue un gruppo di "disegnatori sperimentali" uniti dall'esigenza di ricercare collettivamente".</blockquote>
-            <p>Il nucleo originario del gruppo N si forma a Parma nel 1959; nel 1960 raggiunge il suo assetto definitivo con gli artisti Alberto Biasi, Ennio Chiggio, Toni Costa, Edoardo Landi e Manfredo Massironi.</p>
+            <p>Il nucleo originario del gruppo N si forma a Padova nel 1959; nel 1960 raggiunge il suo assetto definitivo con gli artisti Alberto Biasi, Ennio Chiggio, Toni Costa, Edoardo Landi e Manfredo Massironi.</p>
             <p>Il concetto di lavoro di gruppo diviene radicale e, di conseguenza, il rifiuto del principio di autorialità: l'intento è quello di intraprendere la via della globalità del fare artistico, mettendo in discussione l'immagine dell'artista come individualista elitario. L'intera opera del gruppo è intrisa di una forte componente etica e politica.</p>
             <p>Il Gruppo N diventa una sorta di laboratorio europeo della forma virtuale, che esplora tanto la bidimensionalità, nelle variazioni ottiche della superficie, quanto la spazialità e l'oggetto tridimensionale. Il fine ultimo si ritrova nel coinvolgimento dello spettatore, sfruttando e sfidando la psicologia della percezione.</p>
             <p>Questa è la poetica dei Rilievi ottico-dinamici e dei Light Prism di Alberto Biasi, delle Trame e delle Interferenze Lineari di Ennio Chiggio, delle Dinamiche Visuali di Toni Costa, delle Riflessioni sferiche di Edoardo Landi, delle Fotoriflessioni di Manfredo Massironi.</p>
@@ -178,6 +178,16 @@ const pickEditor = (opera) => {
     let groupIntroCards = [];
     let groupIntroDetails = [];
     let pageEl = null;
+
+    // Mobile touch/drag controls
+    let isMobile = false;
+    let isTouching = false;
+    let touchStartY = 0;
+    let touchRotation = 0;
+    let isDragging = false;
+    let dragStartY = 0;
+    let dragRotation = 0;
+    let accumulatedWheelDelta = 0;
 
     // Helper: parse earliest year from strings like "1959", "1959-1962", "1970–2013"
     function parseYearStartStr(y) {
@@ -395,20 +405,110 @@ const pickEditor = (opera) => {
         });
       });
 
-      // Handle scroll
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            handleScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      });
+      // Detect mobile
+      isMobile = window.innerWidth <= 1024;
+      console.log('isMobile:', isMobile);
+
+      if (isMobile) {
+        // Mobile: use touch, mouse drag, and wheel
+        console.log('Setting up mobile controls');
+        setupMobileControls();
+        document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
+      } else {
+        // Desktop: use scroll
+        console.log('Setting up desktop scroll');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              handleScroll();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+      }
 
       // Smooth animation loop
       animate();
+    }
+
+    function setupMobileControls() {
+      const rolodexContainer = document.querySelector('.rolodex-container');
+      if (!rolodexContainer) {
+        console.error('Rolodex container not found');
+        return;
+      }
+
+      console.log('Mobile controls attached');
+
+      // Touch events
+      rolodexContainer.addEventListener('touchstart', (e) => {
+        isTouching = true;
+        touchStartY = e.touches[0].clientY;
+        touchRotation = targetRotation;
+        e.preventDefault();
+      }, { passive: false });
+
+      rolodexContainer.addEventListener('touchmove', (e) => {
+        if (!isTouching) return;
+        const deltaY = touchStartY - e.touches[0].clientY;
+        const rotationDelta = (deltaY / window.innerHeight) * 360 * 1.2;
+        targetRotation = touchRotation - rotationDelta;
+        clampRotation();
+        e.preventDefault();
+      }, { passive: false });
+
+      rolodexContainer.addEventListener('touchend', () => {
+        isTouching = false;
+        snapToNearest();
+      });
+
+      // Mouse drag
+      rolodexContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        dragStartY = e.clientY;
+        dragRotation = targetRotation;
+        rolodexContainer.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaY = dragStartY - e.clientY;
+        const rotationDelta = (deltaY / window.innerHeight) * 360 * 1.2;
+        targetRotation = dragRotation - rotationDelta;
+        clampRotation();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        rolodexContainer.style.cursor = 'grab';
+        snapToNearest();
+      });
+
+      // Wheel control
+      rolodexContainer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        accumulatedWheelDelta += e.deltaY;
+        const rotationDelta = (accumulatedWheelDelta / window.innerHeight) * 360 * 0.3;
+        targetRotation = -rotationDelta;
+        clampRotation();
+      }, { passive: false });
+
+      rolodexContainer.style.cursor = 'grab';
+    }
+
+    function clampRotation() {
+      const minRotation = -360 * ((cardCount - 1) / cardCount);
+      targetRotation = Math.max(minRotation, Math.min(0, targetRotation));
+    }
+
+    function snapToNearest() {
+      const activeIndex = Math.round(Math.abs(targetRotation) / anglePerCard) % cardCount;
+      targetRotation = -activeIndex * anglePerCard;
     }
 
     function attachImageFallbacks() {
